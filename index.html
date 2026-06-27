@@ -783,8 +783,6 @@ footer a{color:var(--pacific-deep);text-decoration:none}
       <span class="user-greeting" id="user-greeting" style="display:none"></span>
       <button class="profile-link-btn" id="btn-profile" style="display:none" onclick="openMyProfile()">Edit profile</button>
       <button class="auth-btn btn-signout" id="btn-signout" style="display:none" onclick="signOut()">Sign out</button>
-      <button class="auth-btn btn-signup" id="btn-signup" onclick="openSignup()">Create account</button>
-      <button class="auth-btn btn-signin" id="btn-signin" onclick="openSignin()">Sign in</button>
     </div>
   </div>
 </div>
@@ -819,7 +817,7 @@ footer a{color:var(--pacific-deep);text-decoration:none}
 <!-- CAMPGROUNDS -->
 <div class="wrap panel active" id="panel-camps">
   <div class="controls">
-    <input type="text" class="search" id="search" placeholder="Search campgrounds, regions, activities…" autocomplete="off">
+    <input type="text" class="search" id="search" placeholder="Search campgrounds, regions, activities…" autocomplete="off" autocomplete="off">
     <div class="pills" id="filterpills">
       <button class="pill booked" data-filter="booked">★ Booked only</button>
       <button class="pill ocean" data-filter="ocean">🌊 Ocean view</button>
@@ -1251,21 +1249,16 @@ function updateAuthUI(){
   const bi=document.getElementById('btn-signin');
   const bo=document.getElementById('btn-signout');
   const bp=document.getElementById('btn-profile');
-  const bsu=document.getElementById('btn-signup');
   const tabBookings=document.getElementById('tab-bookings');
   if(currentUser){
     g.textContent=myProfile?.display_name?.split(' ')[0]||currentUser.email.split('@')[0];
     g.style.display='inline';
-    bi.style.display='none';
-    if(bsu)bsu.style.display='none';
     bo.style.display='inline-block';
     bp.style.display='inline-block';
     if(tabBookings)tabBookings.style.display='inline-block';
     updateGate(false);
   } else {
     g.style.display='none';
-    bi.style.display='inline-block';
-    if(bsu)bsu.style.display='inline-block';
     bo.style.display='none';
     bp.style.display='none';
     if(tabBookings)tabBookings.style.display='none';
