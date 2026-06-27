@@ -728,17 +728,19 @@ footer a{color:var(--pacific-deep);text-decoration:none}
 <body>
 
 <header class="hero">
-
   <div class="hero-inner">
 
-    <!-- LOGGED OUT: brand hero -->
-    <div class="hero-logged-out" id="hero-logged-out" style="display:none">
+    <!-- LOGGED OUT -->
+    <div id="hero-logged-out" style="display:block">
       <div class="eyebrow">find your site · find your vibe</div>
-      <div class="hero-brand-heading">Car camping.<br><span class="dot">Done right.</span></div>
-      <p class="hero-sub" style="margin-top:10px">A community-built guide to car camping across the United States — curated campgrounds, hidden viewpoints, local tips, and dispersed camping zones. Free to browse, better with an account.</p>
-      <button class="hero-cta" onclick="openAuth()">Create free account →</button>
-      <div class="hero-platform-stats" id="platform-stats">
-        <div class="hero-pstat"><div class="hero-pstat-n" id="pstat-camps">40</div><div class="hero-pstat-l">Campgrounds</div></div>
+      <h1 class="hero-brand-heading">Car camping.<br><span class="dot">Done right.</span></h1>
+      <p class="hero-sub" style="margin-top:12px;margin-bottom:20px;">A community-built guide to car camping across the United States — curated campgrounds, hidden viewpoints, local tips, and dispersed camping zones. Free to browse, better with an account.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px;">
+        <button class="hero-cta" onclick="openSignup()">Create free account →</button>
+        <button class="hero-cta" onclick="openSignin()" style="background:transparent;border:1px solid rgba(253,252,248,0.4);color:var(--surf);">Sign in</button>
+      </div>
+      <div class="hero-platform-stats">
+        <div class="hero-pstat"><div class="hero-pstat-n">40</div><div class="hero-pstat-l">Campgrounds</div></div>
         <div class="hero-pstat-div"></div>
         <div class="hero-pstat"><div class="hero-pstat-n" id="pstat-viewpoints">0</div><div class="hero-pstat-l">Viewpoints</div></div>
         <div class="hero-pstat-div"></div>
@@ -748,13 +750,11 @@ footer a{color:var(--pacific-deep);text-decoration:none}
       </div>
     </div>
 
-    <!-- LOGGED IN: personal journal hero -->
-    <div class="hero-logged-in" id="hero-logged-in" style="display:none">
+    <!-- LOGGED IN -->
+    <div id="hero-logged-in" style="display:none">
       <div class="eyebrow" id="hero-eyebrow">My camping journal</div>
       <div class="hero-user-row">
-        <div class="hero-avatar" id="hero-avatar">
-          <div class="hero-avatar-empty">🏕</div>
-        </div>
+        <div class="hero-avatar" id="hero-avatar"><div class="hero-avatar-empty">🏕</div></div>
         <div class="hero-user-text">
           <div class="hero-user-heading" id="hero-heading">My Adventure</div>
           <div class="hero-user-sub" id="hero-sub"></div>
@@ -791,8 +791,8 @@ footer a{color:var(--pacific-deep);text-decoration:none}
 
 <nav class="tabwrap">
   <div class="tabs">
-    <button class="tab active" data-tab="bookings">My Bookings <span class="badge">10</span></button>
-    <button class="tab" data-tab="camps">Campgrounds <span class="badge">40</span></button>
+    <button class="tab active" data-tab="bookings" id="tab-bookings" style="display:none">My Bookings <span class="badge">10</span></button>
+    <button class="tab active" data-tab="camps" id="tab-camps">Campgrounds <span class="badge">40</span></button>
     <button class="tab" data-tab="boondock">Boondocking <span class="badge">7</span></button>
     <button class="tab" data-tab="viewpoints">Viewpoints <span class="badge" id="vp-badge">0</span></button>
     <button class="tab" data-tab="explore">Explore <span class="badge" id="ex-badge">0</span></button>
@@ -804,7 +804,7 @@ footer a{color:var(--pacific-deep);text-decoration:none}
 <main>
 
 <!-- MY BOOKINGS -->
-<div class="wrap panel active" id="panel-bookings">
+<div class="wrap panel" id="panel-bookings">
   <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:22px;flex-wrap:wrap;">
     <p class="intro" style="margin-bottom:0;flex:1">Your camping journal — every trip, every night, every site. Tap any trip to expand.</p>
     <div style="display:flex;gap:8px;flex-shrink:0;" id="booking-actions" style="display:none">
@@ -817,7 +817,7 @@ footer a{color:var(--pacific-deep);text-decoration:none}
 </div>
 
 <!-- CAMPGROUNDS -->
-<div class="wrap panel" id="panel-camps">
+<div class="wrap panel active" id="panel-camps">
   <div class="controls">
     <input type="text" class="search" id="search" placeholder="Search campgrounds, regions, activities…" autocomplete="off">
     <div class="pills" id="filterpills">
@@ -989,7 +989,7 @@ footer a{color:var(--pacific-deep);text-decoration:none}
 </div>
 
 <footer>
-  carcamping.guide &nbsp;·&nbsp; Fire info: <a href="https://fire.ca.gov">fire.ca.gov</a> &nbsp;·&nbsp; Reservations: <a href="https://reservecalifornia.com">reservecalifornia.com</a>
+  carcamping.guide &nbsp;·&nbsp; Car camping done right &nbsp;·&nbsp; Community-built · Coast to coast
 </footer>
 
 <!-- AUTH MODAL -->
@@ -1252,6 +1252,7 @@ function updateAuthUI(){
   const bo=document.getElementById('btn-signout');
   const bp=document.getElementById('btn-profile');
   const bsu=document.getElementById('btn-signup');
+  const tabBookings=document.getElementById('tab-bookings');
   if(currentUser){
     g.textContent=myProfile?.display_name?.split(' ')[0]||currentUser.email.split('@')[0];
     g.style.display='inline';
@@ -1259,6 +1260,7 @@ function updateAuthUI(){
     if(bsu)bsu.style.display='none';
     bo.style.display='inline-block';
     bp.style.display='inline-block';
+    if(tabBookings)tabBookings.style.display='inline-block';
     updateGate(false);
   } else {
     g.style.display='none';
@@ -1266,6 +1268,7 @@ function updateAuthUI(){
     if(bsu)bsu.style.display='inline-block';
     bo.style.display='none';
     bp.style.display='none';
+    if(tabBookings)tabBookings.style.display='none';
     updateGate(true);
   }
 }
@@ -1974,9 +1977,9 @@ async function renderHero(){
   if(!currentUser){
     if(loEl)loEl.style.display='block';
     if(liEl)liEl.style.display='none';
+    loadPlatformStats();
     return;
   }
-  // Logged in
   if(loEl)loEl.style.display='none';
   if(liEl)liEl.style.display='block';
 
