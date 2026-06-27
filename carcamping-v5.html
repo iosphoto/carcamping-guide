@@ -1,0 +1,2459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>carcamping.guide · Car Camping Across America</title>
+<!-- v5 -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap');
+:root{
+  --ink:#16221d;--pine:#22392f;--pine-2:#2c4a3d;
+  --pacific:#2c6f79;--pacific-deep:#1f545d;
+  --sun:#d9963f;--sun-deep:#bd7c2c;--rust:#b1572f;
+  --fog:#e6e8e2;--fog-2:#dde0d8;--paper:#faf9f4;--surf:#fdfcf8;
+  --line:rgba(22,34,29,0.14);--line-strong:rgba(22,34,29,0.28);--muted:#5d6862;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--fog);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;}
+
+/* HERO */
+.hero{position:relative;background:var(--pine);color:var(--surf);overflow:hidden;border-bottom:3px solid var(--sun);}
+
+.hero-inner{position:relative;max-width:1080px;margin:0 auto;padding:38px 22px 30px;}
+.eyebrow{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.32em;text-transform:uppercase;color:var(--sun);}
+.hero h1{font-family:'Zilla Slab',serif;font-weight:700;font-size:clamp(34px,7vw,62px);line-height:0.98;letter-spacing:-0.01em;margin:10px 0 6px;}
+.hero h1 .dot{color:var(--sun)}
+.hero-sub{max-width:540px;color:rgba(253,252,248,0.78);font-size:15px;}
+.stats{display:flex;flex-wrap:wrap;gap:0;margin-top:24px;border:1px solid rgba(253,252,248,0.2);border-radius:3px;overflow:hidden;}
+.stat{flex:1 1 100px;padding:14px 16px;border-right:1px solid rgba(253,252,248,0.16);}
+.stat:last-child{border-right:none}
+.stat .n{font-family:'Zilla Slab',serif;font-weight:700;font-size:26px;color:var(--sun);line-height:1;}
+.stat .l{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(253,252,248,0.62);margin-top:6px;}
+.nextup{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:22px;background:rgba(253,252,248,0.06);border:1px solid rgba(217,150,63,0.4);border-left:4px solid var(--sun);border-radius:3px;padding:14px 18px;}
+.nextup .tag{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--sun);}
+.nextup .name{font-family:'Zilla Slab',serif;font-weight:600;font-size:20px}
+.nextup .when{font-family:'Space Mono',monospace;font-size:13px;color:rgba(253,252,248,0.8)}
+.nextup .count{margin-left:auto;font-family:'Zilla Slab',serif;font-weight:700;font-size:15px;color:var(--surf);background:var(--sun-deep);padding:6px 12px;border-radius:3px;white-space:nowrap;}
+
+/* AUTH BAR */
+.authbar{background:var(--surf);border-bottom:1px solid var(--line);padding:0 22px;}
+.authbar-inner{max-width:1080px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;height:44px;}
+.authbar-left{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:0.06em;}
+.authbar-right{display:flex;align-items:center;gap:12px;}
+.auth-btn{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;padding:7px 14px;border-radius:3px;cursor:pointer;transition:all .15s;border:none;}
+.btn-signin{background:var(--pine);color:var(--surf);}
+.btn-signin:hover{background:var(--pine-2)}
+.btn-signout{background:transparent;color:var(--muted);border:1px solid var(--line-strong);}
+.btn-signout:hover{color:var(--ink);border-color:var(--ink)}
+.user-greeting{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);}
+
+/* TABS */
+.tabwrap{position:sticky;top:0;z-index:20;background:var(--surf);border-bottom:1px solid var(--line);}
+.tabs{max-width:1080px;margin:0 auto;display:flex;padding:0 22px;overflow-x:auto;}
+.tab{flex-shrink:0;appearance:none;border:none;background:none;cursor:pointer;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);padding:15px 12px;border-bottom:3px solid transparent;transition:color .15s,border-color .15s;white-space:nowrap;}
+.tab:hover{color:var(--ink)}
+.tab.active{color:var(--pine);border-bottom-color:var(--sun)}
+.tab .badge{display:inline-block;margin-left:5px;background:var(--fog-2);color:var(--muted);border-radius:10px;padding:1px 6px;font-size:10px;}
+.tab.active .badge{background:var(--sun);color:var(--pine)}
+
+/* LAYOUT */
+.wrap{max-width:1080px;margin:0 auto;padding:26px 22px 70px}
+.panel{display:none}
+.panel.active{display:block}
+.fullpanel{display:none}
+.fullpanel.active{display:block;padding-bottom:70px}
+
+/* SHARED FORM ELEMENTS */
+.controls{margin-bottom:22px}
+.search{width:100%;font-family:'Space Mono',monospace;font-size:14px;padding:12px 14px;background:var(--surf);border:1px solid var(--line-strong);border-radius:3px;color:var(--ink);}
+.search:focus{outline:2px solid var(--pacific);outline-offset:1px}
+.search::placeholder{color:var(--muted)}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.pill{appearance:none;cursor:pointer;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.04em;padding:7px 12px;border-radius:20px;background:var(--surf);border:1px solid var(--line-strong);color:var(--muted);transition:all .12s;}
+.pill:hover{border-color:var(--pine);color:var(--ink)}
+.pill.on{background:var(--pine);border-color:var(--pine);color:var(--surf)}
+.pill.on.ocean{background:var(--pacific);border-color:var(--pacific)}
+.pill.on.booked{background:var(--sun-deep);border-color:var(--sun-deep)}
+.resultcount{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);margin-top:14px;letter-spacing:0.06em;}
+
+/* CAMPGROUND CARDS */
+.region{display:flex;align-items:baseline;gap:14px;margin:34px 0 16px;padding-bottom:8px;border-bottom:2px solid var(--line-strong);}
+.region:first-of-type{margin-top:6px}
+.region h2{font-family:'Zilla Slab',serif;font-weight:700;font-size:22px;color:var(--pine);letter-spacing:-0.01em;}
+.region .num{font-family:'Space Mono',monospace;font-size:12px;color:var(--sun-deep);font-weight:700;}
+.region .desc{font-size:13px;color:var(--muted);margin-left:auto;font-style:italic;text-align:right;max-width:340px;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:16px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:18px 18px 16px;transition:transform .12s,box-shadow .12s,border-color .12s;}
+.card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(22,34,29,0.1);border-color:var(--line-strong)}
+.card.booked{border-left:4px solid var(--sun)}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.card h3{font-family:'Zilla Slab',serif;font-weight:600;font-size:19px;color:var(--ink);line-height:1.1;letter-spacing:-0.01em;}
+.dist{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);white-space:nowrap;text-align:right;flex-shrink:0;}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:11px 0}
+.t{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.04em;padding:3px 8px;border-radius:3px;text-transform:uppercase;}
+.t.price{background:var(--fog-2);color:var(--ink)}
+.t.ocean{background:rgba(44,111,121,0.14);color:var(--pacific-deep)}
+.t.booked{background:var(--sun);color:var(--pine);font-weight:700}
+.t.nodog{background:rgba(177,87,47,0.13);color:var(--rust)}
+.t.fire{background:rgba(177,87,47,0.14);color:var(--rust)}
+.t.dog{background:rgba(44,111,121,0.13);color:var(--pacific-deep)}
+.blurb{font-size:13.5px;color:#33403a;margin-bottom:12px}
+.meta{border-top:1px dashed var(--line-strong);padding-top:11px}
+.meta .row{font-size:12.5px;margin-bottom:7px;color:#33403a}
+.meta .row:last-child{margin-bottom:0}
+.meta .k{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--pacific-deep);display:block;margin-bottom:2px;}
+.bookline{margin-top:11px;padding-top:10px;border-top:1px dashed var(--line-strong);font-family:'Space Mono',monospace;font-size:11px;color:var(--sun-deep);}
+
+/* BOOKINGS TIMELINE */
+.intro{font-size:14px;color:var(--muted);margin-bottom:26px;max-width:620px}
+.timeline{position:relative;padding-left:26px}
+.timeline::before{content:'';position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:linear-gradient(var(--sun),var(--pacific));}
+.trip{position:relative;margin-bottom:18px}
+.trip::before{content:'';position:absolute;left:-23px;top:20px;width:12px;height:12px;border-radius:50%;background:var(--paper);border:3px solid var(--pacific);}
+.trip.soon::before{border-color:var(--sun);box-shadow:0 0 0 4px rgba(217,150,63,0.2)}
+.trip.done::before{border-color:var(--muted);background:var(--muted)}
+.tripcard{background:var(--paper);border:1px solid var(--line);border-radius:4px;overflow:hidden;}
+.tripcard.soon{border-color:var(--sun);box-shadow:0 4px 18px rgba(217,150,63,0.12)}
+.triphead{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 16px;cursor:pointer;background:var(--surf);}
+.triphead:hover{background:var(--fog)}
+.tripdate{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--surf);background:var(--pine);padding:5px 9px;border-radius:3px;white-space:nowrap;letter-spacing:0.04em;}
+.tripcard.soon .tripdate{background:var(--sun-deep)}
+.tripname{font-family:'Zilla Slab',serif;font-weight:600;font-size:18px;color:var(--ink)}
+.tripmeta{margin-left:auto;display:flex;align-items:center;gap:12px;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);}
+.cd{font-weight:700;color:var(--pacific-deep);background:rgba(44,111,121,0.1);padding:4px 9px;border-radius:3px;white-space:nowrap;}
+.cd.soon{color:var(--sun-deep);background:rgba(217,150,63,0.15)}
+.cd.done{color:var(--muted);background:var(--fog-2)}
+.chev{transition:transform .2s;color:var(--muted);font-size:12px;font-family:'Space Mono',monospace}
+.tripcard.open .chev{transform:rotate(90deg)}
+.nights{display:none;padding:4px 16px 14px}
+.tripcard.open .nights{display:block}
+.night{display:grid;grid-template-columns:62px 1fr auto;gap:12px;align-items:center;padding:9px 0;border-bottom:1px dashed var(--line);font-size:12.5px;}
+.night:last-child{border-bottom:none}
+.night .nd{font-family:'Space Mono',monospace;font-size:11px;color:var(--sun-deep);font-weight:700}
+.night .ns b{font-family:'Zilla Slab',serif;font-weight:600}
+.night .ns span{color:var(--muted);font-size:11.5px}
+.night .nr{font-family:'Space Mono',monospace;font-size:11px;text-align:right;color:var(--muted)}
+.night .nr b{display:block;color:var(--ink);font-size:12px}
+
+/* BOONDOCKING */
+.firebox{display:flex;gap:14px;align-items:flex-start;background:rgba(177,87,47,0.08);border:1px solid rgba(177,87,47,0.3);border-left:4px solid var(--rust);border-radius:4px;padding:16px 18px;margin-bottom:26px;}
+.firebox .ic{font-size:22px;line-height:1}
+.firebox h4{font-family:'Zilla Slab',serif;font-weight:700;color:var(--rust);font-size:15px;margin-bottom:4px}
+.firebox p{font-size:13px;color:#43403a}
+.firebox code{font-family:'Space Mono',monospace;font-size:12px;color:var(--rust)}
+.zone{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:18px;margin-bottom:14px;display:flex;gap:18px;}
+.zone .rank{font-family:'Zilla Slab',serif;font-weight:700;font-size:34px;color:var(--sun);line-height:0.9;flex-shrink:0;width:46px;}
+.zone-body{flex:1}
+.zone h3{font-family:'Zilla Slab',serif;font-weight:600;font-size:20px;color:var(--ink);line-height:1.1}
+.zone .best{font-family:'Space Mono',monospace;font-size:11px;color:var(--pacific-deep);letter-spacing:0.04em;margin:3px 0 8px;}
+.zone .ztags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.zone .ztags .t{background:var(--fog-2);color:var(--ink)}
+.zone p.zb{font-size:13.5px;color:#33403a;margin-bottom:10px}
+.zone .strat{background:var(--fog);border-radius:3px;padding:11px 13px;font-size:12.5px;color:#33403a;}
+.zone .strat .k{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--pine);display:block;margin-bottom:4px;}
+.zone .roads{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);margin-top:9px}
+
+/* COMMUNITY SHARED */
+.community-header{display:flex;align-items:center;justify-content:space-between;margin:40px 0 20px;padding-bottom:12px;border-bottom:2px solid var(--line-strong);}
+.community-header h2{font-family:'Zilla Slab',serif;font-weight:700;font-size:22px;color:var(--pine);}
+.community-header .ch-sub{font-size:13px;color:var(--muted);font-style:italic;}
+.submit-btn{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;background:var(--pine);color:var(--surf);border:none;padding:10px 18px;border-radius:3px;cursor:pointer;transition:background .15s;white-space:nowrap;}
+.submit-btn:hover{background:var(--pine-2)}
+.community-spots{margin-top:8px}
+.community-spot{background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--pacific);border-radius:4px;padding:16px 18px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start;}
+.spot-img{width:90px;height:72px;object-fit:cover;border-radius:3px;flex-shrink:0;background:var(--fog-2);}
+.spot-body{flex:1;min-width:0}
+.spot-name{font-family:'Zilla Slab',serif;font-weight:600;font-size:17px;color:var(--ink);margin-bottom:3px;}
+.spot-desc{font-size:13px;color:#33403a;margin-bottom:8px;line-height:1.45}
+.spot-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
+.spot-meta{display:flex;align-items:center;gap:10px;font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);flex-wrap:wrap;}
+.spot-upvote{display:flex;align-items:center;gap:5px;background:var(--fog-2);border:1px solid var(--line-strong);border-radius:3px;padding:4px 10px;cursor:pointer;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);transition:all .15s;}
+.spot-upvote:hover{border-color:var(--pacific);color:var(--pacific)}
+.spot-upvote.voted{background:rgba(44,111,121,0.12);border-color:var(--pacific);color:var(--pacific-deep)}
+.spot-flag{display:flex;align-items:center;gap:5px;background:var(--fog-2);border:1px solid var(--line-strong);border-radius:3px;padding:4px 10px;cursor:pointer;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);transition:all .15s;}
+.spot-flag:hover{border-color:var(--rust);color:var(--rust)}
+.spot-flag.flagged{background:rgba(177,87,47,0.08);border-color:var(--rust);color:var(--rust)}
+.spot-gps{font-size:11px;color:var(--pacific-deep);cursor:pointer;text-decoration:underline;text-underline-offset:2px;}
+.spots-empty{font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);text-align:center;padding:40px 20px;border:1px dashed var(--line-strong);border-radius:4px;}
+
+/* MAP HEADER — shared by Viewpoints + Explore */
+.map-header{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;background:var(--surf);border-bottom:1px solid var(--line);}
+.map-stats{display:flex;align-items:center;gap:22px;}
+.map-stat{text-align:center;}
+.map-stat-n{font-family:'Zilla Slab',serif;font-weight:700;font-size:22px;color:var(--sun);line-height:1;}
+.map-stat-l{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-top:2px;}
+.map-stat-div{width:1px;height:30px;background:var(--line-strong);}
+.map-share-btn{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;background:var(--sun);color:var(--pine);border:none;padding:11px 20px;border-radius:3px;cursor:pointer;font-weight:700;transition:background .15s;white-space:nowrap;}
+.map-share-btn:hover{background:var(--sun-deep)}
+#viewpoints-map{width:100%;height:calc(100vh - 200px);min-height:420px;}
+#explore-map{width:100%;height:calc(100vh - 240px);min-height:400px;}
+
+/* CATEGORY BADGES */
+.cat-badge{display:inline-flex;align-items:center;gap:5px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;padding:3px 9px;border-radius:20px;font-weight:700;}
+.cat-food{background:rgba(177,87,47,0.12);color:var(--rust);}
+.cat-supplies{background:rgba(44,111,121,0.12);color:var(--pacific-deep);}
+.cat-activity{background:rgba(34,57,47,0.1);color:var(--pine);}
+.cat-nature{background:rgba(44,111,121,0.08);color:#2d6b40;}
+
+/* PHOTO MAP PINS */
+.photo-pin{width:56px;height:56px;border-radius:6px;overflow:hidden;border:3px solid var(--sun);box-shadow:0 3px 12px rgba(22,34,29,0.35);cursor:pointer;transition:transform .15s;background:var(--fog-2);}
+.photo-pin:hover{transform:scale(1.12);}
+.photo-pin img{width:100%;height:100%;object-fit:cover;display:block;}
+.photo-pin.vp{border-color:var(--sun);}
+.photo-pin.explore{border-color:var(--pacific);}
+.photo-pin.no-photo{display:flex;align-items:center;justify-content:center;font-size:20px;}
+
+/* SPOT DETAIL PANEL */
+.spot-panel{display:none;position:fixed;bottom:0;left:0;right:0;z-index:50;background:var(--surf);border-top:2px solid var(--sun);border-radius:14px 14px 0 0;max-height:80vh;overflow-y:auto;box-shadow:0 -8px 40px rgba(22,34,29,0.25);}
+.spot-panel.open{display:block}
+.spot-panel-close{position:absolute;top:14px;right:16px;background:var(--fog-2);border:none;cursor:pointer;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);padding:5px 10px;border-radius:3px;z-index:10;}
+.spot-panel-close:hover{color:var(--ink);background:var(--fog)}
+
+/* CAROUSEL */
+.sp-carousel{position:relative;width:100%;background:#000;overflow:hidden;}
+.sp-carousel-track{display:flex;transition:transform .3s ease;}
+.sp-carousel-track img{flex-shrink:0;width:100%;height:260px;object-fit:cover;}
+.sp-carousel-empty{height:160px;display:flex;align-items:center;justify-content:center;font-size:40px;background:var(--fog-2);}
+.sp-carousel-nav{position:absolute;bottom:12px;right:12px;display:flex;gap:6px;align-items:center;}
+.sp-carousel-btn{background:rgba(22,34,29,0.65);color:#fff;border:none;border-radius:3px;padding:6px 12px;cursor:pointer;font-family:'Space Mono',monospace;font-size:13px;font-weight:700;line-height:1;transition:background .15s;}
+.sp-carousel-btn:hover{background:rgba(22,34,29,0.9)}
+.sp-carousel-btn:disabled{opacity:0.3;cursor:default}
+.sp-carousel-count{font-family:'Space Mono',monospace;font-size:11px;color:rgba(255,255,255,0.85);background:rgba(22,34,29,0.55);padding:4px 8px;border-radius:3px;}
+
+/* COMPASS STRIP — 4 direction viewer */
+.compass-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-bottom:0;}
+.compass-frame{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--fog-2);}
+.compass-frame img{width:100%;height:100%;object-fit:cover;}
+.compass-dir{position:absolute;bottom:4px;left:4px;font-family:'Space Mono',monospace;font-size:10px;font-weight:700;color:#fff;background:rgba(22,34,29,0.7);padding:2px 6px;border-radius:2px;letter-spacing:0.08em;}
+.compass-empty-frame{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);}
+
+/* PANEL BODY */
+.sp-body{padding:18px 20px 28px;}
+.sp-meta-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+.sp-dist{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);margin-left:auto;}
+.sp-desc{font-size:15px;color:var(--ink);line-height:1.6;margin-bottom:18px;}
+.sp-actions{display:flex;gap:10px;align-items:center;padding-top:14px;border-top:1px dashed var(--line-strong);}
+.spot-panel-type{display:none;}
+
+/* COMPASS CAROUSEL — 4 direction viewer */
+.compass-carousel{position:relative;margin-bottom:16px;}
+.compass-slides{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+.compass-slide{position:relative;aspect-ratio:16/9;border-radius:3px;overflow:hidden;background:var(--fog-2);}
+.compass-slide img{width:100%;height:100%;object-fit:cover;}
+.compass-slide-label{position:absolute;bottom:6px;left:6px;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:#fff;background:rgba(22,34,29,0.65);padding:2px 7px;border-radius:2px;letter-spacing:0.08em;}
+.compass-slide-empty{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:0.06em;}
+
+/* FREE CAROUSEL — explore multi-photo */
+.free-carousel{position:relative;margin-bottom:16px;overflow:hidden;border-radius:4px;}
+.free-carousel-track{display:flex;transition:transform .3s ease;gap:6px;}
+.free-carousel-track img{flex-shrink:0;width:calc(100% - 6px);max-width:480px;height:220px;object-fit:cover;border-radius:3px;}
+.free-carousel-nav{display:flex;gap:6px;margin-top:8px;align-items:center;}
+.free-carousel-btn{background:var(--fog-2);border:1px solid var(--line-strong);border-radius:3px;padding:4px 10px;cursor:pointer;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);}
+.free-carousel-btn:hover{color:var(--ink);border-color:var(--ink)}
+.free-carousel-count{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);}
+
+.spot-panel-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+
+/* FORM OVERLAYS */
+.form-overlay{display:none;position:fixed;inset:0;background:rgba(22,34,29,0.55);z-index:100;align-items:center;justify-content:center;padding:20px;}
+.form-overlay.open{display:flex}
+.form-box{background:var(--surf);border-radius:6px;width:100%;max-width:600px;max-height:92vh;overflow-y:auto;padding:28px 28px 24px;}
+.form-box h3{font-family:'Zilla Slab',serif;font-weight:700;font-size:22px;color:var(--ink);margin-bottom:6px;}
+.form-box .form-sub{font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.5;}
+.field{margin-bottom:18px}
+.field label{display:block;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--pacific-deep);margin-bottom:6px;}
+.field input,.field textarea,.field select{width:100%;font-family:'Inter',sans-serif;font-size:14px;padding:10px 12px;background:var(--paper);border:1px solid var(--line-strong);border-radius:3px;color:var(--ink);outline:none;transition:border-color .15s;}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--pacific)}
+.field textarea{resize:vertical;min-height:60px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.toggle-group{display:flex;flex-wrap:wrap;gap:8px}
+.toggle-opt{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--ink);cursor:pointer;padding:7px 12px;border:1px solid var(--line-strong);border-radius:3px;background:var(--paper);transition:all .12s;user-select:none;}
+.toggle-opt:hover{border-color:var(--pine)}
+.toggle-opt.selected{background:var(--pine);color:var(--surf);border-color:var(--pine)}
+.toggle-opt input{display:none}
+
+/* COMPASS UPLOAD SLOTS */
+.compass-upload{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.compass-slot{position:relative;aspect-ratio:16/9;border:2px dashed var(--line-strong);border-radius:4px;overflow:hidden;cursor:pointer;background:var(--paper);transition:border-color .15s;}
+.compass-slot:hover{border-color:var(--pacific)}
+.compass-slot.has-photo{border-style:solid;border-color:var(--pacific)}
+.compass-slot input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.compass-slot img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
+.compass-slot-label{position:absolute;bottom:0;left:0;right:0;background:rgba(22,34,29,0.65);color:#fff;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.1em;padding:4px 8px;text-align:center;}
+.compass-slot-empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;pointer-events:none;}
+.compass-slot-empty span{font-size:20px;}
+.compass-slot-empty p{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);}
+.compass-slot.has-photo .compass-slot-empty{display:none;}
+
+/* MULTI PHOTO UPLOAD */
+.multi-upload-area{border:2px dashed var(--line-strong);border-radius:4px;padding:24px;text-align:center;cursor:pointer;background:var(--paper);transition:border-color .15s;position:relative;margin-bottom:12px;}
+.multi-upload-area:hover{border-color:var(--pacific)}
+.multi-upload-area input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.multi-upload-area p{font-size:13px;color:var(--muted);}
+.multi-upload-area .pd-icon{font-size:26px;margin-bottom:6px;}
+.multi-thumbs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
+.multi-thumb{position:relative;width:72px;height:72px;border-radius:3px;overflow:hidden;border:1px solid var(--line-strong);}
+.multi-thumb img{width:100%;height:100%;object-fit:cover;}
+.multi-thumb-rm{position:absolute;top:2px;right:2px;background:rgba(22,34,29,0.7);color:#fff;border:none;border-radius:2px;cursor:pointer;font-size:11px;padding:1px 4px;line-height:1;}
+
+/* GPS + PIN MAP */
+.gps-status{display:flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:11px;padding:8px 12px;border-radius:3px;margin-bottom:14px;}
+.gps-status.found{background:rgba(44,111,121,0.1);color:var(--pacific-deep);}
+.gps-status.manual{background:rgba(217,150,63,0.1);color:var(--sun-deep);}
+.pin-map-wrap{margin-bottom:18px;}
+.pin-map-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--pacific-deep);margin-bottom:6px;display:block;}
+#pin-map-v,#pin-map-e{width:100%;height:200px;border-radius:3px;border:1px solid var(--line-strong);}
+.pin-map-note{font-size:12px;color:var(--muted);margin-top:6px;}
+
+/* BOONDOCK GATE */
+.gps-gate{background:rgba(177,87,47,0.07);border:1px solid rgba(177,87,47,0.25);border-left:3px solid var(--rust);border-radius:3px;padding:14px 16px;margin-bottom:18px;}
+.gps-gate p{font-size:13px;color:#43403a;margin-bottom:12px;line-height:1.5;}
+.gps-gate label{display:flex;align-items:flex-start;gap:9px;font-size:13px;color:var(--ink);cursor:pointer;}
+.gps-gate input[type=checkbox]{margin-top:2px;width:16px;height:16px;accent-color:var(--pine);flex-shrink:0;}
+.gps-fields{display:none;margin-top:14px;}
+.gps-fields.show{display:block}
+.photo-drop{border:2px dashed var(--line-strong);border-radius:3px;padding:24px;text-align:center;cursor:pointer;background:var(--paper);position:relative;}
+.photo-drop input{position:absolute;inset:0;opacity:0;cursor:pointer;}
+.photo-drop .pd-icon{font-size:26px;margin-bottom:6px;}
+.photo-drop p{font-size:13px;color:var(--muted);}
+.photo-preview{display:none;width:100%;height:140px;object-fit:cover;border-radius:3px;margin-top:8px;}
+
+.form-actions{display:flex;gap:12px;margin-top:22px;padding-top:16px;border-top:1px solid var(--line);}
+.btn-primary{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;background:var(--pine);color:var(--surf);border:none;padding:12px 22px;border-radius:3px;cursor:pointer;transition:background .15s;flex:1;}
+.btn-primary:hover{background:var(--pine-2)}
+.btn-primary:disabled{opacity:0.5;cursor:not-allowed}
+.btn-cancel{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;background:transparent;color:var(--muted);border:1px solid var(--line-strong);padding:12px 18px;border-radius:3px;cursor:pointer;}
+.btn-cancel:hover{color:var(--ink);border-color:var(--ink)}
+.form-msg{font-family:'Space Mono',monospace;font-size:11px;margin-top:10px;padding:10px 12px;border-radius:3px;}
+.form-msg.success{background:rgba(44,111,121,0.1);color:var(--pacific-deep)}
+.form-msg.error{background:rgba(177,87,47,0.1);color:var(--rust)}
+
+/* AUTH MODAL */
+.auth-overlay{display:none;position:fixed;inset:0;background:rgba(22,34,29,0.55);z-index:200;align-items:center;justify-content:center;padding:20px;}
+.auth-overlay.open{display:flex}
+.auth-box{background:var(--surf);border-radius:6px;width:100%;max-width:400px;padding:32px 28px;}
+.auth-box h3{font-family:'Zilla Slab',serif;font-weight:700;font-size:22px;margin-bottom:6px;color:var(--ink)}
+.auth-box .auth-sub{font-size:13px;color:var(--muted);margin-bottom:22px;}
+.auth-switch{font-size:13px;color:var(--muted);margin-top:14px;text-align:center}
+.auth-switch a{color:var(--pacific-deep);cursor:pointer;text-decoration:underline}
+
+/* ADMIN QUEUE */
+.admin-queue{background:rgba(217,150,63,0.07);border:1px solid rgba(217,150,63,0.3);border-left:4px solid var(--sun);border-radius:4px;padding:16px;margin-bottom:22px;}
+.admin-queue h4{font-family:'Zilla Slab',serif;font-weight:700;font-size:15px;color:var(--sun-deep);margin-bottom:10px;}
+.queue-item{background:var(--surf);border:1px solid var(--line);border-radius:3px;padding:10px 12px;margin-bottom:6px;display:flex;align-items:center;gap:10px;}
+.queue-item-name{flex:1;font-weight:600;font-size:13px;color:var(--ink)}
+.queue-item-sub{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);}
+.queue-actions{display:flex;gap:6px}
+.btn-approve{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;background:rgba(44,111,121,0.12);color:var(--pacific-deep);border:1px solid rgba(44,111,121,0.3);padding:4px 9px;border-radius:3px;cursor:pointer;}
+.btn-reject{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;background:rgba(177,87,47,0.08);color:var(--rust);border:1px solid rgba(177,87,47,0.25);padding:4px 9px;border-radius:3px;cursor:pointer;}
+
+
+/* ===== PROFILE ===== */
+.profile-overlay{display:none;position:fixed;inset:0;background:rgba(22,34,29,0.55);z-index:150;align-items:center;justify-content:center;padding:20px;overflow-y:auto;}
+.profile-overlay.open{display:flex}
+.profile-box{background:var(--surf);border-radius:8px;width:100%;max-width:560px;max-height:92vh;overflow-y:auto;display:flex;flex-direction:column;}
+.profile-body{flex:1;overflow-y:auto;padding:24px;}
+.profile-header{background:var(--pine);padding:24px 24px 20px;border-radius:8px 8px 0 0;position:relative;}
+.profile-header h3{font-family:'Zilla Slab',serif;font-weight:700;font-size:22px;color:var(--surf);margin-bottom:4px;}
+.profile-header p{font-size:13px;color:rgba(253,252,248,0.7);}
+.profile-close{position:absolute;top:16px;right:16px;background:rgba(253,252,248,0.15);border:none;color:var(--surf);border-radius:3px;padding:5px 10px;cursor:pointer;font-family:'Space Mono',monospace;font-size:11px;}
+.profile-close:hover{background:rgba(253,252,248,0.25)}
+.profile-body{padding:24px;}
+.avatar-upload{display:flex;align-items:center;gap:16px;margin-bottom:22px;}
+.avatar-circle{width:72px;height:72px;border-radius:50%;overflow:hidden;background:var(--fog-2);border:3px solid var(--line-strong);flex-shrink:0;position:relative;cursor:pointer;}
+.avatar-circle img{width:100%;height:100%;object-fit:cover;}
+.avatar-circle-empty{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;}
+.avatar-circle input{position:absolute;inset:0;opacity:0;cursor:pointer;border-radius:50%;}
+.avatar-hint{font-size:12px;color:var(--muted);}
+.avatar-hint strong{display:block;font-family:'Space Mono',monospace;font-size:11px;color:var(--pine);margin-bottom:2px;}
+
+/* PUBLIC PROFILE VIEW */
+.pub-profile{background:var(--surf);border-radius:8px;width:100%;max-width:620px;max-height:92vh;overflow-y:auto;}
+.pub-profile-hero{background:var(--pine);padding:28px 24px 24px;}
+.pub-avatar{width:80px;height:80px;border-radius:50%;overflow:hidden;background:var(--fog-2);border:4px solid rgba(253,252,248,0.25);margin-bottom:14px;}
+.pub-avatar img{width:100%;height:100%;object-fit:cover;}
+.pub-avatar-empty{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:32px;}
+.pub-name{font-family:'Zilla Slab',serif;font-weight:700;font-size:24px;color:var(--surf);margin-bottom:4px;}
+.pub-bio{font-size:14px;color:rgba(253,252,248,0.78);margin-bottom:12px;line-height:1.5;}
+.pub-links{display:flex;gap:12px;flex-wrap:wrap;}
+.pub-link{font-family:'Space Mono',monospace;font-size:11px;color:var(--sun);letter-spacing:0.04em;text-decoration:none;}
+.pub-link:hover{color:var(--sun-deep)}
+.pub-stats{display:flex;gap:0;border-top:1px solid rgba(253,252,248,0.15);margin-top:16px;padding-top:16px;}
+.pub-stat{flex:1;text-align:center;}
+.pub-stat-n{font-family:'Zilla Slab',serif;font-weight:700;font-size:22px;color:var(--sun);}
+.pub-stat-l{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(253,252,248,0.6);margin-top:3px;}
+.pub-stat-div{width:1px;background:rgba(253,252,248,0.15);}
+.pub-spots{padding:20px 24px 28px;}
+.pub-spots h4{font-family:'Zilla Slab',serif;font-weight:700;font-size:16px;color:var(--pine);margin-bottom:14px;}
+.pub-spot-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px dashed var(--line);cursor:pointer;}
+.pub-spot-row:last-child{border-bottom:none}
+.pub-spot-row:hover .pub-spot-name{color:var(--pacific-deep)}
+.pub-spot-thumb{width:48px;height:48px;border-radius:4px;object-fit:cover;background:var(--fog-2);flex-shrink:0;}
+.pub-spot-thumb-empty{width:48px;height:48px;border-radius:4px;background:var(--fog-2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.pub-spot-name{font-size:14px;color:var(--ink);font-weight:500;flex:1;}
+.pub-spot-type{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:0.04em;}
+
+/* AUTH BAR PROFILE LINK */
+.profile-link-btn{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);cursor:pointer;padding:6px 10px;border-radius:3px;background:var(--fog-2);border:none;letter-spacing:0.04em;}
+.profile-link-btn:hover{color:var(--ink);background:var(--fog)}
+
+/* GATE OVERLAY — for gated tabs */
+.gate-overlay{display:none;position:absolute;inset:0;z-index:10;background:rgba(230,232,226,0.88);backdrop-filter:blur(4px);align-items:center;justify-content:center;flex-direction:column;gap:16px;text-align:center;padding:40px;}
+.gate-overlay.show{display:flex}
+.gate-icon{font-size:40px;}
+.gate-title{font-family:'Zilla Slab',serif;font-weight:700;font-size:22px;color:var(--pine);}
+.gate-sub{font-size:14px;color:var(--muted);max-width:340px;line-height:1.5;}
+.gate-btn{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;background:var(--pine);color:var(--surf);border:none;padding:12px 24px;border-radius:3px;cursor:pointer;}
+.gate-btn:hover{background:var(--pine-2)}
+
+
+/* DYNAMIC HERO */
+.hero-logged-out{display:block}
+.hero-logged-in{display:none}
+.hero-user-row{display:flex;align-items:center;gap:18px;margin-bottom:16px;}
+.hero-avatar{width:72px;height:72px;border-radius:50%;overflow:hidden;border:3px solid rgba(253,252,248,0.3);flex-shrink:0;background:var(--pine-2);}
+.hero-avatar img{width:100%;height:100%;object-fit:cover;}
+.hero-avatar-empty{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;}
+.hero-user-text{}
+.hero-user-heading{font-family:'Zilla Slab',serif;font-weight:700;font-size:clamp(26px,5vw,48px);line-height:1.0;color:var(--surf);letter-spacing:-0.01em;}
+.hero-user-heading .dot{color:var(--sun)}
+.hero-user-sub{font-size:14px;color:rgba(253,252,248,0.78);margin-top:5px;max-width:600px;line-height:1.6;}
+.hero-brand-heading{font-family:'Zilla Slab',serif;font-weight:700;font-size:clamp(34px,7vw,62px);line-height:0.98;letter-spacing:-0.01em;color:var(--surf);margin:10px 0 6px;}
+.hero-brand-heading .dot{color:var(--sun)}
+.hero-cta{display:inline-flex;align-items:center;gap:8px;margin-top:18px;background:var(--sun);color:var(--pine);font-family:'Space Mono',monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:700;padding:12px 22px;border-radius:3px;border:none;cursor:pointer;}
+.hero-cta:hover{background:var(--sun-deep)}
+.hero-platform-stats{display:flex;gap:22px;margin-top:20px;flex-wrap:wrap;}
+.hero-pstat{text-align:center;}
+.hero-pstat-n{font-family:'Zilla Slab',serif;font-weight:700;font-size:28px;color:var(--sun);line-height:1;}
+.hero-pstat-l{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(253,252,248,0.6);margin-top:4px;}
+.hero-pstat-div{width:1px;background:rgba(253,252,248,0.2);}
+
+
+/* BOOKING FORM */
+.booking-form-overlay{display:none;position:fixed;inset:0;background:rgba(22,34,29,0.55);z-index:100;align-items:center;justify-content:center;padding:20px;}
+.booking-form-overlay.open{display:flex}
+
+/* SHARE TRIP PAGE */
+.share-page{display:none;position:fixed;inset:0;z-index:300;background:var(--fog);overflow-y:auto;}
+.share-page.open{display:block}
+.share-header{background:var(--pine);color:var(--surf);padding:20px 24px;display:flex;align-items:center;justify-content:space-between;}
+.share-header h2{font-family:'Zilla Slab',serif;font-weight:700;font-size:22px;}
+.share-close{background:rgba(253,252,248,0.15);border:none;color:var(--surf);font-family:'Space Mono',monospace;font-size:11px;padding:8px 14px;border-radius:3px;cursor:pointer;letter-spacing:0.06em;}
+.share-close:hover{background:rgba(253,252,248,0.25)}
+.share-body{max-width:760px;margin:0 auto;padding:28px 22px 60px;}
+.share-trip-card{background:var(--paper);border:1px solid var(--line);border-radius:6px;overflow:hidden;margin-bottom:20px;}
+.share-trip-head{background:var(--surf);padding:16px 20px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--line);}
+.share-trip-name{font-family:'Zilla Slab',serif;font-weight:700;font-size:20px;color:var(--ink);}
+.share-trip-date{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);}
+.share-trip-nights{display:flex;flex-direction:column;align-items:center;margin-left:auto;font-family:'Space Mono',monospace;}
+.share-trip-n{font-family:'Zilla Slab',serif;font-weight:700;font-size:22px;color:var(--sun);}
+.share-trip-l{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);}
+.share-night-row{display:grid;grid-template-columns:70px 1fr auto;gap:12px;padding:10px 20px;border-bottom:1px dashed var(--line);font-size:13px;align-items:center;}
+.share-night-row:last-child{border-bottom:none}
+.share-night-date{font-family:'Space Mono',monospace;font-size:11px;color:var(--sun-deep);font-weight:700;}
+.share-night-site b{font-family:'Zilla Slab',serif;font-weight:600;}
+.share-night-site span{color:var(--muted);font-size:12px;}
+.share-night-rate{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);text-align:right;}
+.share-copy-btn{display:flex;align-items:center;gap:8px;background:var(--pine);color:var(--surf);border:none;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;padding:10px 18px;border-radius:3px;cursor:pointer;margin:0 auto 28px;}
+.share-copy-btn:hover{background:var(--pine-2)}
+.share-profile-strip{display:flex;align-items:center;gap:14px;background:var(--surf);border:1px solid var(--line);border-radius:6px;padding:16px 20px;margin-bottom:28px;}
+.share-profile-avatar{width:52px;height:52px;border-radius:50%;overflow:hidden;background:var(--fog-2);flex-shrink:0;}
+.share-profile-avatar img{width:100%;height:100%;object-fit:cover;}
+.share-profile-name{font-family:'Zilla Slab',serif;font-weight:700;font-size:17px;color:var(--ink);}
+.share-profile-bio{font-size:13px;color:var(--muted);}
+.share-stats-row{display:flex;gap:0;border:1px solid var(--line);border-radius:6px;overflow:hidden;margin-bottom:28px;}
+.share-stat{flex:1;padding:14px;text-align:center;border-right:1px solid var(--line);}
+.share-stat:last-child{border-right:none}
+.share-stat-n{font-family:'Zilla Slab',serif;font-weight:700;font-size:22px;color:var(--sun);}
+.share-stat-l{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-top:3px;}
+.share-cta{text-align:center;padding:28px 20px;background:var(--pine);border-radius:6px;color:var(--surf);}
+.share-cta h3{font-family:'Zilla Slab',serif;font-weight:700;font-size:20px;margin-bottom:8px;}
+.share-cta p{font-size:14px;color:rgba(253,252,248,0.75);margin-bottom:16px;}
+.share-cta button{background:var(--sun);color:var(--pine);border:none;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:700;padding:12px 24px;border-radius:3px;cursor:pointer;}
+
+
+/* SITE REVIEWS */
+.campcard-sites{margin-top:14px;border-top:1px dashed var(--line-strong);padding-top:14px;display:none;}
+.campcard-sites.open{display:block}
+.sites-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.sites-header h4{font-family:'Zilla Slab',serif;font-weight:700;font-size:15px;color:var(--pine);}
+.sites-header .site-count{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:0.06em;}
+.site-review{background:var(--fog);border-radius:4px;overflow:hidden;margin-bottom:10px;}
+.site-review-carousel{position:relative;overflow:hidden;background:var(--fog-2);}
+.site-review-carousel-track{display:flex;transition:transform .3s ease;}
+.site-review-carousel-track img{flex-shrink:0;width:100%;height:180px;object-fit:cover;}
+.site-review-nav{position:absolute;bottom:8px;right:8px;display:flex;gap:4px;align-items:center;}
+.site-review-nav button{background:rgba(22,34,29,0.65);color:#fff;border:none;border-radius:3px;padding:4px 9px;cursor:pointer;font-size:12px;font-weight:700;line-height:1;}
+.site-review-nav button:disabled{opacity:0.3;cursor:default}
+.site-review-nav span{font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,0.85);background:rgba(22,34,29,0.55);padding:3px 7px;border-radius:3px;}
+.site-review-body{padding:10px 12px 8px;}
+.site-review-name{font-family:'Zilla Slab',serif;font-weight:600;font-size:15px;color:var(--ink);margin-bottom:3px;}
+.site-review-desc{font-size:13px;color:#33403a;margin-bottom:8px;line-height:1.45;}
+.site-review-meta{display:flex;align-items:center;gap:10px;font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);}
+.site-review-upvote{display:flex;align-items:center;gap:4px;background:var(--surf);border:1px solid var(--line-strong);border-radius:3px;padding:3px 8px;cursor:pointer;font-size:11px;color:var(--muted);transition:all .15s;}
+.site-review-upvote:hover{border-color:var(--pacific);color:var(--pacific)}
+.site-review-upvote.voted{background:rgba(44,111,121,0.1);border-color:var(--pacific);color:var(--pacific-deep)}
+.sites-toggle{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:var(--pacific-deep);cursor:pointer;background:none;border:none;padding:4px 0;margin-top:8px;}
+.sites-toggle:hover{color:var(--pacific)}
+.site-submit-btn{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;background:var(--fog-2);border:1px solid var(--line-strong);color:var(--pine);padding:5px 10px;border-radius:3px;cursor:pointer;white-space:nowrap;}
+.site-submit-btn:hover{background:var(--fog);border-color:var(--pine)}
+
+/* SITE SUBMISSION FORM */
+.site-form-overlay{display:none;position:fixed;inset:0;background:rgba(22,34,29,0.55);z-index:100;align-items:center;justify-content:center;padding:20px;}
+.site-form-overlay.open{display:flex}
+
+.empty{text-align:center;padding:50px 20px;color:var(--muted);font-family:'Space Mono',monospace;font-size:13px;}
+.loading{text-align:center;padding:30px;color:var(--muted);font-family:'Space Mono',monospace;font-size:12px;}
+footer{text-align:center;padding:28px 20px;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);border-top:1px solid var(--line);letter-spacing:0.06em;}
+footer a{color:var(--pacific-deep);text-decoration:none}
+
+@media(max-width:640px){
+  .region .desc{display:none}
+  .tripmeta{width:100%;margin-left:0;margin-top:4px;justify-content:space-between}
+  .stat{flex:1 1 50%;border-bottom:1px solid rgba(253,252,248,0.16)}
+  .grid{grid-template-columns:1fr}
+  .compass-slides{grid-template-columns:repeat(2,1fr)}
+  .field-row{grid-template-columns:1fr}
+  .form-box{padding:18px}
+  .compass-upload{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+
+  <div class="hero-inner">
+
+    <!-- LOGGED OUT: brand hero -->
+    <div class="hero-logged-out" id="hero-logged-out" style="display:none">
+      <div class="eyebrow">find your site · find your vibe</div>
+      <div class="hero-brand-heading">Car camping.<br><span class="dot">Done right.</span></div>
+      <p class="hero-sub" style="margin-top:10px">A community-built guide to car camping across the United States — curated campgrounds, hidden viewpoints, local tips, and dispersed camping zones. Free to browse, better with an account.</p>
+      <button class="hero-cta" onclick="openAuth()">Create free account →</button>
+      <div class="hero-platform-stats" id="platform-stats">
+        <div class="hero-pstat"><div class="hero-pstat-n" id="pstat-camps">40</div><div class="hero-pstat-l">Campgrounds</div></div>
+        <div class="hero-pstat-div"></div>
+        <div class="hero-pstat"><div class="hero-pstat-n" id="pstat-viewpoints">0</div><div class="hero-pstat-l">Viewpoints</div></div>
+        <div class="hero-pstat-div"></div>
+        <div class="hero-pstat"><div class="hero-pstat-n" id="pstat-explore">0</div><div class="hero-pstat-l">Places shared</div></div>
+        <div class="hero-pstat-div"></div>
+        <div class="hero-pstat"><div class="hero-pstat-n">7</div><div class="hero-pstat-l">Boondocking zones</div></div>
+      </div>
+    </div>
+
+    <!-- LOGGED IN: personal journal hero -->
+    <div class="hero-logged-in" id="hero-logged-in" style="display:none">
+      <div class="eyebrow" id="hero-eyebrow">My camping journal</div>
+      <div class="hero-user-row">
+        <div class="hero-avatar" id="hero-avatar">
+          <div class="hero-avatar-empty">🏕</div>
+        </div>
+        <div class="hero-user-text">
+          <div class="hero-user-heading" id="hero-heading">My Adventure</div>
+          <div class="hero-user-sub" id="hero-sub"></div>
+          <div id="hero-instagram" style="display:none;margin-top:6px;">
+            <a id="hero-ig-link" href="" target="_blank" style="font-family:'Space Mono',monospace;font-size:11px;color:var(--sun);letter-spacing:0.04em;text-decoration:none;">@<span id="hero-ig-handle"></span></a>
+          </div>
+        </div>
+      </div>
+      <div id="nextup"></div>
+      <div class="stats" id="hero-stats">
+        <div class="stat"><div class="n" id="hs-trips">0</div><div class="l">Trips booked</div></div>
+        <div class="stat"><div class="n" id="hs-nights">0</div><div class="l">Nights out</div></div>
+        <div class="stat"><div class="n" id="hs-spots">0</div><div class="l">Spots shared</div></div>
+        <div class="stat"><div class="n" id="hs-likes">0</div><div class="l">Likes received</div></div>
+      </div>
+    </div>
+
+  </div>
+</header>
+
+<div class="authbar">
+  <div class="authbar-inner">
+    <div class="authbar-left">carcamping.guide</div>
+    <div class="authbar-right">
+      <span class="user-greeting" id="user-greeting" style="display:none"></span>
+      <button class="profile-link-btn" id="btn-profile" style="display:none" onclick="openMyProfile()">Edit profile</button>
+      <button class="auth-btn btn-signout" id="btn-signout" style="display:none" onclick="signOut()">Sign out</button>
+      <button class="auth-btn btn-signin" id="btn-signin" onclick="openAuth()">Sign in · Free</button>
+    </div>
+  </div>
+</div>
+
+<nav class="tabwrap">
+  <div class="tabs">
+    <button class="tab active" data-tab="bookings">My Bookings <span class="badge">10</span></button>
+    <button class="tab" data-tab="camps">Campgrounds <span class="badge">40</span></button>
+    <button class="tab" data-tab="boondock">Boondocking <span class="badge">7</span></button>
+    <button class="tab" data-tab="viewpoints">Viewpoints <span class="badge" id="vp-badge">0</span></button>
+    <button class="tab" data-tab="explore">Explore <span class="badge" id="ex-badge">0</span></button>
+  </div>
+</nav>
+
+<main>
+
+<!-- MY BOOKINGS -->
+<div class="wrap panel active" id="panel-bookings">
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:22px;flex-wrap:wrap;">
+    <p class="intro" style="margin-bottom:0;flex:1">Your camping journal — every trip, every night, every site. Tap any trip to expand. Share your itinerary with anyone.</p>
+    <div style="display:flex;gap:8px;flex-shrink:0;" id="booking-actions" style="display:none">
+      <button class="submit-btn secondary" id="btn-share-trips" onclick="shareMyTrips()" style="background:transparent;color:var(--pine);border:1px solid var(--pine);font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;padding:10px 18px;border-radius:3px;cursor:pointer;">↗ Share my trips</button>
+      <button class="submit-btn" onclick="openAddBooking()">+ Add booking</button>
+    </div>
+  </div>
+  <div class="timeline" id="timeline"></div>
+  <div id="db-trips-timeline"></div>
+</div>
+
+<!-- CAMPGROUNDS -->
+<div class="wrap panel" id="panel-camps">
+  <div class="controls">
+    <input type="text" class="search" id="search" placeholder="Search campgrounds, regions, activities…" autocomplete="off">
+    <div class="pills" id="filterpills">
+      <button class="pill booked" data-filter="booked">★ Booked only</button>
+      <button class="pill ocean" data-filter="ocean">🌊 Ocean view</button>
+    </div>
+    <div class="pills" id="regionpills"></div>
+    <div class="resultcount" id="resultcount"></div>
+  </div>
+  <div id="campgrounds"></div>
+</div>
+
+<!-- BOONDOCKING -->
+<div class="wrap panel" id="panel-boondock">
+  <p class="intro">Free and low-cost dispersed camping on BLM and National Forest land. All zones are dog-friendly and prioritize where campfires are permitted.</p>
+  <div class="firebox">
+    <div class="ic">🔥</div>
+    <div>
+      <h4>Fire restriction notice</h4>
+      <p>Dispersed camping and campfire permissions are separate issues. Verify before <em>every</em> trip. <code>fire.ca.gov</code> · <code>inciweb.nwcg.gov</code> · <code>fs.usda.gov/alerts</code></p>
+    </div>
+  </div>
+  <div id="zones"></div>
+  <div class="community-header">
+    <div>
+      <h2>Community spots</h2>
+      <div class="ch-sub">Dispersed sites — approved by the curator</div>
+    </div>
+    <button class="submit-btn" onclick="openForm('boondock')">+ Submit a spot</button>
+  </div>
+  <div id="admin-queue-boondock"></div>
+  <div class="community-spots" id="community-spots"><div class="loading">Loading…</div></div>
+</div>
+
+<!-- VIEWPOINTS -->
+<div class="fullpanel panel" id="panel-viewpoints">
+  <div class="map-header">
+    <div class="map-stats">
+      <div class="map-stat">
+        <div class="map-stat-n" id="vp-count">0</div>
+        <div class="map-stat-l">Viewpoints</div>
+      </div>
+      <div class="map-stat-div"></div>
+      <div class="map-stat">
+        <div class="map-stat-n" id="vp-likes">0</div>
+        <div class="map-stat-l">Total likes</div>
+      </div>
+    </div>
+    <button class="map-share-btn" onclick="openForm('viewpoint')">+ Add a viewpoint</button>
+  </div>
+  <div id="admin-queue-viewpoints" style="padding:0 22px"></div>
+  <div id="viewpoints-map"></div>
+</div>
+
+<!-- EXPLORE -->
+<div class="fullpanel panel" id="panel-explore">
+  <div class="map-header">
+    <div class="map-stats">
+      <div class="map-stat">
+        <div class="map-stat-n" id="ex-count">0</div>
+        <div class="map-stat-l">Places</div>
+      </div>
+      <div class="map-stat-div"></div>
+      <div class="map-stat">
+        <div class="map-stat-n" id="ex-likes">0</div>
+        <div class="map-stat-l">Likes</div>
+      </div>
+    </div>
+    <button class="map-share-btn" onclick="openForm('explore')">+ Share a place</button>
+  </div>
+  <div style="display:flex;gap:8px;padding:10px 16px;background:var(--surf);border-bottom:1px solid var(--line);overflow-x:auto;flex-shrink:0;">
+    <button class="pill on" id="cat-pill-all" onclick="filterExplore('all')">All</button>
+    <button class="pill" id="cat-pill-food" onclick="filterExplore('food')">🍴 Food & Drink</button>
+    <button class="pill" id="cat-pill-supplies" onclick="filterExplore('supplies')">🛒 Supplies</button>
+    <button class="pill" id="cat-pill-activity" onclick="filterExplore('activity')">🏄 Activity</button>
+    <button class="pill" id="cat-pill-nature" onclick="filterExplore('nature')">🌿 Nature</button>
+    <button class="pill" id="cat-pill-near" onclick="filterExplore('near')" style="margin-left:auto;white-space:nowrap;">📍 Near my trip</button>
+  </div>
+  <div id="admin-queue-explore" style="padding:0 22px"></div>
+  <div id="explore-map"></div>
+</div>
+
+</main>
+
+<!-- SPOT DETAIL PANEL -->
+<div class="spot-panel" id="spot-panel">
+  <button class="spot-panel-close" onclick="closeSpotPanel()">✕ close</button>
+  <!-- media: carousel or compass strip rendered here -->
+  <div id="sp-media"></div>
+  <div class="sp-body">
+    <div class="sp-meta-row">
+      <span id="sp-cat-badge"></span>
+      <span class="sp-dist" id="sp-dist"></span>
+    </div>
+    <div class="sp-desc" id="sp-desc"></div>
+    <div class="sp-actions">
+      <button class="spot-upvote" id="sp-upvote" onclick="panelUpvote()">▲ <span id="sp-votes">0</span></button>
+      <button class="spot-flag" id="sp-flag" onclick="panelFlag()">⚑ Flag</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  carcamping.guide &nbsp;·&nbsp; Fire info: <a href="https://fire.ca.gov">fire.ca.gov</a> &nbsp;·&nbsp; Reservations: <a href="https://reservecalifornia.com">reservecalifornia.com</a>
+</footer>
+
+<!-- AUTH MODAL -->
+<div class="auth-overlay" id="auth-overlay" onclick="if(event.target===this)closeAuth()">
+  <div class="auth-box">
+    <h3 id="auth-title">Welcome back</h3>
+    <p class="auth-sub" id="auth-sub">Sign in to share spots and upvote community finds.</p>
+    <div class="field"><label>Email</label><input type="email" id="auth-email" placeholder="you@example.com"></div>
+    <div class="field"><label>Password</label><input type="password" id="auth-password" placeholder="••••••••"></div>
+    <div class="form-actions" style="margin-top:16px">
+      <button class="btn-primary" onclick="handleAuth()">Sign in</button>
+      <button class="btn-cancel" onclick="closeAuth()">Cancel</button>
+    </div>
+    <div class="form-msg" id="auth-msg" style="display:none"></div>
+    <div class="auth-switch"><span id="auth-switch-text">No account? </span><a onclick="toggleAuthMode()"><span id="auth-switch-link">Create one free</span></a></div>
+  </div>
+</div>
+
+<!-- UNIFIED SUBMISSION FORM -->
+<div class="form-overlay" id="form-overlay" onclick="if(event.target===this)closeForm()">
+  <div class="form-box">
+    <h3 id="form-title">Share a place</h3>
+    <p class="form-sub" id="form-sub"></p>
+
+    <div class="field">
+      <label id="desc-label">Describe this place *</label>
+      <textarea id="f-desc" placeholder="" rows="3" style="min-height:72px"></textarea>
+    </div>
+
+    <!-- CATEGORY — explore only -->
+    <div class="field" id="cat-field" style="display:none">
+      <label>Category *</label>
+      <div class="toggle-group" id="f-cat">
+        <label class="toggle-opt" onmousedown="event.preventDefault();selectCat(this,'food')"><input type="radio" name="cat" value="food">🍴 Food & Drink</label>
+        <label class="toggle-opt" onmousedown="event.preventDefault();selectCat(this,'supplies')"><input type="radio" name="cat" value="supplies">🛒 Supplies</label>
+        <label class="toggle-opt" onmousedown="event.preventDefault();selectCat(this,'activity')"><input type="radio" name="cat" value="activity">🏄 Activity</label>
+        <label class="toggle-opt" onmousedown="event.preventDefault();selectCat(this,'nature')"><input type="radio" name="cat" value="nature">🌿 Nature</label>
+      </div>
+    </div>
+
+    <!-- COMPASS UPLOAD — viewpoints + boondocking -->
+    <div id="compass-section" style="display:none">
+      <div class="field">
+        <label>Four photos — landscape, widest angle — N · E · S · W *</label>
+        <div class="compass-upload">
+          <div class="compass-slot" id="slot-n"><input type="file" id="file-n" accept="image/*" onchange="handleCompassPhoto('n',this)"><div class="compass-slot-empty"><span>📷</span><p>NORTH</p></div><div class="compass-slot-label">N</div></div>
+          <div class="compass-slot" id="slot-e"><input type="file" id="file-e" accept="image/*" onchange="handleCompassPhoto('e',this)"><div class="compass-slot-empty"><span>📷</span><p>EAST</p></div><div class="compass-slot-label">E</div></div>
+          <div class="compass-slot" id="slot-s"><input type="file" id="file-s" accept="image/*" onchange="handleCompassPhoto('s',this)"><div class="compass-slot-empty"><span>📷</span><p>SOUTH</p></div><div class="compass-slot-label">S</div></div>
+          <div class="compass-slot" id="slot-w"><input type="file" id="file-w" accept="image/*" onchange="handleCompassPhoto('w',this)"><div class="compass-slot-empty"><span>📷</span><p>WEST</p></div><div class="compass-slot-label">W</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FREE PHOTO UPLOAD — explore -->
+    <div id="free-photo-section" style="display:none">
+      <div class="field">
+        <label>Photos — add as many as you like</label>
+        <div class="multi-thumbs" id="multi-thumbs"></div>
+        <div class="multi-upload-area">
+          <input type="file" id="f-multi-photo" accept="image/*" multiple onchange="handleMultiPhoto(this)">
+          <div class="pd-icon">📷</div>
+          <p>Tap to add photos</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- GPS STATUS -->
+    <div class="gps-status" id="gps-status" style="display:none">
+      📍 <span id="gps-status-text"></span>
+    </div>
+
+    <!-- PIN MAP -->
+    <div class="pin-map-wrap" id="pin-map-wrap-v" style="display:none">
+      <span class="pin-map-label">Drop a pin — tap the exact location</span>
+      <div id="pin-map-v"></div>
+      <p class="pin-map-note">No GPS in photos — tap the map to set location.</p>
+    </div>
+    <div class="pin-map-wrap" id="pin-map-wrap-e" style="display:none">
+      <span class="pin-map-label">Drop a pin — tap the exact location</span>
+      <div id="pin-map-e"></div>
+      <p class="pin-map-note">Tap anywhere on the map to place a pin.</p>
+    </div>
+
+    <!-- BOONDOCK EXTRA FIELDS -->
+    <div id="boondock-extras" style="display:none">
+      <div class="field-row">
+        <div class="field" style="margin-bottom:0">
+          <label>Vehicle access</label>
+          <select id="f-vehicle">
+            <option value="any">Any vehicle</option>
+            <option value="suv">SUV / truck recommended</option>
+            <option value="4wd">4WD required</option>
+            <option value="walk">Walk-in only</option>
+          </select>
+        </div>
+        <div class="field" style="margin-bottom:0">
+          <label>Seasonal access</label>
+          <select id="f-season">
+            <option value="yearround">Year-round</option>
+            <option value="spring">Spring only</option>
+            <option value="summer">Summer / fall</option>
+            <option value="winter">Winter accessible</option>
+            <option value="dry">Dry season only</option>
+          </select>
+        </div>
+      </div>
+      <br>
+      <div class="field">
+        <label>Tags</label>
+        <div class="toggle-group" id="f-tags">
+          <label class="toggle-opt" onmousedown="event.preventDefault();toggleTag(this)"><input type="checkbox" value="fire">🔥 Fire OK</label>
+          <label class="toggle-opt" onmousedown="event.preventDefault();toggleTag(this)"><input type="checkbox" value="dog">🐕 Dog friendly</label>
+          <label class="toggle-opt" onmousedown="event.preventDefault();toggleTag(this)"><input type="checkbox" value="free">Free</label>
+          <label class="toggle-opt" onmousedown="event.preventDefault();toggleTag(this)"><input type="checkbox" value="blm">BLM</label>
+          <label class="toggle-opt" onmousedown="event.preventDefault();toggleTag(this)"><input type="checkbox" value="forest">National Forest</label>
+          <label class="toggle-opt" onmousedown="event.preventDefault();toggleTag(this)"><input type="checkbox" value="toilet">Vault toilet</label>
+          <label class="toggle-opt" onmousedown="event.preventDefault();toggleTag(this)"><input type="checkbox" value="water">Water nearby</label>
+        </div>
+      </div>
+      <div class="gps-gate">
+        <p>📍 GPS coordinates are only shared with people who acknowledge they'll camp responsibly and leave no trace.</p>
+        <label><input type="checkbox" id="gps-acknowledge" onchange="toggleGpsFields(this)"> I'll camp responsibly — Leave No Trace, pack out all trash, respect fire restrictions.</label>
+        <div class="gps-fields" id="gps-fields">
+          <div class="field-row" style="margin-top:12px">
+            <div class="field" style="margin-bottom:0"><label>Latitude</label><input type="number" id="f-lat" placeholder="34.1234" step="0.0001"></div>
+            <div class="field" style="margin-bottom:0"><label>Longitude</label><input type="number" id="f-lng" placeholder="-118.1234" step="0.0001"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button class="btn-primary" id="f-submit" onclick="submitForm()">Submit for review</button>
+      <button class="btn-cancel" onclick="closeForm()">Cancel</button>
+    </div>
+    <div class="form-msg" id="form-msg" style="display:none"></div>
+  </div>
+</div>
+
+<script>
+/* ===== CONFIG ===== */
+const SUPA_URL='https://mjdgnpxbicnzmbinvqdy.supabase.co';
+const SUPA_KEY='sb_publishable_gnrkH_rqkw0HPcD70av1Uw_Pvifvt-l';
+const MAPBOX_TOKEN='pk.eyJ1IjoiaW9zcGhvdG8iLCJhIjoiY21xc2FxZzhzMDZkNjJxcHFzd3BrY2pubyJ9.eBS7bb_9AGIqZR_FfucCdA';
+const ADMIN_EMAIL='iosphoto@me.com';
+const {createClient}=supabase;
+const db=createClient(SUPA_URL,SUPA_KEY);
+if(typeof mapboxgl!=="undefined")mapboxgl.accessToken=MAPBOX_TOKEN;
+
+/* ===== STATE ===== */
+let currentUser=null,authMode='signin';
+let vpMap=null,exMap=null;
+let pinMapV=null,pinMarkerV=null,pinMapE=null,pinMarkerE=null;
+let exifLat=null,exifLng=null,activePinLat=null,activePinLng=null;
+let compassFiles={n:null,e:null,s:null,w:null};
+let multiFiles=[];
+let activePanelSpot=null;
+let activeFormType=null;
+let campState={region:'all',booked:false,ocean:false,q:''};
+
+/* ===== DATA ===== */
+const REGIONS=[
+  {key:'socal',name:'Southern California Coast',desc:'The crown jewels — ocean views, surf breaks, the best bluff camping in the state.'},
+  {key:'sb',name:'Santa Barbara Coast',desc:'Remote, photogenic, underrated — palm coves, wild bluffs, and rocket launches.'},
+  {key:'smm',name:'Santa Monica Mountains & LA',desc:'Close to the city — canyon escapes and quick overnight access.'},
+  {key:'sd',name:'San Diego Mountains & Desert',desc:'High-country escapes and desert spectacle — alpine pines to wildflower badlands.'},
+  {key:'inland',name:'Inland Lakes & Mountains',desc:'Practical overnights — lake camping, mountain towns, reliable availability.'},
+  {key:'bigsur',name:'Central Coast & Big Sur',desc:'One of the great California road trips — redwoods, river camping, Highway 1.'},
+  {key:'north',name:'Bay Area to Oregon Border',desc:'The long run north — dramatic coastline, old-growth redwoods, wild ocean.'}
+];
+const CAMPS=[
+  {r:'socal',n:'San Onofre State Beach — Bluffs',d:'~75 mi / 1h 5m',p:'$45/night',o:1,b:1,bk:'Sites 11, 13 · Jun 29–30 · Conf 29719638 / 29719642',x:'Sandstone bluffs directly above the Pacific — Trestles surf break 1.5 miles south. Best dollar-for-view deal in SoCal.',a:'Surfing (Trestles) · Swimming · Beach walking · Fishing · Bluff hiking',s:'Sites 1–15 closest to bluff edge; 1–5 are top picks. 11 and 13 confirmed.'},
+  {r:'socal',n:'San Elijo State Beach',d:'~100 mi / 1h 30m',p:'$50–$70 premium',o:1,b:1,bk:'Premium 153, 170 · Nov 29–30 · Conf 29719655 / 29719663',x:'Bluff-backed sand above Cardiff Reef. Seaside Market across Hwy 101 sells the legendary Cardiff Crack tri-tip.',a:'Surfing · Snorkeling · Swimming · Fishing · Tide pools',s:'North bluff row 145–171: most spacious, best ocean exposure. Avoid 73–130.'},
+  {r:'socal',n:'South Carlsbad State Beach',d:'~90 mi / 1h 20m',p:'$45–$78 premium',o:1,b:1,bk:'Premium 203 · Sep 15 · Conf 30130032',x:'Largest bluff campground in San Diego — 3 miles of Pacific views from 43 feet up.',a:'Surfing · Swimming · Beach walking · Whale/dolphin watching · Tide pools',s:'Bluff rows 4–72 and 156–225 ocean-side. Southern section (156+) best privacy.'},
+  {r:'socal',n:'Crystal Cove SP — Moro',d:'~55 mi / 50m',p:'$46–$75/night',o:1,b:1,bk:'Premium 047, 041 · Nov 11–12 · Conf 29772460',x:'Three loops above pristine Newport Coast. Shake Shack and Beachcomber a short walk.',a:'Hiking · Mountain biking · Surfing · Snorkeling · Scuba · Tide pools',s:'Dolphin Circle strongest ocean views. Best-reviewed: 1, 5, 14, 20, 41, 47.'},
+  {r:'socal',n:'Leo Carrillo State Park',d:'~40 mi / 50m',p:'$45–$68/night',o:1,b:1,bk:'Hook Up E-109, E-020 · Aug 10–11 · Conf 29747958 / 29747466',x:'Malibu coast — sea cave, tide pools, kelp-forest snorkeling, sycamore-shaded canyon sites.',a:'Surfing · Snorkeling · Tide pools · Sea cave · Hiking · Kayaking',s:'Canyon sites 1–44: shaded, private. Beach 45–127: direct sand. Hook Up E confirmed.'},
+  {r:'socal',n:'Doheny State Beach',d:'~60 mi / 55m',p:'$35–$65/night',o:1,b:0,x:'Dana Point beach camping with direct sand access and Dana Point Harbor restaurants.',a:'Surfing · Swimming · Beach volleyball · Kayaking · Pier fishing',s:'Sites 1–30 beachfront-adjacent. 61–120 inland with more shade.'},
+  {r:'socal',n:'San Clemente State Beach',d:'~65 mi / 55m',p:'$35–$50/night',o:1,b:0,x:'Bluff campground above a wide sandy beach, walkable to the San Clemente Pier and downtown.',a:'Surfing · Swimming · Pier fishing · Hiking · Beach volleyball',s:'West-facing bluff sites. Only ~3 sites have true unobstructed views.'},
+  {r:'socal',n:'Bolsa Chica State Beach',d:'~30 mi / 35m',p:'$35–$65/night',o:1,b:0,x:'Closest ocean camping from LA — paved sites along PCH in Huntington Beach, wetlands next door.',a:'Surfing · Beach volleyball · Swimming · Bird watching',s:'Sites 36–53 and 183–205 ocean-facing. Best views: 40s and 190s.'},
+  {r:'sb',n:'Jalama Beach County Park',d:'~150 mi / 2h 20m',p:'~$45/night',o:1,b:1,bk:'Sites 31, 16 · Aug 12–13 · Conf 1328238 / 1328241',x:'Remote cult campground 14 miles from Lompoc. Wild coast, Jalama Burger, Vandenberg launches.',a:'Surfing · Clamming · Fishing · Rocket launches · Beach combing',s:'Sites 1–30 beachfront tier. 31 and 16 confirmed.'},
+  {r:'sb',n:'Refugio State Beach',d:'~115 mi / 1h 45m',p:'$35/night',o:1,b:1,bk:'Sites 45, 67 · Sep 1–2 · Conf 30132937',x:'Palm-lined cove with gentle surf and kelp-bed snorkeling. Most photogenic state beach in CA.',a:'Surfing · Snorkeling · Kayaking · Swimming · Fishing',s:'Sites 1–25 beachfront row. 45 and 67 confirmed.'},
+  {r:'sb',n:'El Capitan State Beach',d:'~120 mi / 1h 50m',p:'$35/night',o:1,b:0,x:'Oak-shaded bluff above a pristine cove, 17 miles west of Santa Barbara.',a:'Surfing · Snorkeling · Swimming · Canyon trails · Tide pools',s:'Bluff-top upper loops for views; canyon sites for shade and privacy.'},
+  {r:'smm',n:'Malibu Creek State Park',d:'~35 mi / 45m',p:'$45/night',o:0,b:1,nodog:1,bk:'Sites 29, 38 · Jun 24–25 · Conf 29719581 / 29719588',x:'Oak and sycamore canyon — MASH set, rock climbing, spring swimming hole. No dogs.',a:'Hiking · Rock climbing · MASH set · Creek swimming · Mountain biking',s:'Sites assigned on arrival. 29, 34, 14, 37, 38 top picks; 29 is the favorite.'},
+  {r:'smm',n:'Point Mugu SP — Sycamore Canyon',d:'~50 mi / 55m',p:'$35/night',o:0,b:0,x:'Mountains-meet-ocean canyon camping in the largest Santa Monica Mountains state park.',a:'Hiking · Mountain biking · Ocean day use · Bird watching · Equestrian',s:'Canyon: deeper sites more shade. Beach: ocean-adjacent but exposed.'},
+  {r:'smm',n:'Chilao — Angeles National Forest',d:'~45 mi / 55m',p:'~$25/night',o:0,b:0,x:'Pine forest at 5,300 feet on Angeles Crest Hwy. Wildly underused given proximity to LA.',a:'Hiking · Mountain biking · Stargazing · Nature center',s:'Outer-loop sites with most pine shade and road separation.'},
+  {r:'smm',n:'Chino Hills SP — Rolling M Ranch',d:'~40 mi / 45m',p:'$35/night',o:0,b:0,x:'Rolling grassland hills with long-range views. Spring wildflowers. Best Friday-night shakedown.',a:'Hiking · Mountain biking · Horseback riding · Wildflowers (spring)',s:'Hilltop sites with open grassland views. Spring visits only.'},
+  {r:'sd',n:'Cuyamaca Rancho — Paso Picacho',d:'~62 mi / 1h 10m',p:'$40/night',o:0,b:0,x:'5,000-foot elevation — cool nights, pines, real dark skies. Julian 15 minutes for dinner.',a:'Hiking · Peak summits · Mountain biking · Stargazing',s:'Sites 40–60: densest pine shade. 30, 70, 85: top picks.'},
+  {r:'sd',n:'Palomar Mountain — Doane Valley',d:'~75 mi / 1h 25m',p:'$35/night',o:0,b:0,x:'Cedar, fir, and oak at 5,500 feet. Palomar Observatory 6 miles away.',a:'Hiking · Fishing (Doane Pond) · Stargazing · Observatory · Birding',s:'Doane Valley loop. Meadow-exposure sites with good tree separation.'},
+  {r:'sd',n:'Anza-Borrego — Borrego Palm Canyon',d:'~135 mi / 2h 15m',p:'$35–$45/night',o:0,b:0,x:'California\'s largest state park — superbloom, Font\'s Point badlands, zero-light-pollution skies. Oct–May.',a:'Off-highway vehicle · Palm Canyon Trail · Stargazing · Wildflowers',s:'North and west perimeter outer-loop sites have most separation.'},
+  {r:'sd',n:'Cuyamaca Rancho — Green Valley',d:'~65 mi / 1h 15m',p:'$35/night',o:0,b:0,x:'Lower-elevation Cuyamaca with seasonal creek and waterfall access.',a:'Hiking · Creek swimming · Waterfall · Mountain biking',s:'Creek-adjacent sites in the shaded oak loops.'},
+  {r:'inland',n:'Cachuma Lake Recreation Area',d:'~115 mi / 1h 45m',p:'~$40–$55/night',o:0,b:1,bk:'Mohawk 529, Barona 288, Apache 231 & 230 · Jul 26–29 · Conf 2249020–2249053',x:'Santa Barbara County reservoir — boat rentals, fishing, winter eagles, wine country 20 min.',a:'Fishing · Boating · Kayaking · Eagle watching (winter) · Wine country',s:'Area A sites closest to lake. Waterfront row most dramatic views. 4 sites confirmed.'},
+  {r:'inland',n:'Serrano — Big Bear Lake',d:'~100 mi / 1h 50m',p:'~$40/night',o:0,b:0,x:'USFS campground on north shore of Big Bear Lake. Big Bear Village 3 miles east.',a:'Boating · Fishing · Mountain biking · Hiking · Skiing · Kayaking',s:'Sites 1–30 lakefront or lake-view. Outer sites more pine shade.'},
+  {r:'inland',n:'Silverwood Lake SRA',d:'~85 mi / 1h 20m',p:'$35/night',o:0,b:0,x:'Pine-ringed reservoir at 3,350 feet with swimming beach, boat rentals, and waterskiing.',a:'Swimming · Waterskiing · Boating · Fishing · Hiking',s:'Mesa Loop sites closest to lake.'},
+  {r:'inland',n:'Idyllwild Regional Park',d:'~100 mi / 1h 40m',p:'~$30/night',o:0,b:0,x:'Pine-and-granite mountain town at 5,400 feet — walkable to restaurants and galleries.',a:'Hiking · Rock climbing · Town dining · Birding',s:'Shaded sites set back from main road.'},
+  {r:'inland',n:'Lake Perris SRA',d:'~75 mi / 1h 10m',p:'$35/night',o:0,b:0,x:'Inland lake with developed beach and one of SoCal\'s better rock-climbing areas.',a:'Swimming · Waterskiing · Rock climbing · Fishing · Scuba',s:'Campground A and B loops closest to shore.'},
+  {r:'inland',n:'Lake Skinner Recreation Area',d:'~85 mi / 1h 20m',p:'~$30/night',o:0,b:0,x:'Riverside County park on 1,200-acre reservoir near Temecula.',a:'Fishing · Boating · Swimming · Windsurfing',s:'Sites closest to shoreline in north loops.'},
+  {r:'inland',n:'O\'Neill Regional Park',d:'~60 mi / 55m',p:'~$20/night',o:0,b:0,x:'Oak-shaded canyon park in Trabuco Canyon — reliable available-tonight campground.',a:'Hiking · Creek swimming · Mountain biking · Equestrian',s:'Creek-adjacent sites for atmosphere.'},
+  {r:'inland',n:'Caspers Wilderness Park',d:'~70 mi / 1h 5m',p:'~$20/night',o:0,b:0,x:'2,200-acre oak woodland wilderness in Santa Ana Mountains.',a:'Hiking · Equestrian · Mountain biking · Stargazing',s:'Outer-perimeter sites of Starr Ranch and Bell Canyon loops.'},
+  {r:'bigsur',n:'Pfeiffer Big Sur State Park',d:'~330 mi / 4h 30m',p:'$50–$60 riverfront',o:0,b:1,bk:'Sites 050, 091, 156, 056 · Sep 7–10 · Conf 30136001 / 30136589',x:'Flagship Big Sur campground under coast redwoods on the Big Sur River. Pfeiffer Beach 2 miles west.',a:'Hiking · River swimming · Redwood walks · Scenic drives',s:'Riverfront sites: 7,10,15,17,32,35,47,51,57,59,61,75,79,89,93,100,112,114,122,138,141,143,145,150,151.'},
+  {r:'bigsur',n:'Morro Strand State Beach',d:'~230 mi / 3h 10m',p:'$35/night',o:1,b:0,x:'Exposed beach campground within sight of Morro Rock.',a:'Windsurfing · Kite surfing · Fishing · Swimming',s:'Western-facing sites for ocean views and Morro Rock sightlines.'},
+  {r:'bigsur',n:'Pismo State Beach — North Beach',d:'~200 mi / 2h 50m',p:'$35/night',o:1,b:0,x:'Dune-backed beach camping. Monarch butterfly grove Oct–Feb; Oceano Dunes for ATVs.',a:'ATV/OHV · Butterfly viewing · Clamming · Surfing · Fishing',s:'North Beach loop sites closest to water.'},
+  {r:'bigsur',n:'Morro Bay State Park',d:'~230 mi / 3h 10m',p:'$35/night',o:0,b:0,x:'Bay-side camping in eucalyptus grove with heron rookery and kayak access to the estuary.',a:'Kayaking · Bird watching · Fishing · Hiking · Museum',s:'Sites closest to bay. Eucalyptus-grove sites under the heron nests.'},
+  {r:'bigsur',n:'Hearst San Simeon SP',d:'~250 mi / 3h 30m',p:'$35/night',o:0,b:0,x:'Best value base camp — Hearst Castle tours and elephant-seal rookery 5 miles north.',a:'Hearst Castle · Elephant seals · Hiking · Hwy 1',s:'Washburn: meadow-edge sites. San Simeon Creek: creek-adjacent.'},
+  {r:'north',n:'New Brighton State Beach',d:'~370 mi / 5h',p:'$35/night',o:1,b:0,x:'Monterey Bay bluff campground in Capitola — walkable to Capitola Village and surf.',a:'Surfing · Swimming · Capitola Village · Santa Cruz day trips',s:'Bluff-facing west sites for Monterey Bay views.'},
+  {r:'north',n:'Henry Cowell Redwoods SP',d:'~375 mi / 5h 10m',p:'$35/night',o:0,b:0,x:'Redwood-forest camping in Santa Cruz Mountains. Garden of Eden swimming hole.',a:'Hiking (Redwood Loop) · River swimming · Steam train · Mountain biking',s:'Main loop sites with densest redwood canopy.'},
+  {r:'north',n:'Half Moon Bay State Beach',d:'~390 mi / 5h 20m',p:'$35/night',o:1,b:0,x:'Four beaches south of San Francisco. Famous for Mavericks big-wave competition.',a:'Surfing · Whale watching · Fishing · Coastal trail · Mavericks',s:'West-facing bluff-edge sites at Francis Beach.'},
+  {r:'north',n:'Sonoma Coast SP — Bodega / Wrights',d:'~460 mi / 6h 10m',p:'$35/night',o:1,b:0,x:'Rugged Northern California coast at Bodega Bay, where Hitchcock filmed The Birds.',a:'Surfing · Crab fishing · Whale watching · Beachcombing · Birding',s:'Wrights Beach 1–30 oceanfront. Bodega Dunes: shelter from wind.'},
+  {r:'north',n:'Salt Point State Park',d:'~490 mi / 6h 30m',p:'$35/night',o:1,b:0,x:'Wild Sonoma Coast with sea stacks, tide pools, kelp-forest diving, and abalone habitat.',a:'Abalone diving · Spearfishing · Tide pools · Hiking · Mushroom foraging',s:'Gerstle Cove 1–20 most ocean-proximate.'},
+  {r:'north',n:'MacKerricher State Park',d:'~550 mi / 7h 20m',p:'$35/night',o:1,b:0,x:'Mendocino Coast — 9-mile coastal trail, seal watching, Fort Bragg\'s glass beach.',a:'Coastal trail · Seal watching · Beach glass · Skunk Train',s:'Sites closest to headlands trail.'},
+  {r:'north',n:'Sue-meg State Park',d:'~680 mi / 8h 45m',p:'$35/night',o:1,b:0,x:'Trinidad Head above one of the most dramatic headlands on the coast.',a:'Fishing (pier & surf) · Tide pools · Headland trails · Sea kayaking',s:'Sites closest to bluff edge for Trinidad Head views.'},
+  {r:'north',n:'Jedediah Smith Redwoods SP',d:'~745 mi / 9h 30m',p:'$35/night',o:0,b:0,x:'The Smith River runs beside some of the world\'s tallest trees. Howland Hill Road.',a:'Old-growth hiking · River swimming · Kayaking · Steelhead fishing',s:'Sites 1–30 along the river most coveted.'}
+];
+const TRIPS=[
+  {name:'Malibu Creek',region:'Santa Monica Mountains',start:'2026-06-24',end:'2026-06-25',nights:[{d:'Jun 24',site:'Site 29',det:'Oak Tree, Rocks & Hills',rate:'$53.25',conf:'29719581'},{d:'Jun 25',site:'Site 38',det:'Trees & Meadow Access',rate:'$53.25',conf:'29719588'}]},
+  {name:'San Onofre Bluffs',region:'Southern California Coast',start:'2026-06-29',end:'2026-06-30',nights:[{d:'Jun 29',site:'Site 11',det:'Ocean view',rate:'$53.25',conf:'29719638'},{d:'Jun 30',site:'Site 13',det:'Ocean view',rate:'$53.25',conf:'29719642'}]},
+  {name:'Cachuma Lake',region:'Inland Lakes',start:'2026-07-26',end:'2026-07-29',nights:[{d:'Jul 26',site:'Mohawk 529',det:'Lake view',rate:'$45.00',conf:'2249020'},{d:'Jul 27',site:'Barona 288',det:'Lake view',rate:'$55.00',conf:'2249037'},{d:'Jul 28',site:'Apache 231',det:'Lake view',rate:'$55.00',conf:'2249049'},{d:'Jul 29',site:'Apache 230',det:'Lake view',rate:'$55.00',conf:'2249053'}]},
+  {name:'Leo Carrillo (Canyon)',region:'Southern California Coast',start:'2026-08-10',end:'2026-08-11',nights:[{d:'Aug 10',site:'Hook Up E │ 109',det:'Canyon, beach access, electric',rate:'$68.25',conf:'29747958'},{d:'Aug 11',site:'Hook Up E │ 020',det:'Canyon, beach access, electric',rate:'$68.25',conf:'29747466'}]},
+  {name:'Jalama Beach',region:'Santa Barbara Coast',start:'2026-08-12',end:'2026-08-13',nights:[{d:'Aug 12',site:'Site 31',det:'Oceanfront area',rate:'$50.00',conf:'1328238'},{d:'Aug 13',site:'Site 16',det:'Oceanfront area',rate:'$50.00',conf:'1328241'}]},
+  {name:'Refugio SB',region:'Santa Barbara Coast',start:'2026-09-01',end:'2026-09-02',nights:[{d:'Sep 1',site:'Site 45',det:'Beach campground',rate:'$53.25',conf:'30132937'},{d:'Sep 2',site:'Site 67',det:'Beach campground',rate:'$53.25',conf:'30132937'}]},
+  {name:'Pfeiffer Big Sur',region:'Central Coast & Big Sur',start:'2026-09-07',end:'2026-09-10',nights:[{d:'Sep 7',site:'Site 050',det:'South Camp',rate:'$53.25',conf:'30136001'},{d:'Sep 8',site:'Site 091',det:'Weyland Camp',rate:'$53.25',conf:'30136001'},{d:'Sep 9',site:'Site 156',det:'Main Camp',rate:'$53.25',conf:'30136589'},{d:'Sep 10',site:'Site 056',det:'South Camp',rate:'$53.25',conf:'30136589'}]},
+  {name:'South Carlsbad SB',region:'Southern California Coast',start:'2026-09-15',end:'2026-09-15',nights:[{d:'Sep 15',site:'Premium 203',det:'Ocean view bluff',rate:'$78.25',conf:'30130032'}]},
+  {name:'Crystal Cove Moro',region:'Southern California Coast',start:'2026-11-11',end:'2026-11-12',nights:[{d:'Nov 11',site:'Premium 047',det:'Ocean view',rate:'$46.75',conf:'29772460'},{d:'Nov 12',site:'Premium 041',det:'Ocean view',rate:'$46.75',conf:'29772460'}]},
+  {name:'San Elijo Cardiff',region:'Southern California Coast',start:'2026-11-29',end:'2026-11-30',nights:[{d:'Nov 29',site:'Premium 153',det:'Ocean view, off-highway',rate:'$78.25',conf:'29719655'},{d:'Nov 30',site:'Premium 170',det:'Ocean view, off-highway',rate:'$78.25',conf:'29719663'}]}
+];
+const ZONES=[
+  {rank:1,name:'Chilao & Angeles Crest',best:'Best beginner-friendly exploration area',dist:'~1–1.5 hrs',road:'Excellent — paved Angeles Crest throughout.',x:'Closest forest experience to LA — pine forest, mountain scenery, genuine away-from-the-city feel in under 90 minutes.',strat:'Use Chilao Campground (~$25/night) as legal basecamp, then scout nearby forest roads.',roads:'Angeles Crest Hwy (Hwy 2) · Charlton Flats · Three Points'},
+  {rank:2,name:'Mount Pinos Stargazing',best:'Best dark-sky destination near LA',dist:'~2 hrs',road:'Good — paved to summit. Lockwood Valley Rd is graded dirt.',x:'Pine forest at 8,831 feet with some of the darkest skies within 3 hours of LA.',strat:'Start at Mount Pinos Road, explore Lockwood Valley Road, Grade Valley Road, FR 9N24.',roads:'Mount Pinos Rd · Lockwood Valley Rd · Grade Valley Rd · FR 9N24'},
+  {rank:3,name:'Ojai Backcountry & Hwy 33',best:'Best scenic mountain drive with dispersed potential',dist:'~2–2.5 hrs',road:'Good on Hwy 33. FR 6N06 needs dry conditions.',x:'Highway 33 north of Ojai — SoCal\'s most underrated scenic drive with dispersed potential.',strat:'Drive Ojai → Hwy 33 → Rose Valley → Pine Mountain Summit.',roads:'Hwy 33 · FR 6N06 · Pine Mountain Rd · Rose Valley Rd'},
+  {rank:4,name:'Paradise Road & Upper Santa Ynez',best:'Best hidden-gem river corridor',dist:'~2.5 hrs',road:'Excellent — Paradise Road well-graded.',x:'Oak woodland, year-round river, shade, dramatically fewer crowds than the coast.',strat:'Drive Hwy 154 → Paradise Road, scouting river access points.',roads:'Paradise Road (FS 5N18) · Santa Ynez River corridor'},
+  {rank:5,name:'Figueroa Mountain Explorer',best:'Best overall boondocking destination',dist:'~3 hrs',road:'Good — Figueroa Mountain Road paved. Davy Brown Rd maintained dirt.',x:'Best overall combination of scenery, exploration, accessibility — forest roads, meadows, wildflowers, wine country.',strat:'Drive Los Olivos → Figueroa Mountain Road, investigating Davy Brown Road and pullouts.',roads:'Figueroa Mountain Rd · Davy Brown Rd · Sunset Valley Rd'},
+  {rank:6,name:'Black Mountain Yellow Post Sites',best:'Best primitive-site experience',dist:'~2.5–3 hrs',road:'Most sites accessible via maintained roads.',x:'Primitive designated campsites in Cleveland National Forest — more privacy, existing fire rings.',strat:'Research individual Yellow Post locations through Cleveland NF before leaving.',roads:'Cleveland National Forest roads — varies by site'},
+  {rank:7,name:'Alabama Hills Expedition',best:'Ultimate bucket-list boondocking destination',dist:'~5 hrs',road:'Excellent — well-maintained graded dirt, RX300-accessible.',x:'BLM land, no fees, fire in established rings, eastern Sierra with Mount Whitney visible.',strat:'Use Lone Pine as supply base. Enter via Movie Road off Whitney Portal Road.',roads:'Movie Road · Alabama Hills Road · Moffat Ranch Road'}
+];
+
+/* ===== HELPERS ===== */
+const mkEl=h=>{const t=document.createElement('template');t.innerHTML=h.trim();return t.content.firstChild;};
+const daysUntil=d=>{const t=new Date();t.setHours(0,0,0,0);return Math.round((new Date(d+'T00:00:00')-t)/86400000);};
+const fmt=s=>new Date(s+'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
+const countdownLabel=n=>n<0?{txt:'Completed',cls:'done'}:n===0?{txt:'Today',cls:'soon'}:n<=10?{txt:n+' days out',cls:'soon'}:{txt:n+' days out',cls:''};
+const isAdmin=()=>currentUser&&currentUser.email===ADMIN_EMAIL;
+const showMsg=(id,txt,type)=>{const e=document.getElementById(id);e.textContent=txt;e.className='form-msg '+type;e.style.display='block';};
+const openMaps=(lat,lng)=>window.open(`https://maps.google.com/?q=${lat},${lng}`);
+
+/* ===== AUTH ===== */
+db.auth.onAuthStateChange(async (_,session)=>{
+  currentUser=session?.user||null;
+  updateAuthUI();
+  if(currentUser){
+    await loadMyProfile();
+    renderHero();
+    loadDbTrips();
+  } else {
+    renderHero();
+    loadPlatformStats();
+  }
+});
+function updateAuthUI(){
+  const g=document.getElementById('user-greeting');
+  const bi=document.getElementById('btn-signin');
+  const bo=document.getElementById('btn-signout');
+  const bp=document.getElementById('btn-profile');
+  if(currentUser){
+    g.style.display='none';
+    bi.style.display='none';
+    bo.style.display='inline-block';
+    bp.style.display='inline-block';
+    updateGate(false);
+  } else {
+    g.style.display='none';
+    bi.style.display='inline-block';
+    bo.style.display='none';
+    bp.style.display='none';
+    updateGate(true);
+  }
+}
+function updateGate(show){
+  // Gate viewpoints, explore, boondocking community for logged-out users
+  const activeTab=document.querySelector('.tab.active')?.dataset?.tab;
+  const gatedTabs=['viewpoints','explore','boondock'];
+  const gate=document.getElementById('gate-overlay');
+  if(!gate)return;
+  if(show&&gatedTabs.includes(activeTab)){
+    gate.classList.add('show');
+    gate.style.position='fixed';
+  } else {
+    gate.classList.remove('show');
+  }
+}
+function closeGate(){document.getElementById('gate-overlay').classList.remove('show');}
+function openAuth(){document.getElementById('auth-overlay').classList.add('open');document.getElementById('auth-email').focus();}
+function closeAuth(){document.getElementById('auth-overlay').classList.remove('open');document.getElementById('auth-msg').style.display='none';}
+function toggleAuthMode(){
+  authMode=authMode==='signin'?'signup':'signin';
+  document.getElementById('auth-title').textContent=authMode==='signin'?'Welcome back':'Create account';
+  document.getElementById('auth-sub').textContent=authMode==='signin'?'Sign in to share and upvote community finds.':'Free to join — share spots and upvote.';
+  document.getElementById('auth-switch-text').textContent=authMode==='signin'?'No account? ':'Already have one? ';
+  document.getElementById('auth-switch-link').textContent=authMode==='signin'?'Create one free':'Sign in';
+}
+async function handleAuth(){
+  const email=document.getElementById('auth-email').value.trim(),pw=document.getElementById('auth-password').value;
+  if(!email||!pw){showMsg('auth-msg','Please enter email and password.','error');return;}
+  const btn=document.querySelector('.auth-box .btn-primary');
+  btn.disabled=true;btn.textContent=authMode==='signin'?'Signing in…':'Creating account…';
+  const res=authMode==='signin'?await db.auth.signInWithPassword({email,password:pw}):await db.auth.signUp({email,password:pw});
+  btn.disabled=false;btn.textContent=authMode==='signin'?'Sign in':'Create account';
+  if(res.error)showMsg('auth-msg',res.error.message,'error');
+  else {
+    closeAuth();
+    if(authMode==='signup'){
+      setTimeout(()=>document.getElementById('profile-prompt-overlay').classList.add('open'),300);
+    }
+  }
+}
+async function signOut(){await db.auth.signOut();}
+
+/* ===== HERO NEXT-UP ===== */
+function renderNextUp(){
+  const upcoming=TRIPS.map(t=>({t,n:daysUntil(t.start)})).filter(o=>o.n>=0).sort((a,b)=>a.n-b.n)[0];
+  const box=document.getElementById('nextup');
+  if(!upcoming){box.innerHTML='';return;}
+  const{t,n}=upcoming,cl=countdownLabel(n);
+  const dateRange=t.start===t.end?fmt(t.start):fmt(t.start)+' – '+fmt(t.end);
+  box.innerHTML=`<div class="nextup"><div><div class="tag">Next up</div><div class="name">${t.name}</div></div><div class="when">${dateRange} · ${t.nights.length} night${t.nights.length>1?'s':''}</div><div class="count">${cl.txt}</div></div>`;
+}
+
+/* ===== BOOKINGS ===== */
+function renderTrips(){
+  const tl=document.getElementById('timeline');tl.innerHTML='';
+  TRIPS.forEach((t,i)=>{
+    const n=daysUntil(t.start),cl=countdownLabel(n);
+    const range=t.start===t.end?fmt(t.start):fmt(t.start)+'–'+fmt(t.end).replace(/^[A-Za-z]+ /,'');
+    const total=t.nights.reduce((s,x)=>s+parseFloat(x.rate.replace('$','')),0);
+    const sc=n<0?'done':n<=10?'soon':'';
+    const nightsHtml=t.nights.map(x=>`<div class="night"><div class="nd">${x.d}</div><div class="ns"><b>${x.site}</b> <span>· ${x.det}</span></div><div class="nr"><b>${x.rate}</b>#${x.conf}</div></div>`).join('');
+    const trip=mkEl(`<div class="trip ${sc}"><div class="tripcard ${sc==='soon'?'soon':''} ${i===0&&n>=0?'open':''}"><div class="triphead"><span class="tripdate">${range}</span><span class="tripname">${t.name}</span><span class="tripmeta"><span>${t.region}</span><span class="cd ${cl.cls}">${cl.txt}</span><span class="chev">▶</span></span></div><div class="nights">${nightsHtml}<div class="night" style="border-top:1px solid var(--line-strong);margin-top:4px"><div class="nd"></div><div class="ns"><span>${t.nights.length} nights</span></div><div class="nr"><b>$${total.toFixed(2)}</b>total</div></div></div></div></div>`);
+    trip.querySelector('.triphead').addEventListener('click',()=>trip.querySelector('.tripcard').classList.toggle('open'));
+    tl.appendChild(trip);
+  });
+}
+
+/* ===== CAMPGROUNDS ===== */
+function renderRegionPills(){
+  const wrap=document.getElementById('regionpills');wrap.innerHTML='';
+  const all=mkEl(`<button class="pill ${campState.region==='all'?'on':''}">All regions</button>`);
+  all.addEventListener('click',()=>{campState.region='all';renderCamps();renderRegionPills();});
+  wrap.appendChild(all);
+  REGIONS.forEach(r=>{
+    const p=mkEl(`<button class="pill ${campState.region===r.key?'on':''}">${r.name.replace(' & LA','').replace(' Mountains','')}</button>`);
+    p.addEventListener('click',()=>{campState.region=r.key;renderCamps();renderRegionPills();});
+    wrap.appendChild(p);
+  });
+}
+function campMatches(c){
+  if(campState.booked&&!c.b)return false;
+  if(campState.ocean&&!c.o)return false;
+  if(campState.region!=='all'&&c.r!==campState.region)return false;
+  if(campState.q){const hay=(c.n+' '+c.x+' '+c.a+' '+(REGIONS.find(r=>r.key===c.r)?.name||'')).toLowerCase();if(!hay.includes(campState.q.toLowerCase()))return false;}
+  return true;
+}
+function campCard(c){
+  const tags=[`<span class="t price">${c.p}</span>`];
+  if(c.o)tags.push(`<span class="t ocean">🌊 Ocean view</span>`);
+  if(c.b)tags.push(`<span class="t booked">★ Booked</span>`);
+  if(c.nodog)tags.push(`<span class="t nodog">No dogs</span>`);
+  const cardId=`camp-${c.n.replace(/[^a-z0-9]/gi,'').toLowerCase()}`;
+  return `<div class="card ${c.b?'booked':''}" id="${cardId}">
+    <div class="card-top"><h3>${c.n}</h3><div class="dist">${c.d}</div></div>
+    <div class="tags">${tags.join('')}</div>
+    <div class="blurb">${c.x}</div>
+    <div class="meta">
+      <div class="row"><span class="k">Activities</span>${c.a}</div>
+      <div class="row"><span class="k">Top sites</span>${c.s}</div>
+    </div>
+    ${c.b?`<div class="bookline">✓ ${c.bk}</div>`:''}
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);">
+      <button class="sites-toggle" onclick="toggleSiteReviews('${cardId}','${c.n.replace(/'/g,"\'")}',this)">▶ Favorite sites</button>
+      <button class="site-submit-btn" onclick="openSiteForm('${c.n.replace(/'/g,"\'")}')">+ Share a site</button>
+    </div>
+    <div class="campcard-sites" id="sites-${cardId}">
+      <div class="loading" style="font-size:11px;padding:12px 0;">Loading…</div>
+    </div>
+  </div>`;
+}
+function renderCamps(){
+  const root=document.getElementById('campgrounds'),filtered=CAMPS.filter(campMatches);
+  document.getElementById('resultcount').textContent=`${filtered.length} of ${CAMPS.length} campgrounds`+(campState.booked||campState.ocean||campState.region!=='all'||campState.q?' · filtered':'');
+  if(!filtered.length){root.innerHTML='<div class="empty">No campgrounds match these filters.</div>';return;}
+  let html='';
+  REGIONS.forEach((r,idx)=>{
+    const inRegion=filtered.filter(c=>c.r===r.key);
+    if(!inRegion.length)return;
+    html+=`<div class="region"><span class="num">${String(idx+1).padStart(2,'0')}</span><h2>${r.name}</h2><span class="desc">${r.desc}</span></div><div class="grid">${inRegion.map(campCard).join('')}</div>`;
+  });
+  root.innerHTML=html;
+}
+
+/* ===== ZONES ===== */
+function renderZones(){
+  document.getElementById('zones').innerHTML=ZONES.map(z=>`
+    <div class="zone"><div class="rank">${z.rank}</div><div class="zone-body">
+      <h3>${z.name}</h3><div class="best">${z.best}</div>
+      <div class="ztags"><span class="t">${z.dist}</span><span class="t fire">🔥 Fire OK*</span><span class="t dog">🐕 Dog-friendly</span><span class="t">RX300 ✓</span></div>
+      <p class="zb">${z.x}</p>
+      <div class="strat"><span class="k">Strategy</span>${z.strat}<div class="roads">Roads: ${z.roads}</div></div>
+      <div class="roads" style="margin-top:8px;color:var(--rust)">Access: ${z.road}</div>
+    </div></div>`).join('');
+}
+
+/* ===== BOONDOCKING COMMUNITY ===== */
+async function loadBoondockSpots(){
+  const root=document.getElementById('community-spots');
+  root.innerHTML='<div class="loading">Loading…</div>';
+  if(isAdmin())await loadAdminQueue('boondock','admin-queue-boondock');
+  const {data,error}=await db.from('spots').select('*').eq('status','approved').eq('type','boondock').order('upvotes',{ascending:false});
+  if(error||!data?.length){root.innerHTML='<div class="spots-empty">No community spots yet — be the first to share one.</div>';return;}
+  root.innerHTML=data.map(s=>`<div class="community-spot" id="spot-${s.id}">
+    ${s.photo_url?`<img class="spot-img" src="${s.photo_url}" loading="lazy">`:'<div class="spot-img" style="display:flex;align-items:center;justify-content:center;font-size:22px">🏕</div>'}
+    <div class="spot-body">
+      <div class="spot-name">${s.name}</div>
+      <div class="spot-desc">${s.description||''}</div>
+      <div class="spot-tags">${(s.tags||[]).map(tg=>tg==='fire'?'<span class="t fire">🔥 Fire OK</span>':tg==='dog'?'<span class="t dog">🐕 Dog friendly</span>':`<span class="t">${tg}</span>`).join('')}</div>
+      <div class="spot-meta">
+        <button class="spot-upvote" onclick="toggleUpvote('${s.id}','boondock-spots')">▲ ${s.upvotes||0}</button>
+        <button class="spot-flag" onclick="flagSpot('${s.id}','boondock-spots')">⚑ Flag</button>
+        ${s.lat&&s.lng?`<span class="spot-gps" onclick="openMaps(${s.lat},${s.lng})">📍 Map</span>`:''}
+        ${s.vehicle?`<span>${s.vehicle}</span>`:''}
+      </div>
+    </div>
+  </div>`).join('');
+}
+async function toggleUpvote(spotId,reloadFn){
+  if(!currentUser){openAuth();return;}
+  const el=document.querySelector(`#spot-${spotId} .spot-upvote`);
+  const voted=el.classList.contains('voted');
+  if(voted){await db.from('upvotes').delete().eq('spot_id',spotId).eq('user_id',currentUser.id);await db.from('spots').update({upvotes:parseInt(el.textContent.match(/\d+/)[0])-1}).eq('id',spotId);}
+  else{await db.from('upvotes').insert({spot_id:spotId,user_id:currentUser.id});await db.from('spots').update({upvotes:parseInt(el.textContent.match(/\d+/)[0])+1}).eq('id',spotId);}
+  loadBoondockSpots();
+}
+async function flagSpot(spotId){
+  if(!currentUser){openAuth();return;}
+  await db.from('spots').update({flags:9999}).eq('id',spotId);
+  loadBoondockSpots();
+}
+async function loadAdminQueue(type,containerId){
+  const {data}=await db.from('spots').select('*').eq('status','pending').eq('type',type).order('created_at',{ascending:false});
+  const el=document.getElementById(containerId);
+  if(!el)return;
+  if(!data?.length){el.innerHTML='';return;}
+  el.innerHTML=`<div class="admin-queue"><h4>⚑ ${data.length} pending review</h4>${data.map(s=>`<div class="queue-item"><div><div class="queue-item-name">${s.name||s.description?.slice(0,40)||'Untitled'}</div><div class="queue-item-sub">${s.type} · ${(s.description||'').slice(0,50)}…</div></div><div class="queue-actions"><button class="btn-approve" onclick="moderateSpot('${s.id}','approved','${type}')">Approve</button><button class="btn-reject" onclick="moderateSpot('${s.id}','rejected','${type}')">Reject</button></div></div>`).join('')}</div>`;
+}
+async function moderateSpot(id,status,type){
+  await db.from('spots').update({status}).eq('id',id);
+  if(type==='boondock')loadBoondockSpots();
+  else if(type==='viewpoint')loadMapSpots('viewpoint');
+  else loadMapSpots('explore');
+}
+
+/* ===== MAPS ===== */
+function initMap(type){
+  if(typeof mapboxgl==='undefined'){console.error('Mapbox not loaded');return;}
+  mapboxgl.accessToken=MAPBOX_TOKEN;
+  const containerId=type==='viewpoint'?'viewpoints-map':'explore-map';
+  const mapRef=type==='viewpoint'?'vpMap':'exMap';
+  if(window[mapRef])return loadMapSpots(type);
+  window[mapRef]=new mapboxgl.Map({
+    container:containerId,
+    style:'mapbox://styles/mapbox/outdoors-v12',
+    center:[-119.5,36.5],zoom:5.5,
+    attributionControl:false
+  });
+  window[mapRef].addControl(new mapboxgl.NavigationControl({showCompass:false}),'top-right');
+  window[mapRef].addControl(new mapboxgl.AttributionControl({compact:true}),'bottom-right');
+  window[mapRef].on('load',()=>loadMapSpots(type));
+}
+async function loadMapSpots(type){
+  const map=type==='viewpoint'?window.vpMap:window.exMap;
+  if(!map)return;
+  const adminQId=type==='viewpoint'?'admin-queue-viewpoints':'admin-queue-explore';
+  const countId=type==='viewpoint'?'vp-count':'ex-count';
+  const likesId=type==='viewpoint'?'vp-likes':'ex-likes';
+  const badgeId=type==='viewpoint'?'vp-badge':'ex-badge';
+  if(isAdmin())await loadAdminQueue(type,adminQId);
+  const {data,count}=await db.from('spots').select('*',{count:'exact'}).eq('status','approved').eq('type',type).order('upvotes',{ascending:false});
+  document.getElementById(countId).textContent=count||0;
+  document.getElementById(likesId).textContent=(data||[]).reduce((s,x)=>s+(x.upvotes||0),0);
+  document.getElementById(badgeId).textContent=count||0;
+  document.querySelectorAll(`.map-dot-${type}`).forEach(m=>m.remove());
+
+  if(type==='explore'){
+    // Store for filtering
+    allExploreSpots=data||[];
+    renderExploreMarkers();
+  } else {
+    // Viewpoints — gold dot pins with photo thumbnail
+    (data||[]).forEach(s=>{
+      if(!s.lat||!s.lng)return;
+      const el=document.createElement('div');
+      el.className=`map-dot-${type} photo-pin vp`;
+      if(s.photo_url||s.photo_n){
+        el.innerHTML=`<img src="${s.photo_url||s.photo_n}" loading="lazy">`;
+      } else {
+        el.classList.add('no-photo');el.textContent='📍';
+      }
+      const base=52,bonus=Math.min((s.upvotes||0)*4,24);
+      el.style.width=el.style.height=(base+bonus)+'px';
+      el.addEventListener('mouseenter',()=>el.style.transform='scale(1.12)');
+      el.addEventListener('mouseleave',()=>el.style.transform='scale(1)');
+      el.addEventListener('click',()=>openSpotPanel(s,'viewpoint'));
+      new mapboxgl.Marker({element:el,anchor:'bottom'}).setLngLat([s.lng,s.lat]).addTo(map);
+    });
+  }
+}
+
+/* ===== CATEGORY HELPERS ===== */
+const CAT_LABELS={food:'🍴 Food & Drink',supplies:'🛒 Supplies',activity:'🏄 Activity',nature:'🌿 Nature'};
+const CAT_CLASSES={food:'cat-food',supplies:'cat-supplies',activity:'cat-activity',nature:'cat-nature'};
+function catBadgeHtml(cat){
+  if(!cat||!CAT_LABELS[cat])return '';
+  return `<span class="cat-badge ${CAT_CLASSES[cat]}">${CAT_LABELS[cat]}</span>`;
+}
+function selectCat(label,val){
+  document.querySelectorAll('#f-cat .toggle-opt').forEach(o=>o.classList.remove('selected'));
+  label.classList.add('selected');
+}
+
+/* ===== DISTANCE HELPER ===== */
+function haversineKm(lat1,lng1,lat2,lng2){
+  const R=6371,dLat=(lat2-lat1)*Math.PI/180,dLng=(lng2-lng1)*Math.PI/180;
+  const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2;
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+function distLabel(km){
+  if(km<1)return Math.round(km*1000)+'m away';
+  if(km<10)return km.toFixed(1)+'km away';
+  return Math.round(km)+'km away';
+}
+function getNearestTripCoords(){
+  const upcoming=TRIPS.map(t=>({t,n:daysUntil(t.start)})).filter(o=>o.n>=-1).sort((a,b)=>a.n-b.n)[0];
+  if(!upcoming)return null;
+  // Camp coords approximated from campground data
+  const campCoords={
+    'Malibu Creek':{lat:34.1030,lng:-118.7183},
+    'San Onofre Bluffs':{lat:33.3783,lng:-117.5633},
+    'Cachuma Lake':{lat:34.5820,lng:-119.9753},
+    'Leo Carrillo (Canyon)':{lat:34.0453,lng:-118.9348},
+    'Jalama Beach':{lat:34.5020,lng:-120.5020},
+    'Refugio SB':{lat:34.4680,lng:-120.0680},
+    'Pfeiffer Big Sur':{lat:36.2448,lng:-121.7828},
+    'South Carlsbad SB':{lat:33.1340,lng:-117.3280},
+    'Crystal Cove Moro':{lat:33.5680,lng:-117.8380},
+    'San Elijo Cardiff':{lat:33.0180,lng:-117.2780}
+  };
+  return campCoords[upcoming.t.name]||null;
+}
+
+/* ===== EXPLORE FILTER ===== */
+let activeCatFilter='all';
+let allExploreSpots=[];
+function filterExplore(cat){
+  activeCatFilter=cat;
+  document.querySelectorAll('[id^=cat-pill-]').forEach(p=>p.classList.remove('on'));
+  document.getElementById(`cat-pill-${cat}`)?.classList.add('on');
+  renderExploreMarkers();
+}
+function renderExploreMarkers(){
+  const map=window.exMap;if(!map)return;
+  document.querySelectorAll('.map-dot-explore').forEach(m=>m.remove());
+  let spots=allExploreSpots;
+  if(activeCatFilter!=='all'&&activeCatFilter!=='near'){
+    spots=spots.filter(s=>s.category===activeCatFilter);
+  }
+  if(activeCatFilter==='near'){
+    const coords=getNearestTripCoords();
+    if(coords)spots=spots.filter(s=>s.lat&&s.lng&&haversineKm(coords.lat,coords.lng,s.lat,s.lng)<80);
+  }
+  spots.forEach(s=>{
+    if(!s.lat||!s.lng)return;
+    const el=document.createElement('div');
+    el.className='map-dot-explore photo-pin explore';
+    if(s.photo_url){
+      el.innerHTML=`<img src="${s.photo_url}" loading="lazy">`;
+    } else {
+      el.classList.add('no-photo');
+      el.textContent=s.category==='food'?'🍴':s.category==='supplies'?'🛒':s.category==='activity'?'🏄':'🌿';
+    }
+    // Size by upvotes
+    const base=52,bonus=Math.min((s.upvotes||0)*4,24);
+    el.style.width=el.style.height=(base+bonus)+'px';
+    el.addEventListener('mouseenter',()=>el.style.transform='scale(1.12)');
+    el.addEventListener('mouseleave',()=>el.style.transform='scale(1)');
+    el.addEventListener('click',()=>openSpotPanel(s,'explore'));
+    new mapboxgl.Marker({element:el,anchor:'bottom'}).setLngLat([s.lng,s.lat]).addTo(map);
+  });
+}
+
+/* ===== SPOT PANEL ===== */
+function openSpotPanel(s,type){
+  activePanelSpot=s;
+  document.getElementById('sp-votes').textContent=s.upvotes||0;
+  document.getElementById('sp-upvote').className='spot-upvote';
+  document.getElementById('sp-flag').className='spot-flag';
+  // Category badge
+  document.getElementById('sp-cat-badge').innerHTML=type==='viewpoint'?'<span class="cat-badge" style="background:rgba(217,150,63,0.15);color:var(--sun-deep)">📍 Viewpoint</span>':catBadgeHtml(s.category);
+  // Distance
+  const coords=getNearestTripCoords();
+  const distEl=document.getElementById('sp-dist');
+  if(coords&&s.lat&&s.lng){
+    const km=haversineKm(coords.lat,coords.lng,s.lat,s.lng);
+    distEl.textContent=distLabel(km)+' from '+TRIPS.map(t=>({t,n:daysUntil(t.start)})).filter(o=>o.n>=-1).sort((a,b)=>a.n-b.n)[0]?.t.name;
+  } else distEl.textContent='';
+  // Description
+  document.getElementById('sp-desc').textContent=s.description||s.name||'';
+  // Media
+  const media=document.getElementById('sp-media');
+  if(type==='viewpoint'||type==='boondock'){
+    const dirs=['n','e','s','w'];
+    const hasCompass=dirs.some(d=>s[`photo_${d}`]);
+    if(hasCompass){
+      media.innerHTML=`<div class="compass-strip">${dirs.map(d=>`<div class="compass-frame">${s[`photo_${d}`]?`<img src="${s[`photo_${d}`]}" loading="lazy">`:`<div class="compass-empty-frame">${d.toUpperCase()}</div>`}<div class="compass-dir">${d.toUpperCase()}</div></div>`).join('')}</div>`;
+    } else if(s.photo_url){
+      media.innerHTML=`<div class="sp-carousel"><div class="sp-carousel-track"><img src="${s.photo_url}" loading="lazy"></div></div>`;
+    } else {
+      media.innerHTML=`<div class="sp-carousel"><div class="sp-carousel-empty">📍</div></div>`;
+    }
+  } else {
+    // Explore — photo carousel
+    const photos=[s.photo_url,...(s.photos||[])].filter(Boolean);
+    if(!photos.length){
+      media.innerHTML=`<div class="sp-carousel"><div class="sp-carousel-empty">🗺</div></div>`;
+    } else if(photos.length===1){
+      media.innerHTML=`<div class="sp-carousel"><div class="sp-carousel-track"><img src="${photos[0]}" loading="lazy"></div></div>`;
+    } else {
+      let cur=0;
+      media.innerHTML=`<div class="sp-carousel" id="sp-car"><div class="sp-carousel-track" id="sp-track">${photos.map(p=>`<img src="${p}" loading="lazy">`).join('')}</div><div class="sp-carousel-nav"><button class="sp-carousel-btn" id="sp-prev">‹</button><span class="sp-carousel-count" id="sp-cnt">1 / ${photos.length}</span><button class="sp-carousel-btn" id="sp-next">›</button></div></div>`;
+      const track=document.getElementById('sp-track');
+      const upd=()=>{track.style.transform=`translateX(-${cur*100}%)`;document.getElementById('sp-cnt').textContent=`${cur+1} / ${photos.length}`;document.getElementById('sp-prev').disabled=cur===0;document.getElementById('sp-next').disabled=cur===photos.length-1;};
+      document.getElementById('sp-prev').onclick=()=>{cur=Math.max(0,cur-1);upd();};
+      document.getElementById('sp-next').onclick=()=>{cur=Math.min(photos.length-1,cur+1);upd();};
+      upd();
+    }
+  }
+  document.getElementById('spot-panel').classList.add('open');
+}
+function closeSpotPanel(){document.getElementById('spot-panel').classList.remove('open');activePanelSpot=null;}
+async function panelUpvote(){
+  if(!currentUser){openAuth();return;}
+  if(!activePanelSpot)return;
+  const btn=document.getElementById('sp-upvote');
+  const voted=btn.classList.contains('voted');
+  const newCount=(activePanelSpot.upvotes||0)+(voted?-1:1);
+  if(voted)await db.from('upvotes').delete().eq('spot_id',activePanelSpot.id).eq('user_id',currentUser.id);
+  else await db.from('upvotes').insert({spot_id:activePanelSpot.id,user_id:currentUser.id});
+  await db.from('spots').update({upvotes:newCount}).eq('id',activePanelSpot.id);
+  btn.classList.toggle('voted');
+  document.getElementById('sp-votes').textContent=newCount;
+  activePanelSpot.upvotes=newCount;
+  const type=document.getElementById('sp-type').textContent.includes('Viewpoint')?'viewpoint':'explore';
+  loadMapSpots(type);
+}
+async function panelFlag(){
+  if(!currentUser){openAuth();return;}
+  if(!activePanelSpot)return;
+  await db.from('spots').update({flags:(activePanelSpot.flags||0)+1}).eq('id',activePanelSpot.id);
+  document.getElementById('sp-flag').textContent='⚑ Flagged';
+  document.getElementById('sp-flag').classList.add('flagged');
+}
+
+/* ===== EXIF GPS ===== */
+function extractGPS(file){
+  return new Promise(resolve=>{
+    const reader=new FileReader();
+    reader.onload=e=>{
+      try{
+        const view=new DataView(e.target.result);
+        if(view.getUint16(0,false)!==0xFFD8){resolve(null);return;}
+        let offset=2;
+        while(offset<view.byteLength){
+          const marker=view.getUint16(offset,false);offset+=2;
+          if(marker===0xFFE1){
+            const len=view.getUint16(offset,false);
+            const exifStr=String.fromCharCode(...new Uint8Array(e.target.result,offset+2,4));
+            if(exifStr==='Exif'){
+              const tiff=offset+8;
+              const little=view.getUint16(tiff,false)===0x4949;
+              const ifd=view.getUint32(tiff+4,little);
+              const entries=view.getUint16(tiff+ifd,little);
+              let gpsOff=null;
+              for(let i=0;i<entries;i++){if(view.getUint16(tiff+ifd+2+i*12,little)===0x8825){gpsOff=view.getUint32(tiff+ifd+2+i*12+8,little);break;}}
+              if(gpsOff!==null){
+                const ge=view.getUint16(tiff+gpsOff,little);
+                let latRef='',lat=null,lngRef='',lng=null;
+                for(let i=0;i<ge;i++){
+                  const tag=view.getUint16(tiff+gpsOff+2+i*12,little);
+                  const vo=tiff+gpsOff+2+i*12+8;
+                  if(tag===1)latRef=String.fromCharCode(view.getUint8(tiff+view.getUint32(vo,little)));
+                  if(tag===2){const o=tiff+view.getUint32(vo,little);lat=view.getUint32(o,little)/view.getUint32(o+4,little)+view.getUint32(o+8,little)/view.getUint32(o+12,little)/60+view.getUint32(o+16,little)/view.getUint32(o+20,little)/3600;}
+                  if(tag===3)lngRef=String.fromCharCode(view.getUint8(tiff+view.getUint32(vo,little)));
+                  if(tag===4){const o=tiff+view.getUint32(vo,little);lng=view.getUint32(o,little)/view.getUint32(o+4,little)+view.getUint32(o+8,little)/view.getUint32(o+12,little)/60+view.getUint32(o+16,little)/view.getUint32(o+20,little)/3600;}
+                }
+                if(lat&&lng){resolve({lat:latRef==='S'?-lat:lat,lng:lngRef==='W'?-lng:lng});return;}
+              }
+            }
+            offset+=len;
+          } else if((marker&0xFF00)===0xFF00)offset+=view.getUint16(offset,false);
+          else{resolve(null);return;}
+        }
+      }catch(e){}
+      resolve(null);
+    };
+    reader.readAsArrayBuffer(file);
+  });
+}
+
+/* ===== COMPASS PHOTO HANDLER ===== */
+async function handleCompassPhoto(dir,input){
+  const file=input.files[0];if(!file)return;
+  compassFiles[dir]=file;
+  const slot=document.getElementById(`slot-${dir}`);
+  slot.querySelectorAll('img').forEach(i=>i.remove());
+  const img=document.createElement('img');
+  img.src=URL.createObjectURL(file);
+  img.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;';
+  slot.appendChild(img);slot.classList.add('has-photo');
+  // Try GPS from this photo
+  if(!exifLat){
+    const gps=await extractGPS(file);
+    if(gps){
+      exifLat=gps.lat;exifLng=gps.lng;
+      const st=document.getElementById('gps-status');
+      st.className='gps-status found';
+      document.getElementById('gps-status-text').textContent=`GPS found: ${gps.lat.toFixed(5)}, ${gps.lng.toFixed(5)}`;
+      st.style.display='flex';
+      document.getElementById('pin-map-wrap-v').style.display='none';
+    } else if(Object.values(compassFiles).every(f=>f!==null)){
+      showPinMapV();
+    }
+  }
+}
+function showPinMapV(){
+  document.getElementById('pin-map-wrap-v').style.display='block';
+  const st=document.getElementById('gps-status');
+  st.className='gps-status manual';
+  document.getElementById('gps-status-text').textContent='No GPS in photos — drop a pin on the map';
+  st.style.display='flex';
+  if(!pinMapV){
+    setTimeout(()=>{
+      if(typeof mapboxgl==='undefined')return;
+    pinMapV=new mapboxgl.Map({container:'pin-map-v',style:'mapbox://styles/mapbox/outdoors-v12',center:[-119.5,36.5],zoom:5});
+      pinMapV.on('click',e=>{
+        activePinLat=e.lngLat.lat;activePinLng=e.lngLat.lng;
+        if(pinMarkerV)pinMarkerV.remove();
+        pinMarkerV=new mapboxgl.Marker({color:'#d9963f'}).setLngLat([activePinLng,activePinLat]).addTo(pinMapV);
+        document.getElementById('gps-status-text').textContent=`Pin: ${activePinLat.toFixed(5)}, ${activePinLng.toFixed(5)}`;
+      });
+    },100);
+  }
+}
+
+/* ===== MULTI PHOTO HANDLER ===== */
+function handleMultiPhoto(input){
+  const files=Array.from(input.files);
+  multiFiles=[...multiFiles,...files];
+  renderMultiThumbs();
+  // Try GPS from first photo
+  if(!activePinLat&&files[0]){
+    extractGPS(files[0]).then(gps=>{
+      if(gps){
+        activePinLat=gps.lat;activePinLng=gps.lng;
+        const st=document.getElementById('gps-status');
+        st.className='gps-status found';
+        document.getElementById('gps-status-text').textContent=`GPS found: ${gps.lat.toFixed(5)}, ${gps.lng.toFixed(5)}`;
+        st.style.display='flex';
+      }
+    });
+  }
+  // Always show pin map for explore (location might be different from where photo was taken)
+  showPinMapE();
+}
+function renderMultiThumbs(){
+  const wrap=document.getElementById('multi-thumbs');
+  wrap.innerHTML=multiFiles.map((f,i)=>`<div class="multi-thumb"><img src="${URL.createObjectURL(f)}"><button class="multi-thumb-rm" onclick="removeMultiPhoto(${i})">✕</button></div>`).join('');
+}
+function removeMultiPhoto(i){multiFiles.splice(i,1);renderMultiThumbs();}
+function showPinMapE(){
+  document.getElementById('pin-map-wrap-e').style.display='block';
+  if(!pinMapE){
+    setTimeout(()=>{
+      if(typeof mapboxgl==='undefined')return;
+      pinMapE=new mapboxgl.Map({container:'pin-map-e',style:'mapbox://styles/mapbox/outdoors-v12',center:[-119.5,36.5],zoom:5});
+      pinMapE.on('click',e=>{
+        activePinLat=e.lngLat.lat;activePinLng=e.lngLat.lng;
+        if(pinMarkerE)pinMarkerE.remove();
+        pinMarkerE=new mapboxgl.Marker({color:'#2c6f79'}).setLngLat([activePinLng,activePinLat]).addTo(pinMapE);
+        const st=document.getElementById('gps-status');
+        st.className='gps-status manual';
+        document.getElementById('gps-status-text').textContent=`Pin: ${activePinLat.toFixed(5)}, ${activePinLng.toFixed(5)}`;
+        st.style.display='flex';
+      });
+    },100);
+  }
+}
+
+/* ===== UNIFIED FORM ===== */
+function openForm(type){
+  if(!currentUser){openAuth();return;}
+  activeFormType=type;
+  resetForm();
+  const titles={viewpoint:'Add a viewpoint',explore:'Share a place',boondock:'Submit a boondocking spot'};
+  const subs={
+    viewpoint:'A parking spot with a great view — day use, not overnight. Landscape mode, widest angle. Shoot N · E · S · W.',
+    explore:'A restaurant, activity, viewpoint, or anything worth sharing near a campsite. Add as many photos as you like.',
+    boondock:'A dispersed overnight camping location. Four directional photos + key details for responsible campers.'
+  };
+  document.getElementById('form-title').textContent=titles[type];
+  document.getElementById('form-sub').textContent=subs[type];
+  document.getElementById('desc-label').textContent=type==='explore'?'Describe this place *':'One sentence *';
+  document.getElementById('f-desc').placeholder=type==='explore'?'e.g. Best fish tacos near Malibu — cash only, worth the wait':type==='viewpoint'?'e.g. End-of-bluff pull-off with unobstructed ocean view in every direction':'e.g. Oak woodland clearing on the Santa Ynez River, year-round water';
+  document.getElementById('compass-section').style.display=(type==='viewpoint'||type==='boondock')?'block':'none';
+  document.getElementById('free-photo-section').style.display=type==='explore'?'block':'none';
+  document.getElementById('cat-field').style.display=type==='explore'?'block':'none';
+  document.querySelectorAll('#f-cat .toggle-opt').forEach(o=>o.classList.remove('selected'));
+  document.getElementById('free-photo-section').style.display=type==='explore'?'block':'none';
+  document.getElementById('boondock-extras').style.display=type==='boondock'?'block':'none';
+  document.getElementById('pin-map-wrap-v').style.display='none';
+  document.getElementById('pin-map-wrap-e').style.display=type==='explore'?'block':'none';
+  if(type==='explore'&&!pinMapE){
+    setTimeout(()=>{
+      if(typeof mapboxgl==='undefined')return;
+      pinMapE=new mapboxgl.Map({container:'pin-map-e',style:'mapbox://styles/mapbox/outdoors-v12',center:[-119.5,36.5],zoom:5});
+      pinMapE.on('click',e=>{
+        activePinLat=e.lngLat.lat;activePinLng=e.lngLat.lng;
+        if(pinMarkerE)pinMarkerE.remove();
+        pinMarkerE=new mapboxgl.Marker({color:'#2c6f79'}).setLngLat([activePinLng,activePinLat]).addTo(pinMapE);
+        const st=document.getElementById('gps-status');
+        st.className='gps-status manual';
+        document.getElementById('gps-status-text').textContent=`Pin: ${activePinLat.toFixed(5)}, ${activePinLng.toFixed(5)}`;
+        st.style.display='flex';
+      });
+    },150);
+  }
+  document.getElementById('form-overlay').classList.add('open');
+}
+function closeForm(){document.getElementById('form-overlay').classList.remove('open');resetForm();}
+function resetForm(){
+  compassFiles={n:null,e:null,s:null,w:null};
+  multiFiles=[];
+  exifLat=null;exifLng=null;activePinLat=null;activePinLng=null;
+  ['n','e','s','w'].forEach(d=>{
+    const slot=document.getElementById(`slot-${d}`);if(!slot)return;
+    slot.classList.remove('has-photo');
+    slot.querySelectorAll('img').forEach(i=>i.remove());
+    document.getElementById(`file-${d}`).value='';
+  });
+  document.getElementById('f-desc').value='';
+  document.getElementById('multi-thumbs').innerHTML='';
+  document.getElementById('f-multi-photo').value='';
+  document.getElementById('gps-status').style.display='none';
+  document.getElementById('form-msg').style.display='none';
+  const ga=document.getElementById('gps-acknowledge');if(ga)ga.checked=false;
+  const gf=document.getElementById('gps-fields');if(gf)gf.classList.remove('show');
+  document.querySelectorAll('#f-tags .toggle-opt').forEach(o=>o.classList.remove('selected'));
+  if(pinMarkerV){pinMarkerV.remove();pinMarkerV=null;}
+  if(pinMarkerE){pinMarkerE.remove();pinMarkerE=null;}
+}
+function toggleTag(label){label.classList.toggle('selected');label.querySelector('input').checked=label.classList.contains('selected');}
+function toggleGpsFields(cb){document.getElementById('gps-fields').classList.toggle('show',cb.checked);}
+
+async function uploadFile(file,folder){
+  const ext=file.name.split('.').pop();
+  const path=`${folder}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+  const {error}=await db.storage.from('trip-photos').upload(path,file,{upsert:false});
+  if(error)return null;
+  const {data}=db.storage.from('trip-photos').getPublicUrl(path);
+  return data.publicUrl;
+}
+
+async function submitForm(){
+  const desc=document.getElementById('f-desc').value.trim();
+  if(!desc){showMsg('form-msg','Please add a description.','error');return;}
+  const btn=document.getElementById('f-submit');
+  btn.disabled=true;btn.textContent='Uploading…';
+
+  try{
+    const type=activeFormType;
+    const finalLat=exifLat||activePinLat;
+    const finalLng=exifLng||activePinLng;
+
+    const selectedCat=document.querySelector('#f-cat .toggle-opt.selected input');
+    const insertData={
+      description:desc,name:desc.slice(0,80),type,
+      lat:finalLat||null,lng:finalLng||null,
+      category:type==='explore'?(selectedCat?.value||null):null,
+      user_id:currentUser.id,status:'pending',upvotes:0,flags:0,tags:[]
+    };
+
+    if(type==='viewpoint'||type==='boondock'){
+      for(const dir of['n','e','s','w']){
+        if(compassFiles[dir]){
+          const url=await uploadFile(compassFiles[dir],type);
+          if(url)insertData[`photo_${dir}`]=url;
+          if(dir==='n'&&url)insertData.photo_url=url;
+        }
+      }
+      if(!insertData.photo_url){
+        const firstUrl=insertData.photo_n||insertData.photo_e||insertData.photo_s||insertData.photo_w;
+        if(firstUrl)insertData.photo_url=firstUrl;
+      }
+    }
+
+    if(type==='explore'&&multiFiles.length>0){
+      const urls=[];
+      for(const f of multiFiles){
+        const url=await uploadFile(f,'explore');
+        if(url)urls.push(url);
+      }
+      if(urls.length>0){insertData.photo_url=urls[0];insertData.photos=urls.slice(1);}
+    }
+
+    if(type==='boondock'){
+      insertData.vehicle=document.getElementById('f-vehicle').value;
+      insertData.season=document.getElementById('f-season').value;
+      insertData.tags=[...document.querySelectorAll('#f-tags .toggle-opt.selected')].map(o=>o.querySelector('input').value);
+      if(document.getElementById('gps-acknowledge').checked){
+        insertData.lat=parseFloat(document.getElementById('f-lat').value)||finalLat||null;
+        insertData.lng=parseFloat(document.getElementById('f-lng').value)||finalLng||null;
+      } else {
+        insertData.lat=null;insertData.lng=null;
+      }
+    }
+
+    const {error}=await db.from('spots').insert(insertData);
+    if(error){showMsg('form-msg',error.message,'error');btn.disabled=false;btn.textContent='Submit for review';return;}
+    showMsg('form-msg','Submitted! It will appear once approved.','success');
+    setTimeout(()=>closeForm(),2000);
+  }catch(err){
+    showMsg('form-msg','Something went wrong. Please try again.','error');
+    console.error(err);
+  }
+  btn.disabled=false;btn.textContent='Submit for review';
+}
+
+/* ===== PROFILE ===== */
+let myProfile=null;
+let promptAvatarFile=null;
+let editAvatarFile=null;
+
+async function loadMyProfile(){
+  if(!currentUser)return;
+  const {data}=await db.from('profiles').select('*').eq('user_id',currentUser.id).single();
+  myProfile=data||null;
+  const btn=document.getElementById('btn-profile');
+  if(btn&&myProfile?.display_name){
+    btn.textContent=myProfile.display_name.split(' ')[0];
+  }
+}
+
+async function loadPlatformStats(){
+  const [{count:vp},{count:ex}]=await Promise.all([
+    db.from('spots').select('*',{count:'exact',head:true}).eq('status','approved').eq('type','viewpoint'),
+    db.from('spots').select('*',{count:'exact',head:true}).eq('status','approved').eq('type','explore')
+  ]);
+  const vs=document.getElementById('pstat-viewpoints');
+  const es=document.getElementById('pstat-explore');
+  if(vs)vs.textContent=vp||0;
+  if(es)es.textContent=ex||0;
+}
+
+async function renderHero(){
+  const loEl=document.getElementById('hero-logged-out');
+  const liEl=document.getElementById('hero-logged-in');
+  if(!currentUser){
+    if(loEl){loEl.style.display='block';loEl.style.opacity='1';}
+    if(liEl)liEl.style.display='none';
+    return;
+  }
+  if(loEl)loEl.style.display='none';
+  if(liEl){liEl.style.display='block';liEl.style.opacity='1';}
+
+  // Avatar
+  const avatarEl=document.getElementById('hero-avatar');
+  if(myProfile?.avatar_url){
+    avatarEl.innerHTML=`<img src="${myProfile.avatar_url}" alt="">`;
+  } else {
+    avatarEl.innerHTML=`<div class="hero-avatar-empty">🏕</div>`;
+  }
+
+  // Heading & sub
+  const heading=myProfile?.heading||myProfile?.display_name||'My Adventure';
+  const sub=myProfile?.bio||'';
+  document.getElementById('hero-heading').textContent=heading;
+  document.getElementById('hero-sub').textContent=sub;
+
+  // Instagram
+  const igWrap=document.getElementById('hero-instagram');
+  const ig=myProfile?.instagram?.replace('@','');
+  if(ig){
+    document.getElementById('hero-ig-handle').textContent=ig;
+    document.getElementById('hero-ig-link').href=`https://instagram.com/${ig}`;
+    igWrap.style.display='block';
+  } else {
+    igWrap.style.display='none';
+  }
+
+  // Eyebrow
+  const eyebrow=document.getElementById('hero-eyebrow');
+  if(eyebrow)eyebrow.textContent=`${myProfile?.display_name||'My'} camping journal`;
+
+  // Stats — trips from hardcoded data, spots from db
+  const tripCount=TRIPS.length;
+  const nightCount=TRIPS.reduce((s,t)=>s+t.nights.length,0);
+  document.getElementById('hs-trips').textContent=tripCount;
+  document.getElementById('hs-nights').textContent=nightCount;
+
+  // Community spots + likes
+  const {data:mySpots}=await db.from('spots').select('upvotes').eq('user_id',currentUser.id).eq('status','approved');
+  const spotsCount=(mySpots||[]).length;
+  const likesCount=(mySpots||[]).reduce((s,x)=>s+(x.upvotes||0),0);
+  document.getElementById('hs-spots').textContent=spotsCount;
+  document.getElementById('hs-likes').textContent=likesCount;
+
+  // Next up
+  renderNextUp();
+}
+
+function openMyProfile(){
+  if(!currentUser){openAuth();return;}
+  const overlay=document.getElementById('profile-overlay');
+  // Prefill from existing profile
+  if(myProfile){
+    document.getElementById('p-name').value=myProfile.display_name||'';
+    document.getElementById('p-heading').value=myProfile.heading||'';
+    document.getElementById('p-bio').value=myProfile.bio||'';
+    document.getElementById('p-region').value=myProfile.zip||'';
+    document.getElementById('p-instagram').value=myProfile.instagram||'';
+    document.getElementById('p-website').value=myProfile.website||'';
+    if(myProfile.avatar_url){
+      document.getElementById('avatar-preview').src=myProfile.avatar_url;
+      document.getElementById('avatar-preview').style.display='block';
+      document.getElementById('avatar-empty').style.display='none';
+    }
+  }
+  overlay.classList.add('open');
+}
+function closeProfile(){
+  document.getElementById('profile-overlay').classList.remove('open');
+  document.getElementById('profile-msg').style.display='none';
+  editAvatarFile=null;
+}
+
+function handleAvatarSelect(input){
+  const file=input.files[0];if(!file)return;
+  editAvatarFile=file;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const img=document.getElementById('avatar-preview');
+    img.src=e.target.result;img.style.display='block';
+    document.getElementById('avatar-empty').style.display='none';
+  };
+  reader.readAsDataURL(file);
+}
+
+async function saveProfile(){
+  const name=document.getElementById('p-name').value.trim();
+  if(!name){showMsg('profile-msg','Please enter a display name.','error');return;}
+  const btn=document.querySelector('#profile-overlay .btn-primary');
+  btn.disabled=true;btn.textContent='Saving…';
+  let avatar_url=myProfile?.avatar_url||null;
+  if(editAvatarFile){
+    const ext=editAvatarFile.name.split('.').pop();
+    const path=`avatars/${currentUser.id}.${ext}`;
+    const {error}=await db.storage.from('trip-photos').upload(path,editAvatarFile,{upsert:true});
+    if(!error){const {data}=db.storage.from('trip-photos').getPublicUrl(path);avatar_url=data.publicUrl;}
+  }
+  const profileData={
+    user_id:currentUser.id,
+    display_name:name,
+    heading:document.getElementById('p-heading').value.trim(),
+    bio:document.getElementById('p-bio').value.trim(),
+    heading:document.getElementById('p-heading').value.trim(),
+    zip:document.getElementById('p-region').value,
+    instagram:document.getElementById('p-instagram').value.trim().replace('@',''),
+    website:document.getElementById('p-website').value.trim(),
+    avatar_url,
+    updated_at:new Date().toISOString()
+  };
+  const {error}=await db.from('profiles').upsert(profileData,{onConflict:'user_id'});
+  btn.disabled=false;btn.textContent='Save profile';
+  if(error){showMsg('profile-msg',error.message,'error');return;}
+  myProfile=profileData;
+  const btn2=document.getElementById('btn-profile');
+  if(btn2)btn2.textContent=name.split(' ')[0];
+  renderHero();
+  showMsg('profile-msg','Profile saved!','success');
+  setTimeout(()=>closeProfile(),1400);
+}
+
+/* PROFILE PROMPT (post-signup) */
+function handlePromptAvatarSelect(input){
+  const file=input.files[0];if(!file)return;
+  promptAvatarFile=file;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const img=document.getElementById('prompt-avatar-preview');
+    img.src=e.target.result;img.style.display='block';
+    document.querySelector('#profile-prompt-overlay .avatar-circle-empty').style.display='none';
+  };
+  reader.readAsDataURL(file);
+}
+async function savePromptProfile(){
+  const name=document.getElementById('prompt-name').value.trim();
+  if(!name){showMsg('prompt-msg','Please enter a display name.','error');return;}
+  const btn=document.querySelector('#profile-prompt-overlay .btn-primary');
+  btn.disabled=true;btn.textContent='Saving…';
+  let avatar_url=null;
+  if(promptAvatarFile){
+    const ext=promptAvatarFile.name.split('.').pop();
+    const path=`avatars/${currentUser.id}.${ext}`;
+    const {error}=await db.storage.from('trip-photos').upload(path,promptAvatarFile,{upsert:true});
+    if(!error){const {data}=db.storage.from('trip-photos').getPublicUrl(path);avatar_url=data.publicUrl;}
+  }
+  const {error}=await db.from('profiles').upsert({
+    user_id:currentUser.id,
+    display_name:name,
+    bio:document.getElementById('prompt-bio').value.trim(),
+    avatar_url,
+    updated_at:new Date().toISOString()
+  },{onConflict:'user_id'});
+  btn.disabled=false;
+  if(error){showMsg('prompt-msg',error.message,'error');return;}
+  myProfile={display_name:name,avatar_url};
+  const btn2=document.getElementById('btn-profile');
+  if(btn2)btn2.textContent=name.split(' ')[0];
+  skipProfilePrompt();
+}
+function skipProfilePrompt(){document.getElementById('profile-prompt-overlay').classList.remove('open');promptAvatarFile=null;}
+
+/* PUBLIC PROFILE */
+async function openPubProfile(userId){
+  if(!userId)return;
+  document.getElementById('pub-profile-overlay').classList.add('open');
+  const {data:prof}=await db.from('profiles').select('*').eq('user_id',userId).single();
+  const {data:spots}=await db.from('spots').select('*').eq('user_id',userId).eq('status','approved').order('created_at',{ascending:false});
+  if(prof){
+    document.getElementById('pub-name').textContent=prof.display_name||'Anonymous';
+    document.getElementById('pub-bio').textContent=prof.bio||'';
+    const regionEl=document.getElementById('pub-region-n');
+    regionEl.textContent=prof.zip||'—';
+    regionEl.style.fontSize='16px';
+    if(prof.avatar_url){
+      document.getElementById('pub-avatar-img').src=prof.avatar_url;
+      document.getElementById('pub-avatar-img').style.display='block';
+      document.getElementById('pub-avatar-empty').style.display='none';
+    }
+    const links=[];
+    if(prof.instagram)links.push(`<a class="pub-link" href="https://instagram.com/${prof.instagram}" target="_blank">@${prof.instagram}</a>`);
+    if(prof.website)links.push(`<a class="pub-link" href="${prof.website}" target="_blank">${prof.website.replace('https://','')}</a>`);
+    document.getElementById('pub-links').innerHTML=links.join('');
+  }
+  const totalLikes=(spots||[]).reduce((s,x)=>s+(x.upvotes||0),0);
+  document.getElementById('pub-spots-n').textContent=(spots||[]).length;
+  document.getElementById('pub-likes-n').textContent=totalLikes;
+  const list=document.getElementById('pub-spot-list');
+  if(!spots?.length){list.innerHTML='<div class="empty" style="padding:20px 0">No spots shared yet.</div>';return;}
+  list.innerHTML=spots.map(s=>`<div class="pub-spot-row" onclick="closePubProfile();openSpotPanel(${JSON.stringify(s).replace(/"/g,'&quot;')},'${s.type}')">
+    ${s.photo_url?`<img class="pub-spot-thumb" src="${s.photo_url}" loading="lazy">`:`<div class="pub-spot-thumb-empty">${s.type==='viewpoint'?'📍':s.type==='explore'?'🗺':'🏕'}</div>`}
+    <div><div class="pub-spot-name">${s.name||s.description?.slice(0,50)||'Untitled'}</div><div class="pub-spot-type">${s.type} · ${s.upvotes||0} likes</div></div>
+  </div>`).join('');
+}
+function closePubProfile(){
+  document.getElementById('pub-profile-overlay').classList.remove('open');
+  document.getElementById('pub-avatar-img').style.display='none';
+  document.getElementById('pub-avatar-empty').style.display='flex';
+}
+
+/* ===== BOOKINGS DB ===== */
+function openAddBooking(){
+  if(!currentUser){openAuth();return;}
+  document.getElementById('booking-overlay').classList.add('open');
+}
+function closeAddBooking(){
+  document.getElementById('booking-overlay').classList.remove('open');
+  document.getElementById('booking-msg').style.display='none';
+  ['b-name','b-start','b-end','b-site','b-rate','b-detail','b-conf'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.value='';
+  });
+  document.getElementById('b-region').value='';
+}
+
+async function saveBooking(){
+  const name=document.getElementById('b-name').value.trim();
+  const start=document.getElementById('b-start').value;
+  const end=document.getElementById('b-end').value;
+  if(!name||!start){showMsg('booking-msg','Please enter campground name and check-in date.','error');return;}
+  const btn=document.querySelector('#booking-overlay .btn-primary');
+  btn.disabled=true;btn.textContent='Saving…';
+  const nights=end&&start?Math.max(1,Math.round((new Date(end)-new Date(start))/86400000)):1;
+  const slug=`${name.toLowerCase().replace(/[^a-z0-9]+/g,'-')}-${start}`;
+  const {error}=await db.from('trips').insert({
+    user_id:currentUser.id,
+    campground_name:name,
+    region:document.getElementById('b-region').value||null,
+    start_date:start,
+    end_date:end||start,
+    nights,
+    site:document.getElementById('b-site').value.trim()||null,
+    site_detail:document.getElementById('b-detail').value.trim()||null,
+    rate:parseFloat(document.getElementById('b-rate').value)||null,
+    conf_number:document.getElementById('b-conf').value.trim()||null,
+    is_public:true,
+    share_slug:slug
+  });
+  btn.disabled=false;btn.textContent='Save booking';
+  if(error){showMsg('booking-msg',error.message,'error');return;}
+  showMsg('booking-msg','Booking saved!','success');
+  setTimeout(()=>{closeAddBooking();loadDbTrips();},1400);
+}
+
+async function loadDbTrips(){
+  if(!currentUser)return;
+  const {data}=await db.from('trips').select('*').eq('user_id',currentUser.id).order('start_date',{ascending:true});
+  const container=document.getElementById('db-trips-timeline');
+  if(!container)return;
+  if(!data?.length){container.innerHTML='';return;}
+  container.innerHTML=data.map(t=>{
+    const fmt=d=>new Date(d+'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    const range=t.start_date===t.end_date?fmt(t.start_date):fmt(t.start_date)+'–'+fmt(t.end_date);
+    return `<div class="trip"><div class="tripcard"><div class="triphead" onclick="this.parentElement.classList.toggle('open')">
+      <span class="tripdate">${range}</span>
+      <span class="tripname">${t.campground_name}</span>
+      <span class="tripmeta"><span>${t.region||''}</span><span class="chev">▶</span></span>
+    </div>
+    <div class="nights">
+      <div class="night"><div class="nd">${fmt(t.start_date)}</div><div class="ns"><b>${t.site||'—'}</b> <span>${t.site_detail?'· '+t.site_detail:''}</span></div><div class="nr">${t.rate?'<b>$'+parseFloat(t.rate).toFixed(2)+'</b>':''}<span>${t.conf_number?'#'+t.conf_number:''}</span></div></div>
+      ${t.nights>1?`<div class="night"><div class="nd"></div><div class="ns"><span>${t.nights} nights</span></div><div class="nr"><b>$${(t.rate*t.nights).toFixed(2)}</b>total</div></div>`:''}
+    </div></div></div>`;
+  }).join('');
+  // Show booking action buttons when user is logged in
+  const ba=document.getElementById('booking-actions');
+  if(ba)ba.style.display='flex';
+}
+
+/* ===== SHARE TRIPS ===== */
+async function shareMyTrips(){
+  if(!currentUser)return;
+  const page=document.getElementById('share-page');
+  page.classList.add('open');
+  // Profile strip
+  const strip=document.getElementById('share-profile-strip');
+  const avatarHtml=myProfile?.avatar_url?`<img src="${myProfile.avatar_url}" style="width:100%;height:100%;object-fit:cover;">`:'<div style="font-size:22px;display:flex;align-items:center;justify-content:center;height:100%">🏕</div>';
+  strip.innerHTML=`<div class="share-profile-avatar">${avatarHtml}</div><div><div class="share-profile-name">${myProfile?.display_name||'Camper'}</div><div class="share-profile-bio">${myProfile?.bio||''}</div>${myProfile?.instagram?`<div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--pacific-deep);margin-top:4px;">@${myProfile.instagram}</div>`:''}</div>`;
+  // Stats
+  const nightsTotal=TRIPS.reduce((s,t)=>s+t.nights.length,0);
+  const statsEl=document.getElementById('share-stats-row');
+  statsEl.innerHTML=`<div class="share-stat"><div class="share-stat-n">${TRIPS.length}</div><div class="share-stat-l">Trips</div></div><div class="share-stat"><div class="share-stat-n">${nightsTotal}</div><div class="share-stat-l">Nights out</div></div><div class="share-stat"><div class="share-stat-n">40</div><div class="share-stat-l">Campgrounds</div></div>`;
+  // Trip cards
+  const list=document.getElementById('share-trips-list');
+  list.innerHTML=TRIPS.map(t=>{
+    const fmt=d=>new Date(d+'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    const range=t.start===t.end?fmt(t.start):fmt(t.start)+' – '+fmt(t.end);
+    const total=t.nights.reduce((s,x)=>s+parseFloat(x.rate.replace('$','')),0);
+    const nightRows=t.nights.map(n=>`<div class="share-night-row"><div class="share-night-date">${n.d}</div><div class="share-night-site"><b>${n.site}</b> <span>· ${n.det}</span></div><div class="share-night-rate">$${n.rate}<br><span style="font-size:10px;color:var(--muted)">#${n.conf}</span></div></div>`).join('');
+    return `<div class="share-trip-card"><div class="share-trip-head"><div><div class="share-trip-name">${t.name}</div><div class="share-trip-date">${range} · ${t.region}</div></div><div class="share-trip-nights"><div class="share-trip-n">${t.nights.length}</div><div class="share-trip-l">night${t.nights.length>1?'s':''}</div></div></div>${nightRows}<div style="padding:10px 20px;border-top:1px solid var(--line);font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);text-align:right;">Total: $${total.toFixed(2)}</div></div>`;
+  }).join('');
+}
+function closeSharePage(){document.getElementById('share-page').classList.remove('open');}
+function copyShareLink(){
+  const url=`${window.location.origin}?user=${currentUser?.id}`;
+  navigator.clipboard.writeText(url).then(()=>{
+    const btn=document.querySelector('.share-copy-btn');
+    const orig=btn.textContent;btn.textContent='✓ Copied!';
+    setTimeout(()=>btn.textContent=orig,2000);
+  });
+}
+
+/* ===== SITE REVIEWS ===== */
+let siteFormCampground='';
+let sitePhotoFiles=[];
+
+function openSiteForm(campground){
+  if(!currentUser){openAuth();return;}
+  siteFormCampground=campground;
+  sitePhotoFiles=[];
+  document.getElementById('sf-thumbs').innerHTML='';
+  document.getElementById('sf-photos').value='';
+  document.getElementById('sf-site').value='';
+  document.getElementById('sf-desc').value='';
+  document.getElementById('site-form-msg').style.display='none';
+  document.querySelectorAll('#sf-tags .toggle-opt').forEach(o=>o.classList.remove('selected'));
+  // Pre-select the campground
+  const sel=document.getElementById('sf-campground');
+  const opt=[...sel.options].find(o=>o.value===campground||o.text===campground);
+  if(opt)sel.value=opt.value;
+  document.getElementById('site-form-overlay').classList.add('open');
+}
+function closeSiteForm(){
+  document.getElementById('site-form-overlay').classList.remove('open');
+  sitePhotoFiles=[];
+}
+
+function handleSitePhotos(input){
+  const files=Array.from(input.files);
+  sitePhotoFiles=[...sitePhotoFiles,...files];
+  const wrap=document.getElementById('sf-thumbs');
+  wrap.innerHTML=sitePhotoFiles.map((f,i)=>`<div class="multi-thumb"><img src="${URL.createObjectURL(f)}"><button class="multi-thumb-rm" onclick="removeSitePhoto(${i})">✕</button></div>`).join('');
+}
+function removeSitePhoto(i){sitePhotoFiles.splice(i,1);handleSitePhotos({files:[]});}
+
+async function submitSiteReview(){
+  const campground=document.getElementById('sf-campground').value;
+  const site=document.getElementById('sf-site').value.trim();
+  if(!campground||!site){showMsg('site-form-msg','Please select a campground and enter a site number.','error');return;}
+  const btn=document.querySelector('#site-form-overlay .btn-primary');
+  btn.disabled=true;btn.textContent='Uploading…';
+  // Upload photos
+  const photoUrls=[];
+  for(const f of sitePhotoFiles){
+    const ext=f.name.split('.').pop();
+    const path=`sites/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+    const {error}=await db.storage.from('trip-photos').upload(path,f,{upsert:false});
+    if(!error){const {data}=db.storage.from('trip-photos').getPublicUrl(path);photoUrls.push(data.publicUrl);}
+  }
+  const tags=[...document.querySelectorAll('#sf-tags .toggle-opt.selected')].map(o=>o.querySelector('input').value);
+  const {error}=await db.from('site_reviews').insert({
+    user_id:currentUser.id,
+    campground_name:campground,
+    site_number:site,
+    one_liner:document.getElementById('sf-desc').value.trim()||null,
+    photo_url:photoUrls[0]||null,
+    photos:photoUrls.slice(1),
+    tags,
+    upvotes:0,
+    status:'pending'
+  });
+  btn.disabled=false;btn.textContent='Submit for review';
+  if(error){showMsg('site-form-msg',error.message,'error');return;}
+  showMsg('site-form-msg','Submitted! It will appear once approved.','success');
+  setTimeout(()=>closeSiteForm(),1800);
+}
+
+async function toggleSiteReviews(cardId,campgroundName,btn){
+  const section=document.getElementById(`sites-${cardId}`);
+  const isOpen=section.classList.contains('open');
+  if(isOpen){
+    section.classList.remove('open');
+    btn.textContent='▶ Favorite sites';
+    return;
+  }
+  section.classList.add('open');
+  btn.textContent='▼ Favorite sites';
+  // Load from DB
+  const {data}=await db.from('site_reviews').select('*').eq('campground_name',campgroundName).eq('status','approved').order('upvotes',{ascending:false});
+  if(!data?.length){
+    section.innerHTML=`<div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);padding:12px 0;">No favorite sites yet — be the first to share one.</div>`;
+    return;
+  }
+  section.innerHTML=`<div class="sites-header"><h4>${data.length} favorite site${data.length>1?'s':''}</h4></div>`+data.map(s=>siteReviewCard(s)).join('');
+  // Init carousels
+  data.forEach(s=>{
+    const photos=[s.photo_url,...(s.photos||[])].filter(Boolean);
+    if(photos.length>1)initSiteCarousel(s.id,photos);
+  });
+}
+
+function siteReviewCard(s){
+  const photos=[s.photo_url,...(s.photos||[])].filter(Boolean);
+  const tags=(s.tags||[]).map(t=>{
+    const labels={ocean:'🌊 Ocean view',shade:'🌳 Shaded',private:'🔒 Private',dog:'🐕 Dog friendly',electric:'⚡ Electric',waterfront:'💧 Waterfront',pullthrough:'🚗 Pull-through'};
+    return `<span class="t" style="background:var(--fog-2);color:var(--ink)">${labels[t]||t}</span>`;
+  }).join('');
+  const photoHtml=photos.length===0?'':`
+    <div class="site-review-carousel">
+      <div class="site-review-carousel-track" id="src-track-${s.id}">${photos.map(p=>`<img src="${p}" loading="lazy">`).join('')}</div>
+      ${photos.length>1?`<div class="site-review-nav"><button onclick="siteCarouselPrev('${s.id}')" id="src-prev-${s.id}">‹</button><span id="src-cnt-${s.id}">1/${photos.length}</span><button onclick="siteCarouselNext('${s.id}')" id="src-next-${s.id}">›</button></div>`:''}
+    </div>`;
+  return `<div class="site-review" id="sr-${s.id}">
+    ${photoHtml}
+    <div class="site-review-body">
+      <div class="site-review-name">${s.site_number}</div>
+      ${s.one_liner?`<div class="site-review-desc">${s.one_liner}</div>`:''}
+      ${tags?`<div class="spot-tags" style="margin-bottom:8px">${tags}</div>`:''}
+      <div class="site-review-meta">
+        <button class="site-review-upvote" onclick="upvoteSiteReview('${s.id}',this)">▲ ${s.upvotes||0}</button>
+        ${s.user_id?`<span style="cursor:pointer;color:var(--pacific-deep)" onclick="openPubProfile('${s.user_id}')">By contributor</span>`:''}
+      </div>
+    </div>
+  </div>`;
+}
+
+const siteCarouselPos={};
+function initSiteCarousel(id,photos){siteCarouselPos[id]=0;}
+function siteCarouselPrev(id){
+  siteCarouselPos[id]=Math.max(0,(siteCarouselPos[id]||0)-1);
+  updateSiteCarousel(id);
+}
+function siteCarouselNext(id){
+  const track=document.getElementById(`src-track-${id}`);
+  const total=track?.children.length||1;
+  siteCarouselPos[id]=Math.min(total-1,(siteCarouselPos[id]||0)+1);
+  updateSiteCarousel(id);
+}
+function updateSiteCarousel(id){
+  const cur=siteCarouselPos[id]||0;
+  const track=document.getElementById(`src-track-${id}`);
+  const cnt=document.getElementById(`src-cnt-${id}`);
+  const prev=document.getElementById(`src-prev-${id}`);
+  const next=document.getElementById(`src-next-${id}`);
+  if(track){track.style.transform=`translateX(-${cur*100}%)`;}
+  if(cnt){const t=track?.children.length||1;cnt.textContent=`${cur+1}/${t}`;}
+  if(prev)prev.disabled=cur===0;
+  if(next){const t=track?.children.length||1;next.disabled=cur===t-1;}
+}
+
+async function upvoteSiteReview(id,btn){
+  if(!currentUser){openAuth();return;}
+  const voted=btn.classList.contains('voted');
+  const cur=parseInt(btn.textContent.match(/\d+/)[0]);
+  await db.from('site_reviews').update({upvotes:voted?cur-1:cur+1}).eq('id',id);
+  btn.textContent=`▲ ${voted?cur-1:cur+1}`;
+  btn.classList.toggle('voted');
+}
+
+/* ===== TABS ===== */
+const PANELS={bookings:'panel',camps:'panel',boondock:'panel',viewpoints:'fullpanel',explore:'fullpanel'};
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.panel,.fullpanel').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('panel-'+t.dataset.tab).classList.add('active');
+    const tab=t.dataset.tab;
+    if(PANELS[tab]==='panel')window.scrollTo({top:document.querySelector('.tabwrap').offsetTop-1,behavior:'instant'});
+    updateGate(!currentUser);
+    if(tab==='boondock')loadBoondockSpots();
+    if(tab==='viewpoints')initMap('viewpoint');
+    if(tab==='explore')initMap('explore');
+  });
+});
+document.querySelectorAll('#filterpills .pill').forEach(p=>{
+  p.addEventListener('click',()=>{const f=p.dataset.filter;campState[f]=!campState[f];p.classList.toggle('on');renderCamps();});
+});
+document.getElementById('search').addEventListener('input',e=>{campState.q=e.target.value;renderCamps();});
+
+/* ===== INIT ===== */
+// Show logged-out hero immediately, auth state will update it
+document.getElementById('hero-logged-out').style.display='block';
+renderTrips();renderRegionPills();renderCamps();renderZones();
+loadPlatformStats();
+</script>
+
+<!-- MY PROFILE MODAL -->
+<div class="profile-overlay" id="profile-overlay" onclick="if(event.target===this)closeProfile()">
+  <div class="profile-box">
+    <div class="profile-header">
+      <h3 id="profile-modal-title">My profile</h3>
+      <p id="profile-modal-sub">How you appear to the community</p>
+      <button class="profile-close" onclick="closeProfile()">✕ close</button>
+    </div>
+    <div class="profile-body">
+      <div class="avatar-upload">
+        <div class="avatar-circle" id="avatar-circle">
+          <div class="avatar-circle-empty" id="avatar-empty">🏕</div>
+          <img id="avatar-preview" style="display:none">
+          <input type="file" id="avatar-file" accept="image/*" onchange="handleAvatarSelect(this)">
+        </div>
+        <div class="avatar-hint">
+          <strong>Profile photo</strong>
+          Tap to upload — square works best
+        </div>
+      </div>
+      <div class="field">
+        <label>Display name *</label>
+        <input type="text" id="p-name" placeholder="e.g. Ian OSullivan" maxlength="40">
+      </div>
+      <div class="field">
+        <label>Journey heading</label>
+        <input type="text" id="p-heading" placeholder="e.g. Ian & Oso take California" maxlength="60">
+        <div style="font-size:11px;color:var(--muted);margin-top:4px;">Your big bold headline — shown at the top of your personal page</div>
+      </div>
+      <div class="field">
+        <label>One-liner bio</label>
+        <input type="text" id="p-bio" placeholder="e.g. One man, one dog, one Lexus RX — chasing the California coast" maxlength="140">
+        <div style="font-size:11px;color:var(--muted);margin-top:4px;">Shown under your heading as your personal subheading</div>
+      </div>
+      <div class="field">
+        <label>Home ZIP code</label>
+        <input type="text" id="p-region" placeholder="e.g. 90210" maxlength="5" pattern="[0-9]{5}" inputmode="numeric">
+      </div>
+      <div class="field-row">
+        <div class="field" style="margin-bottom:0">
+          <label>Instagram</label>
+          <input type="text" id="p-instagram" placeholder="@username">
+        </div>
+        <div class="field" style="margin-bottom:0">
+          <label>Website</label>
+          <input type="url" id="p-website" placeholder="https://…">
+        </div>
+      </div>
+      <div class="form-actions" style="margin-top:22px">
+        <button class="btn-primary" onclick="saveProfile()">Save profile</button>
+        <button class="btn-cancel" onclick="closeProfile()">Cancel</button>
+      </div>
+      <div class="form-msg" id="profile-msg" style="display:none"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PUBLIC PROFILE VIEW -->
+<div class="profile-overlay" id="pub-profile-overlay" onclick="if(event.target===this)closePubProfile()">
+  <div class="pub-profile">
+    <div class="pub-profile-hero">
+      <button class="profile-close" onclick="closePubProfile()">✕ close</button>
+      <div class="pub-avatar"><div class="pub-avatar-empty" id="pub-avatar-empty">🏕</div><img id="pub-avatar-img" style="display:none"></div>
+      <div class="pub-name" id="pub-name">—</div>
+      <div class="pub-bio" id="pub-bio"></div>
+      <div class="pub-links" id="pub-links"></div>
+      <div class="pub-stats">
+        <div class="pub-stat"><div class="pub-stat-n" id="pub-spots-n">0</div><div class="pub-stat-l">Spots shared</div></div>
+        <div class="pub-stat-div"></div>
+        <div class="pub-stat"><div class="pub-stat-n" id="pub-likes-n">0</div><div class="pub-stat-l">Total likes</div></div>
+        <div class="pub-stat-div"></div>
+        <div class="pub-stat"><div class="pub-stat-n" id="pub-region-n">—</div><div class="pub-stat-l">Home ZIP</div></div>
+      </div>
+    </div>
+    <div class="pub-spots">
+      <h4>Spots shared</h4>
+      <div id="pub-spot-list"><div class="loading">Loading…</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- GATE OVERLAY — shown over gated panels -->
+<div class="gate-overlay" id="gate-overlay">
+  <div class="gate-icon">🏕</div>
+  <div class="gate-title">Join the community</div>
+  <div class="gate-sub">Create a free account to view community viewpoints, explore spots near campsites, and share your own finds.</div>
+  <button class="gate-btn" onclick="closeGate();openAuth()">Sign up free</button>
+</div>
+
+<!-- PROFILE COMPLETE PROMPT — shown after signup -->
+<div class="profile-overlay" id="profile-prompt-overlay">
+  <div class="profile-box">
+    <div class="profile-header">
+      <h3>You're in 🎉</h3>
+      <p>Tell the community a little about yourself — takes 30 seconds.</p>
+    </div>
+    <div class="profile-body">
+      <div class="avatar-upload">
+        <div class="avatar-circle" id="prompt-avatar-circle">
+          <div class="avatar-circle-empty">🏕</div>
+          <img id="prompt-avatar-preview" style="display:none">
+          <input type="file" id="prompt-avatar-file" accept="image/*" onchange="handlePromptAvatarSelect(this)">
+        </div>
+        <div class="avatar-hint"><strong>Profile photo</strong>Optional but encouraged</div>
+      </div>
+      <div class="field">
+        <label>Display name *</label>
+        <input type="text" id="prompt-name" placeholder="Your name" maxlength="40">
+      </div>
+      <div class="field">
+        <label>One-liner bio</label>
+        <input type="text" id="prompt-bio" placeholder="e.g. Dog dad, weekend camper, always looking for the next view" maxlength="120">
+      </div>
+      <div class="form-actions" style="margin-top:16px">
+        <button class="btn-primary" onclick="savePromptProfile()">Save & start exploring</button>
+        <button class="btn-cancel" onclick="skipProfilePrompt()">Skip for now</button>
+      </div>
+      <div class="form-msg" id="prompt-msg" style="display:none"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+
+<!-- ADD BOOKING FORM -->
+<div class="booking-form-overlay" id="booking-overlay" onclick="if(event.target===this)closeAddBooking()">
+  <div class="form-box">
+    <h3>Add a booking</h3>
+    <p class="form-sub">Log a campground reservation — ReserveCalifornia, recreation.gov, or any booking. It lives in your personal journal and can be shared.</p>
+    <div class="field">
+      <label>Campground name *</label>
+      <input type="text" id="b-name" placeholder="e.g. Pfeiffer Big Sur State Park">
+    </div>
+    <div class="field-row">
+      <div class="field" style="margin-bottom:0">
+        <label>Check-in date *</label>
+        <input type="date" id="b-start">
+      </div>
+      <div class="field" style="margin-bottom:0">
+        <label>Check-out date *</label>
+        <input type="date" id="b-end">
+      </div>
+    </div>
+    <br>
+    <div class="field-row">
+      <div class="field" style="margin-bottom:0">
+        <label>Site number</label>
+        <input type="text" id="b-site" placeholder="e.g. Site 029">
+      </div>
+      <div class="field" style="margin-bottom:0">
+        <label>Rate per night</label>
+        <input type="number" id="b-rate" placeholder="53.25" step="0.01">
+      </div>
+    </div>
+    <br>
+    <div class="field">
+      <label>Site detail</label>
+      <input type="text" id="b-detail" placeholder="e.g. Riverfront, redwood canopy">
+    </div>
+    <div class="field">
+      <label>Confirmation number</label>
+      <input type="text" id="b-conf" placeholder="e.g. 30136001">
+    </div>
+    <div class="field">
+      <label>Region</label>
+      <select id="b-region">
+        <option value="">Select region…</option>
+        <option>Southern California Coast</option>
+        <option>Santa Barbara Coast</option>
+        <option>Santa Monica Mountains & LA</option>
+        <option>San Diego Mountains & Desert</option>
+        <option>Inland Lakes & Mountains</option>
+        <option>Central Coast & Big Sur</option>
+        <option>Bay Area to Oregon Border</option>
+        <option>Eastern Sierra</option>
+        <option>Other California</option>
+        <option>Pacific Northwest</option>
+        <option>Rocky Mountains</option>
+        <option>Southwest</option>
+        <option>Other US</option>
+      </select>
+    </div>
+    <div class="form-actions">
+      <button class="btn-primary" onclick="saveBooking()">Save booking</button>
+      <button class="btn-cancel" onclick="closeAddBooking()">Cancel</button>
+    </div>
+    <div class="form-msg" id="booking-msg" style="display:none"></div>
+  </div>
+</div>
+
+<!-- SHARE TRIP PAGE -->
+<div class="share-page" id="share-page">
+  <div class="share-header">
+    <h2 id="share-page-title">My camping trips</h2>
+    <div style="display:flex;gap:10px;align-items:center;">
+      <button class="share-copy-btn" style="margin:0" onclick="copyShareLink()">📋 Copy share link</button>
+      <button class="share-close" onclick="closeSharePage()">✕ Close</button>
+    </div>
+  </div>
+  <div class="share-body">
+    <div class="share-profile-strip" id="share-profile-strip"></div>
+    <div class="share-stats-row" id="share-stats-row"></div>
+    <div id="share-trips-list"></div>
+    <div class="share-cta">
+      <h3>Plan your own adventure</h3>
+      <p>Track your bookings, share your trips, and discover the best campsites — free to join.</p>
+      <button onclick="closeSharePage();openAuth()">Create free account</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- SITE REVIEW SUBMISSION FORM -->
+<div class="site-form-overlay" id="site-form-overlay" onclick="if(event.target===this)closeSiteForm()">
+  <div class="form-box">
+    <h3>Share a favorite site</h3>
+    <p class="form-sub">A specific campsite number or name worth knowing about. Photos speak loudest — add as many as you like.</p>
+
+    <div class="field">
+      <label>Campground *</label>
+      <select id="sf-campground">
+        <option value="">Select campground…</option>
+        <option>San Onofre State Beach — Bluffs</option>
+        <option>San Elijo State Beach</option>
+        <option>South Carlsbad State Beach</option>
+        <option>Crystal Cove SP — Moro</option>
+        <option>Leo Carrillo State Park</option>
+        <option>Doheny State Beach</option>
+        <option>San Clemente State Beach</option>
+        <option>Bolsa Chica State Beach</option>
+        <option>Jalama Beach County Park</option>
+        <option>Refugio State Beach</option>
+        <option>El Capitan State Beach</option>
+        <option>Malibu Creek State Park</option>
+        <option>Point Mugu SP — Sycamore Canyon</option>
+        <option>Chilao — Angeles National Forest</option>
+        <option>Cuyamaca Rancho — Paso Picacho</option>
+        <option>Palomar Mountain — Doane Valley</option>
+        <option>Anza-Borrego — Borrego Palm Canyon</option>
+        <option>Cachuma Lake Recreation Area</option>
+        <option>Serrano — Big Bear Lake</option>
+        <option>Pfeiffer Big Sur State Park</option>
+        <option>Other California campground</option>
+        <option>Out of state campground</option>
+      </select>
+    </div>
+
+    <div class="field-row">
+      <div class="field" style="margin-bottom:0">
+        <label>Site number or name *</label>
+        <input type="text" id="sf-site" placeholder="e.g. Site 29 or Premium 047">
+      </div>
+      <div class="field" style="margin-bottom:0">
+        <label>One-liner description</label>
+        <input type="text" id="sf-desc" placeholder="e.g. Oak tree shade, great privacy" maxlength="100">
+      </div>
+    </div>
+    <br>
+
+    <div class="field">
+      <label>Tags</label>
+      <div class="toggle-group" id="sf-tags">
+        <label class="toggle-opt" onmousedown="event.preventDefault();toggleTag(this)"><input type="checkbox" value="ocean">🌊 Ocean view</label>
+        <label class="toggle-opt" onmousedown="event.preventDefault();toggleTag(this)"><input type="checkbox" value="shade">🌳 Shaded</label>
+        <label class="toggle-opt" onmousedown="event.preventDefault();toggleTag(this)"><input type="checkbox" value="private">🔒 Private</label>
+        <label class="toggle-opt" onmousedown="event.preventDefault();toggleTag(this)"><input type="checkbox" value="dog">🐕 Dog friendly</label>
+        <label class="toggle-opt" onmousedown="event.preventDefault();toggleTag(this)"><input type="checkbox" value="electric">⚡ Electric hookup</label>
+        <label class="toggle-opt" onmousedown="event.preventDefault();toggleTag(this)"><input type="checkbox" value="waterfront">💧 Waterfront</label>
+        <label class="toggle-opt" onmousedown="event.preventDefault();toggleTag(this)"><input type="checkbox" value="pullthrough">🚗 Pull-through</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Photos — add as many as you like</label>
+      <div class="multi-thumbs" id="sf-thumbs"></div>
+      <div class="multi-upload-area">
+        <input type="file" id="sf-photos" accept="image/*" multiple onchange="handleSitePhotos(this)">
+        <div class="pd-icon">📷</div>
+        <p>Tap to add photos — no limit</p>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button class="btn-primary" onclick="submitSiteReview()">Submit for review</button>
+      <button class="btn-cancel" onclick="closeSiteForm()">Cancel</button>
+    </div>
+    <div class="form-msg" id="site-form-msg" style="display:none"></div>
+  </div>
+</div>
+
+</body>
+</html>
