@@ -12,14 +12,14 @@
 <meta name="twitter:title" content="carcamping.guide · The best sights at the best sites">
 <meta name="twitter:description" content="Community-built car camping guide. Find your site. Find your vibe.">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>carcamping.guide · Car Camping Across America</title>
+<title>carcamping.guide · The best sights at the best sites</title>
 <!-- v5 -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap');
 :root{
-  --ink:#16221d;--pine:#3d6b55;--pine-2:#4a7d65;
+  --ink:#16221d;--pine:#4a7c63;--pine-2:#5a9175;
   --pacific:#2c6f79;--pacific-deep:#1f545d;
   --sun:#d9963f;--sun-deep:#bd7c2c;--rust:#b1572f;
   --fog:#e6e8e2;--fog-2:#dde0d8;--paper:#faf9f4;--surf:#fdfcf8;
@@ -671,19 +671,19 @@ footer a{color:var(--pacific-deep);text-decoration:none}
         <button class="hero-cta" onclick="openSignin()" style="background:transparent;border:1px solid rgba(253,252,248,0.4);color:var(--surf);">Sign in</button>
       </div>
       <div class="hero-platform-stats">
-        <div class="hero-pstat"><a class="pstat-link" href="#campsite-reviews"><div class="hero-pstat-n">40</div><div class="hero-pstat-l">Campsite Reviews</div></a></div>
+        <div class="hero-pstat"><a class="pstat-link" href="javascript:void(0)" onclick="showPanel('camps')"><div class="hero-pstat-n">40</div><div class="hero-pstat-l">Campsite Reviews</div></a></div>
         <div class="hero-pstat-div"></div>
-        <div class="hero-pstat"><a class="pstat-link" href="#boondocking"><div class="hero-pstat-n">7</div><div class="hero-pstat-l">Boondocking</div></a></div>
+        <div class="hero-pstat"><a class="pstat-link" href="javascript:void(0)" onclick="showPanel('boondock')"><div class="hero-pstat-n">7</div><div class="hero-pstat-l">Boondocking</div></a></div>
         <div class="hero-pstat-div"></div>
-        <div class="hero-pstat"><a class="pstat-link" href="#driving-tours"><div class="hero-pstat-n" id="pstat-driving-tours">0</div><div class="hero-pstat-l">Driving Tours</div></a></div>
+        <div class="hero-pstat"><a class="pstat-link" href="javascript:void(0)" onclick="alert('Driving Tours — coming soon')"><div class="hero-pstat-n" id="pstat-driving-tours">0</div><div class="hero-pstat-l">Driving Tours</div></a></div>
         <div class="hero-pstat-div"></div>
-        <div class="hero-pstat"><a class="pstat-link" href="#hot-views"><div class="hero-pstat-n" id="pstat-hot-views">0</div><div class="hero-pstat-l">Hot Views</div></a></div>
+        <div class="hero-pstat"><a class="pstat-link" href="javascript:void(0)" onclick="alert('Hot Views — coming soon')"><div class="hero-pstat-n" id="pstat-hot-views">0</div><div class="hero-pstat-l">Hot Views</div></a></div>
         <div class="hero-pstat-div"></div>
-        <div class="hero-pstat"><a class="pstat-link" href="#hot-todos"><div class="hero-pstat-n" id="pstat-hot-todos">0</div><div class="hero-pstat-l">Hot To-Dos</div></a></div>
+        <div class="hero-pstat"><a class="pstat-link" href="javascript:void(0)" onclick="alert('Hot To-Dos — coming soon')"><div class="hero-pstat-n" id="pstat-hot-todos">0</div><div class="hero-pstat-l">Hot To-Dos</div></a></div>
         <div class="hero-pstat-div"></div>
-        <div class="hero-pstat"><a class="pstat-link" href="#community"><div class="hero-pstat-n" id="pstat-community">0</div><div class="hero-pstat-l">Car Camper Community</div></a></div>
+        <div class="hero-pstat"><a class="pstat-link" href="javascript:void(0)" onclick="alert('Car Camper Community — coming soon')"><div class="hero-pstat-n" id="pstat-community">0</div><div class="hero-pstat-l">Car Camper Community</div></a></div>
         <div class="hero-pstat-div"></div>
-        <div class="hero-pstat"><a class="pstat-link" href="#gear-up"><div class="hero-pstat-n" id="pstat-gear">8</div><div class="hero-pstat-l">Gear Up</div></a></div>
+        <div class="hero-pstat"><a class="pstat-link" href="javascript:void(0)" onclick="showPanel('gear')"><div class="hero-pstat-n" id="pstat-gear">8</div><div class="hero-pstat-l">Gear Up</div></a></div>
       </div>
     </div>
 
@@ -734,9 +734,8 @@ footer a{color:var(--pacific-deep);text-decoration:none}
 <!-- CAMPGROUNDS -->
 <div class="wrap" id="panel-camps">
   <div class="controls">
-    <input type="text" class="search" id="search" placeholder="Search campgrounds, regions, activities…" autocomplete="off" autocomplete="off">
+    <input type="text" class="search" id="camp-search" name="camp-search" placeholder="Search campgrounds, regions, activities…" autocomplete="off" autocomplete="off" autocomplete="off">
 
-    <div class="pills" id="regionpills"></div>
     <div class="resultcount" id="resultcount"></div>
   </div>
   <div id="campgrounds"></div>
@@ -916,7 +915,10 @@ footer a{color:var(--pacific-deep);text-decoration:none}
       <button class="btn-cancel" onclick="closeAuth()">Cancel</button>
     </div>
     <div class="form-msg" id="auth-msg" style="display:none"></div>
-    <div class="auth-switch"><span id="auth-switch-text">No account? </span><a onclick="toggleAuthMode()"><span id="auth-switch-link">Create one free</span></a></div>
+    <div style="text-align:center;margin-top:10px;">
+  <a onclick="handleForgotPassword()" style="font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);cursor:pointer;text-decoration:underline;">Forgot password?</a>
+</div>
+<div class="auth-switch"><span id="auth-switch-text">No account? </span><a onclick="toggleAuthMode()"><span id="auth-switch-link">Create one free</span></a></div>
   </div>
 </div>
 
@@ -1048,7 +1050,7 @@ const SUPA_KEY='sb_publishable_gnrkH_rqkw0HPcD70av1Uw_Pvifvt-l';
 const MAPBOX_TOKEN='pk.eyJ1IjoiaW9zcGhvdG8iLCJhIjoiY21xc2FxZzhzMDZkNjJxcHFzd3BrY2pubyJ9.eBS7bb_9AGIqZR_FfucCdA';
 const ADMIN_EMAIL='iosphoto@me.com';
 const {createClient}=supabase;
-const db=createClient(SUPA_URL,SUPA_KEY);
+const db=createClient(SUPA_URL,SUPA_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'pkce'}});
 if(typeof mapboxgl!=="undefined")mapboxgl.accessToken=MAPBOX_TOKEN;
 
 /* ===== STATE ===== */
@@ -1060,7 +1062,7 @@ let compassFiles={n:null,e:null,s:null,w:null};
 let multiFiles=[];
 let activePanelSpot=null;
 let activeFormType=null;
-let campState={region:'all',booked:false,ocean:false,q:''};
+let campState={region:'all',q:''};
 
 /* ===== DATA ===== */
 const REGIONS=[
@@ -1228,6 +1230,14 @@ async function handleAuth(){
     }
   }
 }
+
+async function handleForgotPassword(){
+  const email=document.getElementById('auth-email').value.trim();
+  if(!email){showMsg('auth-msg','Enter your email above first.','error');return;}
+  const {error}=await db.auth.resetPasswordForEmail(email,{redirectTo:'https://carcamping.guide'});
+  if(error)showMsg('auth-msg',error.message,'error');
+  else showMsg('auth-msg','Password reset email sent — check your inbox.','success');
+}
 async function signOut(){await db.auth.signOut();}
 
 /* ===== HERO NEXT-UP ===== */
@@ -1256,21 +1266,8 @@ function renderTrips(){
 }
 
 /* ===== CAMPGROUNDS ===== */
-function renderRegionPills(){
-  const wrap=document.getElementById('regionpills');wrap.innerHTML='';
-  const all=mkEl(`<button class="pill ${campState.region==='all'?'on':''}">All regions</button>`);
-  all.addEventListener('click',()=>{campState.region='all';renderCamps();renderRegionPills();});
-  wrap.appendChild(all);
-  REGIONS.forEach(r=>{
-    const p=mkEl(`<button class="pill ${campState.region===r.key?'on':''}">${r.name.replace(' & LA','').replace(' Mountains','')}</button>`);
-    p.addEventListener('click',()=>{campState.region=r.key;renderCamps();renderRegionPills();});
-    wrap.appendChild(p);
-  });
-}
 function campMatches(c){
-  if(campState.booked&&!c.b)return false;
-  if(campState.ocean&&!c.o)return false;
-  if(campState.region!=='all'&&c.r!==campState.region)return false;
+    if(campState.region!=='all'&&c.r!==campState.region)return false;
   if(campState.q){const hay=(c.n+' '+c.x+' '+c.a+' '+(REGIONS.find(r=>r.key===c.r)?.name||'')).toLowerCase();if(!hay.includes(campState.q.toLowerCase()))return false;}
   return true;
 }
@@ -1304,7 +1301,7 @@ function campCard(c){
 }
 function renderCamps(){
   const root=document.getElementById('campgrounds'),filtered=CAMPS.filter(campMatches);
-  document.getElementById('resultcount').textContent=`${filtered.length} of ${CAMPS.length} campgrounds`+(campState.booked||campState.ocean||campState.region!=='all'||campState.q?' · filtered':'');
+  document.getElementById('resultcount').textContent=`${filtered.length} of ${CAMPS.length} campgrounds`+(campState.q?' · filtered':'');
   if(!filtered.length){root.innerHTML='<div class="empty">No campgrounds match these filters.</div>';return;}
   let html='';
   REGIONS.forEach((r,idx)=>{
@@ -2759,7 +2756,7 @@ async function upvoteFeedPost(id,type,btn){
 /* ===== TABS ===== */
 const PANELS={bookings:'panel',camps:'panel',boondock:'panel',viewpoints:'fullpanel',explore:'fullpanel',community:'fullpanel',gear:'panel'};
 
-document.getElementById('search').addEventListener('input',e=>{campState.q=e.target.value;renderCamps();});
+const si=document.getElementById('camp-search');if(si)si.addEventListener('input',e=>{campState.q=e.target.value;renderCamps();});
 
 
 function showPanel(id){
@@ -2774,7 +2771,7 @@ function showPanel(id){
 /* ===== INIT ===== */
 // Show logged-out hero immediately, auth state will update it
 document.getElementById('hero-logged-out').style.display='block';
-renderTrips();renderRegionPills();renderCamps();renderZones();
+renderTrips();renderCamps();renderZones();
 loadPlatformStats();
 </script>
 
