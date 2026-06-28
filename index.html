@@ -3136,7 +3136,7 @@ function showPostMsg(txt, type){
 }
 
 /* ===== MAIN FEED ===== */
-const CAT_LABELS = {
+const FEED_CAT_LABELS = {
   'hot-todo': '🍽 Hot To-Do',
   'hot-view': '👁 Hot View',
   'driving-tour': '🚗 Driving Tour',
@@ -3180,7 +3180,7 @@ function renderFeedItem(post, likedIds){
   
   const name = profile.display_name || 'Anonymous';
   const timeAgo = formatTimeAgo(post.created_at);
-  const catLabel = CAT_LABELS[post.type] || post.type;
+  const catLabel = FEED_CAT_LABELS[post.type] || CAT_LABELS[post.type] || post.type;
   const liked = likedIds?.has(post.id);
   
   // Photo
