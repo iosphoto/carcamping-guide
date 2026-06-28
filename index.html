@@ -683,7 +683,7 @@ footer a{color:var(--pacific-deep);text-decoration:none}
         <div class="hero-pstat-div"></div>
         <div class="hero-pstat"><a class="pstat-link" href="javascript:void(0)" onclick="alert('Car Camper Community — coming soon')"><div class="hero-pstat-n" id="pstat-community">0</div><div class="hero-pstat-l">Car Camper Community</div></a></div>
         <div class="hero-pstat-div"></div>
-        <div class="hero-pstat"><a class="pstat-link" href="javascript:void(0)" onclick="showPanel('gear')"><div class="hero-pstat-n" id="pstat-gear">8</div><div class="hero-pstat-l">Gear Up</div></a></div>
+        <div class="hero-pstat"><a class="pstat-link" href="javascript:void(0)" onclick="showPanel('gear');renderGear();"><div class="hero-pstat-n" id="pstat-gear">8</div><div class="hero-pstat-l">Gear Up</div></a></div>
       </div>
     </div>
 
@@ -733,11 +733,7 @@ footer a{color:var(--pacific-deep);text-decoration:none}
 
 <!-- CAMPGROUNDS -->
 <div class="wrap" id="panel-camps">
-  <div class="controls">
-    <input type="text" class="search" id="camp-search" name="camp-search" placeholder="Search campgrounds, regions, activities…" autocomplete="off" autocomplete="off" autocomplete="off">
-
-    <div class="resultcount" id="resultcount"></div>
-  </div>
+  <div style="margin-bottom:8px;"></div>
   <div id="campgrounds"></div>
 </div>
 
@@ -1046,7 +1042,7 @@ footer a{color:var(--pacific-deep);text-decoration:none}
 <script>
 /* ===== CONFIG ===== */
 const SUPA_URL='https://mjdgnpxbicnzmbinvqdy.supabase.co';
-const SUPA_KEY='sb_publishable_gnrkH_rqkw0HPcD70av1Uw_Pvifvt-l';
+const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1qZGducHhiaWNuem1iaW52cWR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3NzY5NjcsImV4cCI6MjA2NTM1Mjk2N30.LPNfNgLsLHRCYfMp69sHZBidMBkbWFEFzYaQVr7XYZE';
 const MAPBOX_TOKEN='pk.eyJ1IjoiaW9zcGhvdG8iLCJhIjoiY21xc2FxZzhzMDZkNjJxcHFzd3BrY2pubyJ9.eBS7bb_9AGIqZR_FfucCdA';
 const ADMIN_EMAIL='iosphoto@me.com';
 const {createClient}=supabase;
@@ -1062,7 +1058,7 @@ let compassFiles={n:null,e:null,s:null,w:null};
 let multiFiles=[];
 let activePanelSpot=null;
 let activeFormType=null;
-let campState={region:'all',q:''};
+let campState={region:'all'};
 
 /* ===== DATA ===== */
 const REGIONS=[
@@ -1268,7 +1264,7 @@ function renderTrips(){
 /* ===== CAMPGROUNDS ===== */
 function campMatches(c){
     if(campState.region!=='all'&&c.r!==campState.region)return false;
-  if(campState.q){const hay=(c.n+' '+c.x+' '+c.a+' '+(REGIONS.find(r=>r.key===c.r)?.name||'')).toLowerCase();if(!hay.includes(campState.q.toLowerCase()))return false;}
+
   return true;
 }
 function campCard(c){
@@ -1301,7 +1297,7 @@ function campCard(c){
 }
 function renderCamps(){
   const root=document.getElementById('campgrounds'),filtered=CAMPS.filter(campMatches);
-  document.getElementById('resultcount').textContent=`${filtered.length} of ${CAMPS.length} campgrounds`+(campState.q?' · filtered':'');
+  // resultcount hidden
   if(!filtered.length){root.innerHTML='<div class="empty">No campgrounds match these filters.</div>';return;}
   let html='';
   REGIONS.forEach((r,idx)=>{
@@ -2583,7 +2579,7 @@ function renderGear(){
       <div class="gear-card-img-empty">${g.emoji}</div>
       <div class="gear-card-body">
         <div class="gear-card-cat">${g.cat.charAt(0).toUpperCase()+g.cat.slice(1)}</div>
-        ${g.ian?'<div class="gear-ian-badge">★ Ian\'s pick</div>':''}
+        ${g.ian?'<div class="gear-ian-badge">★ Editor\'s pick</div>':''}
         <div class="gear-card-name">${g.name}</div>
         <div class="gear-card-brand">${g.brand}</div>
         <div class="gear-card-take">${g.take}</div>
@@ -2756,7 +2752,7 @@ async function upvoteFeedPost(id,type,btn){
 /* ===== TABS ===== */
 const PANELS={bookings:'panel',camps:'panel',boondock:'panel',viewpoints:'fullpanel',explore:'fullpanel',community:'fullpanel',gear:'panel'};
 
-const si=document.getElementById('camp-search');if(si)si.addEventListener('input',e=>{campState.q=e.target.value;renderCamps();});
+// search disabled for now
 
 
 function showPanel(id){
