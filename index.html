@@ -48,19 +48,6 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--fog);color:var(--
 .nextup .when{font-family:'Space Mono',monospace;font-size:13px;color:rgba(253,252,248,0.8)}
 .nextup .count{margin-left:auto;font-family:'Zilla Slab',serif;font-weight:700;font-size:15px;color:var(--surf);background:var(--sun-deep);padding:6px 12px;border-radius:3px;white-space:nowrap;}
 
-/* AUTH BAR */
-.authbar{background:var(--surf);border-bottom:1px solid var(--line);padding:0 22px;}
-.authbar-inner{max-width:1080px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;height:44px;}
-.authbar-left{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:0.06em;}
-.authbar-right{display:flex;align-items:center;gap:12px;}
-.auth-btn{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;padding:7px 14px;border-radius:3px;cursor:pointer;transition:all .15s;border:none;}
-.btn-signin{background:transparent;color:var(--muted);border:1px solid var(--line-strong);}
-.btn-signin:hover{color:var(--ink);border-color:var(--ink)}
-.btn-signup{background:var(--pine);color:var(--surf);}
-.btn-signup:hover{background:var(--pine-2)}
-.btn-signout{background:transparent;color:var(--muted);border:1px solid var(--line-strong);}
-.btn-signout:hover{color:var(--ink);border-color:var(--ink)}
-.user-greeting{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);}
 
 /* TABS */
 .tabwrap{position:sticky;top:0;z-index:20;background:var(--surf);border-bottom:1px solid var(--line);}
@@ -659,16 +646,6 @@ footer a{color:var(--pacific-deep);text-decoration:none}
   </div>
 </header>
 
-<div class="authbar">
-  <div class="authbar-inner">
-    <div class="authbar-left">carcamping.guide</div>
-    <div class="authbar-right">
-      <span class="user-greeting" id="user-greeting" style="display:none"></span>
-      <button class="profile-link-btn" id="btn-profile" style="display:none" onclick="openMyProfile()">Edit profile</button>
-      <button class="auth-btn btn-signout" id="btn-signout" style="display:none" onclick="signOut()">Sign out</button>
-    </div>
-  </div>
-</div>
 
 <nav class="tabwrap">
   <div class="tabs">
@@ -701,10 +678,7 @@ footer a{color:var(--pacific-deep);text-decoration:none}
 <div class="wrap panel active" id="panel-camps">
   <div class="controls">
     <input type="text" class="search" id="search" placeholder="Search campgrounds, regions, activities…" autocomplete="off" autocomplete="off">
-    <div class="pills" id="filterpills">
-      <button class="pill booked" data-filter="booked">★ Booked only</button>
-      <button class="pill ocean" data-filter="ocean">🌊 Ocean view</button>
-    </div>
+
     <div class="pills" id="regionpills"></div>
     <div class="resultcount" id="resultcount"></div>
   </div>
@@ -1129,21 +1103,19 @@ db.auth.onAuthStateChange(async (_,session)=>{
 });
 function updateAuthUI(){
   const g=document.getElementById('user-greeting');
-  const bi=document.getElementById('btn-signin');
   const bo=document.getElementById('btn-signout');
   const bp=document.getElementById('btn-profile');
   const tabBookings=document.getElementById('tab-bookings');
   if(currentUser){
-    g.textContent=myProfile?.display_name?.split(' ')[0]||currentUser.email.split('@')[0];
-    g.style.display='inline';
-    bo.style.display='inline-block';
-    bp.style.display='inline-block';
+    if(g){g.textContent=myProfile?.display_name?.split(' ')[0]||currentUser.email.split('@')[0];g.style.display='inline';}
+    if(bo)bo.style.display='inline-block';
+    if(bp)bp.style.display='inline-block';
     if(tabBookings)tabBookings.style.display='inline-block';
     updateGate(false);
   } else {
-    g.style.display='none';
-    bo.style.display='none';
-    bp.style.display='none';
+    if(g)g.style.display='none';
+    if(bo)bo.style.display='none';
+    if(bp)bp.style.display='none';
     if(tabBookings)tabBookings.style.display='none';
     updateGate(true);
   }
@@ -2444,7 +2416,7 @@ function renderGear(){
       <div class="gear-card-img-empty">${g.emoji}</div>
       <div class="gear-card-body">
         <div class="gear-card-cat">${g.cat.charAt(0).toUpperCase()+g.cat.slice(1)}</div>
-        ${g.ian?'<div class="gear-ian-badge">★ Ian's pick</div>':''}
+        ${g.ian?'<div class="gear-ian-badge">★ Ian\'s pick</div>':''}
         <div class="gear-card-name">${g.name}</div>
         <div class="gear-card-brand">${g.brand}</div>
         <div class="gear-card-take">${g.take}</div>
@@ -2631,9 +2603,6 @@ document.querySelectorAll('.tab').forEach(t=>{
     if(tab==='community')loadCommunity();
     if(tab==='gear')renderGear();
   });
-});
-document.querySelectorAll('#filterpills .pill').forEach(p=>{
-  p.addEventListener('click',()=>{const f=p.dataset.filter;campState[f]=!campState[f];p.classList.toggle('on');renderCamps();});
 });
 document.getElementById('search').addEventListener('input',e=>{campState.q=e.target.value;renderCamps();});
 
