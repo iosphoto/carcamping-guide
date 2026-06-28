@@ -657,6 +657,63 @@ footer a{color:var(--pacific-deep);text-decoration:none}
 
 .hero::before{content:'';position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,0.68) 0%,rgba(0,0,0,0.45) 45%,rgba(0,0,0,0.15) 70%,rgba(0,0,0,0.05) 100%);z-index:0;}
 .hero-inner{position:relative;z-index:1;}
+
+/* MAIN NAV TABS */
+.main-tab{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);background:none;border:none;border-bottom:3px solid transparent;padding:0 16px;height:50px;cursor:pointer;white-space:nowrap;transition:color .15s;}
+.main-tab:hover{color:var(--ink);}
+.active-tab{color:var(--pine);border-bottom-color:var(--sun);}
+
+/* COMMUNITY MEMBER CARD */
+.member-card{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:18px;display:flex;gap:14px;align-items:flex-start;cursor:pointer;transition:transform .12s,box-shadow .12s;}
+.member-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(22,34,29,0.08);}
+.member-avatar{width:56px;height:56px;border-radius:50%;background:var(--fog-2);flex-shrink:0;object-fit:cover;display:flex;align-items:center;justify-content:center;font-size:22px;}
+.member-info{flex:1;min-width:0;}
+.member-name{font-family:'Zilla Slab',serif;font-weight:600;font-size:17px;color:var(--ink);margin-bottom:2px;}
+.member-location{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.member-bio{font-size:12.5px;color:#33403a;line-height:1.45;margin-bottom:8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.member-stats{display:flex;gap:12px;font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);}
+.member-stat-n{color:var(--sun-deep);font-weight:700;}
+
+/* POST FORM */
+.post-cat-btn{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.04em;padding:7px 13px;border-radius:20px;border:1px solid var(--line-strong);background:var(--surf);color:var(--muted);cursor:pointer;transition:all .12s;}
+.post-cat-btn.active{background:var(--pine);border-color:var(--pine);color:var(--surf);}
+.post-cat-btn:hover{border-color:var(--pine);color:var(--ink);}
+.post-tag-btn{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.04em;padding:6px 11px;border-radius:3px;border:1px solid var(--line-strong);background:var(--surf);color:var(--muted);cursor:pointer;transition:all .12s;}
+.post-tag-btn.active{background:var(--pacific);border-color:var(--pacific);color:var(--surf);}
+.post-tag-btn:hover{border-color:var(--pacific);color:var(--ink);}
+
+/* FEED POSTS */
+.feed-item{background:var(--paper);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-bottom:0;}
+.feed-item-header{display:flex;align-items:center;gap:12px;padding:14px 16px 10px;}
+.feed-avatar-sm{width:40px;height:40px;border-radius:50%;object-fit:cover;background:var(--fog-2);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.feed-author{flex:1;}
+.feed-author-name{font-family:'Zilla Slab',serif;font-weight:600;font-size:15px;color:var(--ink);cursor:pointer;}
+.feed-author-name:hover{color:var(--pacific-deep);}
+.feed-meta{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:0.04em;}
+.feed-cat-tag{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:3px;background:var(--fog-2);color:var(--pacific-deep);}
+.feed-carousel{position:relative;width:100%;background:var(--fog-2);}
+.feed-carousel img{width:100%;max-height:400px;object-fit:cover;display:block;}
+.feed-carousel-dots{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:5px;}
+.feed-carousel-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.6);}
+.feed-carousel-dot.active{background:#fff;}
+.feed-body{padding:12px 16px;}
+.feed-headline{font-family:'Zilla Slab',serif;font-weight:600;font-size:18px;color:var(--ink);margin-bottom:6px;line-height:1.2;}
+.feed-text{font-size:13.5px;color:#33403a;line-height:1.55;margin-bottom:10px;}
+.feed-text.truncated{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+.feed-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
+.feed-tag{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.06em;text-transform:uppercase;padding:3px 8px;border-radius:3px;background:var(--fog-2);color:var(--muted);}
+.feed-actions{display:flex;align-items:center;gap:16px;padding:10px 16px 14px;border-top:1px solid var(--line);}
+.feed-like-btn{display:flex;align-items:center;gap:6px;font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);background:none;border:none;cursor:pointer;padding:4px 0;transition:color .15s;}
+.feed-like-btn:hover{color:var(--rust);}
+.feed-like-btn.liked{color:var(--rust);}
+.feed-view-link{font-family:'Space Mono',monospace;font-size:11px;color:var(--pacific-deep);text-decoration:none;letter-spacing:0.06em;margin-left:auto;cursor:pointer;}
+.feed-view-link:hover{text-decoration:underline;}
+.feed-location{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:6px;}
+.feed-buy-link{display:inline-block;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:var(--pacific-deep);border:1px solid rgba(44,111,121,0.3);padding:4px 10px;border-radius:3px;text-decoration:none;margin-top:4px;}
+.feed-buy-link:hover{background:rgba(44,111,121,0.08);}
+.post-photo-thumb{width:80px;height:80px;object-fit:cover;border-radius:6px;position:relative;}
+.photo-thumb-wrap{position:relative;width:80px;height:80px;flex-shrink:0;}
+.photo-thumb-remove{position:absolute;top:-4px;right:-4px;background:var(--rust);color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;}
 </style>
 </head>
 <body>
@@ -715,16 +772,37 @@ footer a{color:var(--pacific-deep);text-decoration:none}
 
   </div>
 </header>
-
-
-
-
+<div id="logged-in-nav" style="display:none;background:var(--surf);border-bottom:2px solid var(--sun);padding:0 22px;position:sticky;top:0;z-index:20;">
+  <div style="max-width:1080px;margin:0 auto;display:flex;align-items:center;height:50px;gap:0;overflow-x:auto;">
+    <button onclick="switchMainTab('feed')" id="mtab-feed" class="main-tab">Feed</button>
+    <button onclick="switchMainTab('trips')" id="mtab-trips" class="main-tab">Trips Planned</button>
+    <button onclick="switchMainTab('camps')" id="mtab-camps" class="main-tab">Campsite Reviews</button>
+    <button onclick="switchMainTab('boondock')" id="mtab-boondock" class="main-tab">Boondocking</button>
+    <button onclick="switchMainTab('gear')" id="mtab-gear" class="main-tab">Gear Up</button>
+    <button onclick="switchMainTab('community')" id="mtab-community" class="main-tab">Community</button>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:10px;flex-shrink:0;">
+      <button onclick="openPostForm()" style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;background:var(--pine);color:var(--surf);border:none;padding:7px 14px;border-radius:3px;cursor:pointer;font-weight:700;">+ Post</button>
+      <span id="nav-greeting" style="font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);"></span>
+      <button onclick="openPubProfile(currentUser?.id)" style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;background:transparent;color:var(--muted);border:1px solid var(--line-strong);padding:5px 10px;border-radius:3px;cursor:pointer;">Profile</button>
+      <button onclick="signOut()" style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;background:transparent;color:var(--muted);border:1px solid var(--line-strong);padding:5px 10px;border-radius:3px;cursor:pointer;">Sign out</button>
+    </div>
+  </div>
+</div>
 <main>
+
+<!-- COMMUNITY FEED -->
+<div class="wrap" style="display:none" id="panel-feed">
+  <div style="max-width:680px;margin:0 auto;">
+    <div id="main-feed-list" style="display:flex;flex-direction:column;gap:16px;">
+      <div class="loading">Loading feed…</div>
+    </div>
+  </div>
+</div>
 
 <!-- MY BOOKINGS -->
 <div class="wrap" style="display:none" id="panel-bookings">
   <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:22px;flex-wrap:wrap;">
-    <p class="intro" style="margin-bottom:0;flex:1">Your camping journal — every trip, every night, every site. Tap any trip to expand.</p>
+    <p class="intro" style="margin-bottom:0;flex:1">Your planned trips — every booking, every night, every site. Tap any trip to expand.</p>
     <div style="display:flex;gap:8px;flex-shrink:0;" id="booking-actions" style="display:none">
       <button class="submit-btn secondary" id="btn-share-trips" onclick="shareMyTrips()" style="background:transparent;color:var(--pine);border:1px solid var(--pine);font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;padding:10px 18px;border-radius:3px;cursor:pointer;">↗ Share my trips</button>
       <button class="submit-btn" onclick="openAddBooking()">+ Add booking</button>
@@ -831,12 +909,12 @@ footer a{color:var(--pacific-deep);text-decoration:none}
       </div>
     </div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;">
-      <button class="comm-filter on" id="cf-all" onclick="filterCommunity('all')">All</button>
-      <button class="comm-filter" id="cf-booking" onclick="filterCommunity('booking')">🗓 Bookings</button>
-      <button class="comm-filter" id="cf-viewpoint" onclick="filterCommunity('viewpoint')">📍 Viewpoints</button>
-      <button class="comm-filter" id="cf-explore" onclick="filterCommunity('explore')">🗺 Explore</button>
-      <button class="comm-filter" id="cf-site_review" onclick="filterCommunity('site_review')">⭐ Sites</button>
-      <button class="comm-filter" id="cf-boondock" onclick="filterCommunity('boondock')">🔥 Boondocking</button>
+      <button class="comm-filter on" id="cf-all" onclick="filterCommFeed('all')">All</button>
+      <button class="comm-filter" id="cf-booking" onclick="filterCommFeed('booking')">🗓 Bookings</button>
+      <button class="comm-filter" id="cf-viewpoint" onclick="filterCommFeed('viewpoint')">📍 Viewpoints</button>
+      <button class="comm-filter" id="cf-explore" onclick="filterCommFeed('explore')">🗺 Explore</button>
+      <button class="comm-filter" id="cf-site_review" onclick="filterCommFeed('site_review')">⭐ Sites</button>
+      <button class="comm-filter" id="cf-boondock" onclick="filterCommFeed('boondock')">🔥 Boondocking</button>
     </div>
     <div style="display:flex;gap:8px;margin-left:auto;">
       <button class="comm-filter" id="cs-latest" onclick="sortCommunity('latest')">Latest</button>
@@ -1173,6 +1251,8 @@ function updateAuthUI(){
     const navGreeting=document.getElementById('nav-greeting');
     if(loggedInNav)loggedInNav.style.display='block';
     if(navGreeting)navGreeting.textContent=myProfile?.display_name?.split(' ')[0]||currentUser.email.split('@')[0];
+    switchMainTab('feed');
+    loadMainFeed();
     updateGate(false);
   } else {
     if(g)g.style.display='none';
@@ -2113,6 +2193,8 @@ async function openPubProfile(userId){
   // Name + bio
   document.getElementById('pub-profile-name').textContent=profile.display_name||'Anonymous';
   document.getElementById('pub-profile-bio').textContent=profile.bio||'';
+  const locEl=document.getElementById('pub-profile-location');
+  if(locEl)locEl.textContent=profile.location?'📍 '+profile.location:'';
 
   // Connect links
   const connectEl=document.getElementById('pub-profile-connect');
@@ -2125,14 +2207,35 @@ async function openPubProfile(userId){
   const {data:spots}=await db.from('spots').select('*').eq('user_id',userId).eq('status','approved').order('created_at',{ascending:false});
   const allSpots=spots||[];
 
-  // Scoreboard
+  // Scoreboard — calculate nights camped from past trips, trips planned from future
+  const today=new Date(); today.setHours(0,0,0,0);
+  const {data:userTrips}=await db.from('trips').select('*').eq('user_id',userId);
+  const trips=userTrips||[];
+  let nightsCamped=0,tripsPlanned=0;
+  trips.forEach(t=>{
+    const end=new Date(t.end_date||t.start_date);
+    const nights=t.nights||1;
+    if(end<today) nightsCamped+=nights;
+    else tripsPlanned+=1;
+  });
+  // Also count from hardcoded TRIPS for admin user
+  if(userId===currentUser?.id){
+    TRIPS.forEach(t=>{
+      const end=new Date(t.end+'T00:00:00');
+      const nights=t.nights.length;
+      if(end<today) nightsCamped+=nights;
+      else tripsPlanned+=1;
+    });
+  }
   const byType=(t)=>allSpots.filter(s=>s.type===t).length;
-  document.getElementById('pub-score-nights').textContent=profile.nights_completed||0;
-  document.getElementById('pub-score-reviews').textContent=byType('campsite-review');
+  const totalLikes=allSpots.reduce((s,x)=>s+(x.upvotes||0),0);
+  document.getElementById('pub-score-nights').textContent=nightsCamped;
+  document.getElementById('pub-score-trips').textContent=tripsPlanned;
   document.getElementById('pub-score-boondocking').textContent=byType('boondocking');
   document.getElementById('pub-score-tours').textContent=byType('driving-tour');
   document.getElementById('pub-score-views').textContent=byType('hot-view');
   document.getElementById('pub-score-todos').textContent=byType('hot-todo');
+  document.getElementById('pub-score-likes').textContent=totalLikes;
 
   // Feed
   const typeLabel={
@@ -2629,7 +2732,7 @@ async function loadCommunity(){
   renderCommunityFeed();
 }
 
-function filterCommunity(type){
+function filterCommFeed(type){
   commFilter=type;
   document.querySelectorAll('.comm-filter[id^=cf-]').forEach(b=>b.classList.remove('on'));
   const btn=document.getElementById(`cf-${type}`);
@@ -2759,12 +2862,397 @@ const PANELS={bookings:'panel',camps:'panel',boondock:'panel',viewpoints:'fullpa
 
 
 function showPanel(id){
-  document.querySelectorAll('.wrap,.fullpanel').forEach(p=>{
-    if(p.id&&p.id.startsWith('panel-')) p.style.display='none';
-  });
+  document.querySelectorAll('[id^="panel-"]').forEach(p=>p.style.display='none');
   const target=document.getElementById('panel-'+id);
   if(target)target.style.display='block';
   window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function switchMainTab(id){
+  showPanel(id);
+  document.querySelectorAll('.main-tab').forEach(t=>t.classList.remove('active-tab'));
+  const btn=document.getElementById('mtab-'+id);
+  if(btn)btn.classList.add('active-tab');
+  if(id==='community') loadCommunityMembers();
+  if(id==='feed') loadMainFeed();
+  if(id==='gear') renderGear();
+  if(id==='boondock') loadCommunitySpots();
+}
+
+
+/* ===== COMMUNITY MEMBERS ===== */
+let allMembers = [];
+async function loadCommunityMembers(){
+  const grid = document.getElementById('community-grid');
+  if(!grid) return;
+  grid.innerHTML = '<div class="loading">Loading community…</div>';
+  
+  const {data, error} = await db.from('profiles')
+    .select('*')
+    .order('display_name', {ascending: true});
+  
+  if(error || !data?.length){
+    grid.innerHTML = '<div class="profile-empty">No community members yet — be the first to create a profile.</div>';
+    return;
+  }
+  
+  allMembers = data;
+  renderMemberCards(data);
+  
+  // Update community stat
+  const commEl = document.getElementById('pstat-community');
+  if(commEl) commEl.textContent = data.length;
+}
+
+function renderMemberCards(members){
+  const grid = document.getElementById('community-grid');
+  if(!grid) return;
+  if(!members.length){
+    grid.innerHTML = '<div class="profile-empty">No members match your search.</div>';
+    return;
+  }
+  grid.innerHTML = members.map(m => {
+    const avatarHtml = m.avatar_url
+      ? `<img class="member-avatar" src="${m.avatar_url}" alt="${m.display_name||''}">`
+      : `<div class="member-avatar">🏕</div>`;
+    const location = m.location ? `<div class="member-location">📍 ${m.location}</div>` : '';
+    const bio = m.bio ? `<div class="member-bio">${m.bio}</div>` : '';
+    return `<div class="member-card" onclick="openPubProfile('${m.id}')">
+      ${avatarHtml}
+      <div class="member-info">
+        <div class="member-name">${m.display_name||'Anonymous'}</div>
+        ${location}
+        ${bio}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filterCommunity(q){
+  if(!q) { renderMemberCards(allMembers); return; }
+  const filtered = allMembers.filter(m =>
+    (m.display_name||'').toLowerCase().includes(q.toLowerCase()) ||
+    (m.bio||'').toLowerCase().includes(q.toLowerCase()) ||
+    (m.location||'').toLowerCase().includes(q.toLowerCase())
+  );
+  renderMemberCards(filtered);
+}
+
+
+/* ===== POST FORM ===== */
+let postCat = 'hot-todo';
+let postPhotos = [];
+let boondockTags = [];
+
+function openPostForm(cat){
+  if(!currentUser){ openAuth(); return; }
+  postCat = cat || 'hot-todo';
+  postPhotos = [];
+  boondockTags = [];
+  // Reset form
+  document.getElementById('post-headline').value = '';
+  document.getElementById('post-body').value = '';
+  document.getElementById('post-location-name').value = '';
+  document.getElementById('post-photo-previews').innerHTML = '';
+  document.getElementById('post-photos').value = '';
+  const msg = document.getElementById('post-msg');
+  msg.style.display = 'none';
+  // Set active category
+  document.querySelectorAll('.post-cat-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.cat === postCat);
+  });
+  updatePostFormFields();
+  const overlay = document.getElementById('post-overlay');
+  overlay.style.display = 'flex';
+}
+
+function closePostForm(){
+  document.getElementById('post-overlay').style.display = 'none';
+}
+
+function selectPostCat(btn){
+  document.querySelectorAll('.post-cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  postCat = btn.dataset.cat;
+  updatePostFormFields();
+}
+
+function updatePostFormFields(){
+  const isGear = postCat === 'gear';
+  const isBoon = postCat === 'boondocking';
+  const isView = postCat === 'hot-view';
+  const isTour = postCat === 'driving-tour';
+  
+  document.getElementById('post-location-section').style.display = isGear ? 'none' : 'block';
+  document.getElementById('post-todo-fields').style.display = postCat === 'hot-todo' ? 'block' : 'none';
+  document.getElementById('post-view-fields').style.display = isView ? 'block' : 'none';
+  document.getElementById('post-tour-fields').style.display = isTour ? 'block' : 'none';
+  document.getElementById('post-boondock-fields').style.display = isBoon ? 'block' : 'none';
+  document.getElementById('post-gear-fields').style.display = isGear ? 'block' : 'none';
+  document.getElementById('post-gps-section').style.display = (isBoon || isView) ? 'block' : 'none';
+  document.getElementById('post-dog-section').style.display = isGear ? 'none' : 'block';
+  
+  // Update location placeholder
+  const locInput = document.getElementById('post-location-name');
+  if(isBoon) locInput.placeholder = 'General area name (no precise location)';
+  else if(isView) locInput.placeholder = 'e.g. PCH Mile Marker 63, Malibu';
+  else if(isTour) locInput.placeholder = 'Route name (e.g. PCH Malibu to Santa Barbara)';
+  else locInput.placeholder = 'e.g. Malibu Pier, CA';
+}
+
+function selectTag(btn, group){
+  // Single select within a group
+  const parent = btn.parentElement;
+  parent.querySelectorAll('.post-tag-btn[data-group="' + group + '"], .post-tag-btn').forEach(b => {
+    if(b.parentElement === parent) b.classList.remove('active');
+  });
+  btn.classList.add('active');
+}
+
+function toggleBoondockTag(btn){
+  btn.classList.toggle('active');
+  const val = btn.dataset.val;
+  if(btn.classList.contains('active')) {
+    if(!boondockTags.includes(val)) boondockTags.push(val);
+  } else {
+    boondockTags = boondockTags.filter(t => t !== val);
+  }
+}
+
+function handlePostPhotos(input){
+  const files = [...input.files].slice(0, 6 - postPhotos.length);
+  const previews = document.getElementById('post-photo-previews');
+  files.forEach(file => {
+    if(postPhotos.length >= 6) return;
+    postPhotos.push(file);
+    const wrap = document.createElement('div');
+    wrap.className = 'photo-thumb-wrap';
+    const idx = postPhotos.length - 1;
+    const reader = new FileReader();
+    reader.onload = e => {
+      wrap.innerHTML = `<img class="post-photo-thumb" src="${e.target.result}">
+        <button class="photo-thumb-remove" onclick="removePostPhoto(${idx}, this.parentElement)">✕</button>`;
+    };
+    reader.readAsDataURL(file);
+    previews.appendChild(wrap);
+  });
+}
+
+function removePostPhoto(idx, wrap){
+  postPhotos.splice(idx, 1);
+  wrap.remove();
+}
+
+async function submitPost(){
+  const headline = document.getElementById('post-headline').value.trim();
+  const body = document.getElementById('post-body').value.trim();
+  if(!headline || !body){ showPostMsg('Please add a headline and description.', 'error'); return; }
+  
+  const btn = document.getElementById('post-submit-btn');
+  btn.disabled = true; btn.textContent = 'Posting…';
+  
+  // Upload photos
+  const photoUrls = [];
+  for(const file of postPhotos){
+    const ext = file.name.split('.').pop();
+    const path = `posts/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+    const {error} = await db.storage.from('trip-photos').upload(path, file, {upsert:false});
+    if(!error){
+      const {data} = db.storage.from('trip-photos').getPublicUrl(path);
+      photoUrls.push(data.publicUrl);
+    }
+  }
+  
+  // Build tags
+  const tags = [];
+  const isGear = postCat === 'gear';
+  const isBoon = postCat === 'boondocking';
+  const isTodo = postCat === 'hot-todo';
+  const isView = postCat === 'hot-view';
+  
+  if(isTodo){
+    const typeBtn = document.querySelector('#post-todo-fields .post-tag-btn.active[data-val]');
+    if(typeBtn) tags.push(typeBtn.dataset.val);
+    const costBtn = document.querySelectorAll('#post-todo-fields .post-tag-btn.active');
+    costBtn.forEach(b => { if(['Free','$','$$','$$$'].includes(b.dataset.val)) tags.push(b.dataset.val); });
+  }
+  if(isView){
+    const timeBtn = document.querySelector('#post-view-fields .post-tag-btn.active');
+    if(timeBtn) tags.push(timeBtn.dataset.val);
+  }
+  if(isBoon) tags.push(...boondockTags);
+  if(document.getElementById('post-dog')?.checked) tags.push('dog-friendly');
+  
+  // GPS
+  const gpsAck = document.getElementById('post-gps-ack')?.checked;
+  const lat = gpsAck ? parseFloat(document.getElementById('post-lat')?.value)||null : null;
+  const lng = gpsAck ? parseFloat(document.getElementById('post-lng')?.value)||null : null;
+  
+  // Extra fields
+  const extra = {};
+  if(isGear){
+    extra.gear_brand = document.getElementById('post-gear-brand').value.trim();
+    extra.gear_price = document.getElementById('post-gear-price').value.trim();
+    extra.gear_url = document.getElementById('post-gear-url').value.trim();
+  }
+  if(postCat === 'driving-tour'){
+    extra.tour_start = document.getElementById('post-tour-start').value.trim();
+    extra.tour_end = document.getElementById('post-tour-end').value.trim();
+  }
+  
+  const spotData = {
+    name: headline,
+    description: body,
+    type: postCat,
+    region: document.getElementById('post-location-name')?.value?.trim() || null,
+    tags,
+    photo_url: photoUrls[0] || null,
+    photos: photoUrls,
+    lat, lng,
+    user_id: currentUser.id,
+    status: 'approved', // curator auto-approved; others go to pending
+    upvotes: 0,
+    ...extra
+  };
+  
+  // Admin auto-approves; others need review
+  if(currentUser.email !== 'iosphoto@me.com') spotData.status = 'pending';
+  
+  const {error} = await db.from('spots').insert(spotData);
+  btn.disabled = false; btn.textContent = 'Post it';
+  
+  if(error){ showPostMsg('Something went wrong: ' + error.message, 'error'); return; }
+  
+  showPostMsg('Posted! ' + (spotData.status === 'approved' ? 'It\'s live on the feed.' : 'Pending review.'), 'success');
+  setTimeout(()=>{ closePostForm(); loadMainFeed(); }, 1800);
+}
+
+function showPostMsg(txt, type){
+  const el = document.getElementById('post-msg');
+  el.textContent = txt;
+  el.style.display = 'block';
+  el.style.background = type === 'error' ? 'rgba(177,87,47,0.1)' : 'rgba(44,111,121,0.1)';
+  el.style.color = type === 'error' ? 'var(--rust)' : 'var(--pacific-deep)';
+}
+
+/* ===== MAIN FEED ===== */
+const CAT_LABELS = {
+  'hot-todo': '🍽 Hot To-Do',
+  'hot-view': '👁 Hot View',
+  'driving-tour': '🚗 Driving Tour',
+  'boondocking': '🏕 Boondocking',
+  'gear': '⚙️ Gear Up',
+  'viewpoint': '📍 Viewpoint',
+  'explore': '🌄 Explore'
+};
+
+async function loadMainFeed(){
+  const feedEl = document.getElementById('main-feed-list');
+  if(!feedEl) return;
+  feedEl.innerHTML = '<div class="loading">Loading feed…</div>';
+  
+  const {data} = await db.from('spots')
+    .select('*, profiles(display_name, avatar_url)')
+    .eq('status','approved')
+    .order('created_at', {ascending: false})
+    .limit(50);
+  
+  if(!data?.length){
+    feedEl.innerHTML = '<div style="text-align:center;padding:60px 20px;font-family:'Space Mono',monospace;font-size:13px;color:var(--muted);">No posts yet — be the first to share something.</div>';
+    return;
+  }
+  
+  // Check which ones current user has liked
+  let likedIds = new Set();
+  if(currentUser){
+    const {data:votes} = await db.from('upvotes').select('spot_id').eq('user_id', currentUser.id);
+    (votes||[]).forEach(v => likedIds.add(v.spot_id));
+  }
+  
+  feedEl.innerHTML = data.map(post => renderFeedItem(post, likedIds)).join('');
+}
+
+function renderFeedItem(post, likedIds){
+  const profile = post.profiles || {};
+  const avatarHtml = profile.avatar_url
+    ? `<img class="feed-avatar-sm" src="${profile.avatar_url}" alt="">`
+    : `<div class="feed-avatar-sm">🏕</div>`;
+  
+  const name = profile.display_name || 'Anonymous';
+  const timeAgo = formatTimeAgo(post.created_at);
+  const catLabel = CAT_LABELS[post.type] || post.type;
+  const liked = likedIds?.has(post.id);
+  
+  // Photo
+  const photos = post.photos || (post.photo_url ? [post.photo_url] : []);
+  const photoHtml = photos.length
+    ? `<div class="feed-carousel"><img src="${photos[0]}" alt="${post.name}" loading="lazy" style="width:100%;max-height:420px;object-fit:cover;display:block;"></div>`
+    : '';
+  
+  // Tags
+  const tagHtml = (post.tags||[]).map(t => `<span class="feed-tag">${t}</span>`).join('');
+  
+  // Extra fields
+  let extraHtml = '';
+  if(post.region) extraHtml += `<div class="feed-location">📍 ${post.region}</div>`;
+  if(post.gear_url) extraHtml += `<a href="${post.gear_url}" target="_blank" class="feed-buy-link">Buy / View →</a>`;
+  if(post.gear_brand) extraHtml += `<div class="feed-location">by ${post.gear_brand}${post.gear_price ? ' · ' + post.gear_price : ''}</div>`;
+  if(post.tour_start && post.tour_end) extraHtml += `<div class="feed-location">🚗 ${post.tour_start} → ${post.tour_end}</div>`;
+  
+  return `<div class="feed-item" id="feed-${post.id}">
+    <div class="feed-item-header">
+      <div onclick="openPubProfile('${post.user_id}')" style="cursor:pointer;">${avatarHtml}</div>
+      <div class="feed-author">
+        <div class="feed-author-name" onclick="openPubProfile('${post.user_id}')">${name}</div>
+        <div class="feed-meta">${timeAgo} <span class="feed-cat-tag">${catLabel}</span></div>
+      </div>
+    </div>
+    ${photoHtml}
+    <div class="feed-body">
+      <div class="feed-headline">${post.name}</div>
+      ${extraHtml}
+      <div class="feed-text truncated">${post.description||''}</div>
+      ${tagHtml ? `<div class="feed-tags">${tagHtml}</div>` : ''}
+    </div>
+    <div class="feed-actions">
+      <button class="feed-like-btn ${liked?'liked':''}" onclick="toggleFeedLike('${post.id}',this)">
+        ${liked ? '♥' : '♡'} <span>${post.upvotes||0}</span>
+      </button>
+      <span class="feed-view-link" onclick="openPubProfile('${post.user_id}')">View profile →</span>
+    </div>
+  </div>`;
+}
+
+async function toggleFeedLike(spotId, btn){
+  if(!currentUser){ openAuth(); return; }
+  const liked = btn.classList.contains('liked');
+  const countEl = btn.querySelector('span');
+  const current = parseInt(countEl.textContent) || 0;
+  
+  if(liked){
+    await db.from('upvotes').delete().eq('spot_id',spotId).eq('user_id',currentUser.id);
+    await db.from('spots').update({upvotes: current-1}).eq('id',spotId);
+    btn.classList.remove('liked');
+    btn.innerHTML = '♡ <span>' + (current-1) + '</span>';
+  } else {
+    await db.from('upvotes').insert({spot_id:spotId, user_id:currentUser.id});
+    await db.from('spots').update({upvotes: current+1}).eq('id',spotId);
+    btn.classList.add('liked');
+    btn.innerHTML = '♥ <span>' + (current+1) + '</span>';
+  }
+}
+
+function formatTimeAgo(ts){
+  if(!ts) return '';
+  const diff = Date.now() - new Date(ts).getTime();
+  const m = Math.floor(diff/60000);
+  const h = Math.floor(m/60);
+  const d = Math.floor(h/24);
+  if(d > 6) return new Date(ts).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+  if(d > 0) return d + 'd ago';
+  if(h > 0) return h + 'h ago';
+  if(m > 0) return m + 'm ago';
+  return 'Just now';
 }
 
 /* ===== INIT ===== */
@@ -2850,6 +3338,7 @@ loadPlatformStats();
         <div class="profile-info">
           <div class="profile-username" id="pub-profile-name">—</div>
           <div class="profile-bio" id="pub-profile-bio"></div>
+          <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;" id="pub-profile-location"></div>
           <div class="profile-connect" id="pub-profile-connect"></div>
           <button class="profile-edit-btn" id="pub-edit-profile-btn" style="display:none;" onclick="openProfile()">Edit profile</button>
         </div>
@@ -2857,18 +3346,20 @@ loadPlatformStats();
 
       <!-- SCOREBOARD -->
       <div class="profile-scoreboard">
-        <div class="profile-score-item"><div class="profile-score-n" id="pub-score-nights">0</div><div class="profile-score-l">Nights out</div></div>
-        <div class="profile-score-item"><div class="profile-score-n" id="pub-score-reviews">0</div><div class="profile-score-l">Campsite reviews</div></div>
+        <div class="profile-score-item"><div class="profile-score-n" id="pub-score-nights">0</div><div class="profile-score-l">Nights camped</div></div>
+        <div class="profile-score-item"><div class="profile-score-n" id="pub-score-trips">0</div><div class="profile-score-l">Trips planned</div></div>
         <div class="profile-score-item"><div class="profile-score-n" id="pub-score-boondocking">0</div><div class="profile-score-l">Boondocking</div></div>
         <div class="profile-score-item"><div class="profile-score-n" id="pub-score-tours">0</div><div class="profile-score-l">Driving tours</div></div>
         <div class="profile-score-item"><div class="profile-score-n" id="pub-score-views">0</div><div class="profile-score-l">Hot views</div></div>
         <div class="profile-score-item"><div class="profile-score-n" id="pub-score-todos">0</div><div class="profile-score-l">Hot to-dos</div></div>
+        <div class="profile-score-item"><div class="profile-score-n" id="pub-score-likes">0</div><div class="profile-score-l">Total likes</div></div>
       </div>
 
       <!-- TABS -->
       <div class="profile-tabs">
         <button class="profile-tab active" data-ptab="feed" onclick="switchProfileTab(this)">Feed</button>
-        <button class="profile-tab" data-ptab="nights" onclick="switchProfileTab(this)">Nights out</button>
+        <button class="profile-tab" data-ptab="nights" onclick="switchProfileTab(this)">Nights camped</button>
+        <button class="profile-tab" data-ptab="trips-planned" onclick="switchProfileTab(this)">Trips planned</button>
         <button class="profile-tab" data-ptab="reviews" onclick="switchProfileTab(this)">Campsite reviews</button>
         <button class="profile-tab" data-ptab="boondocking" onclick="switchProfileTab(this)">Boondocking</button>
         <button class="profile-tab" data-ptab="tours" onclick="switchProfileTab(this)">Driving tours</button>
@@ -2883,6 +3374,9 @@ loadPlatformStats();
       </div>
       <div id="pub-ptab-nights" class="pub-ptab" style="display:none;">
         <div id="pub-nights-list"><div class="profile-empty">No completed trips yet.</div></div>
+      </div>
+      <div id="pub-ptab-trips-planned" class="pub-ptab" style="display:none;">
+        <div id="pub-trips-planned-list"><div class="profile-empty">No upcoming trips.</div></div>
       </div>
       <div id="pub-ptab-reviews" class="pub-ptab" style="display:none;">
         <div id="pub-reviews-list"><div class="profile-empty">No campsite reviews yet.</div></div>
@@ -2906,6 +3400,152 @@ loadPlatformStats();
     </div>
   </div>
 </div>>
+
+
+<!-- POST SUBMISSION FORM -->
+<div id="post-overlay" style="display:none;position:fixed;inset:0;background:rgba(22,34,29,0.6);z-index:200;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto;" onclick="if(event.target===this)closePostForm()">
+  <div style="background:var(--surf);border-radius:8px;width:100%;max-width:600px;margin:20px auto;overflow:hidden;">
+    
+    <!-- Form header -->
+    <div style="background:var(--pine);padding:18px 22px;display:flex;align-items:center;justify-content:space-between;">
+      <div style="font-family:'Zilla Slab',serif;font-weight:700;font-size:18px;color:var(--surf);">Share something</div>
+      <button onclick="closePostForm()" style="background:none;border:none;color:rgba(253,252,248,0.7);font-size:20px;cursor:pointer;line-height:1;">✕</button>
+    </div>
+
+    <!-- Category selector -->
+    <div style="padding:18px 22px 0;">
+      <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--pacific-deep);margin-bottom:10px;">Category</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;" id="post-cats">
+        <button class="post-cat-btn active" data-cat="hot-todo" onclick="selectPostCat(this)">🍽 Hot To-Do</button>
+        <button class="post-cat-btn" data-cat="hot-view" onclick="selectPostCat(this)">👁 Hot View</button>
+        <button class="post-cat-btn" data-cat="driving-tour" onclick="selectPostCat(this)">🚗 Driving Tour</button>
+        <button class="post-cat-btn" data-cat="boondocking" onclick="selectPostCat(this)">🏕 Boondocking</button>
+        <button class="post-cat-btn" data-cat="gear" onclick="selectPostCat(this)">⚙️ Gear Up</button>
+      </div>
+
+      <!-- Photos -->
+      <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--pacific-deep);margin-bottom:8px;">Photos <span style="color:var(--muted);font-size:9px;">(up to 6)</span></div>
+      <div id="post-photo-area" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+        <label style="width:80px;height:80px;border:2px dashed var(--line-strong);border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:22px;color:var(--muted);flex-shrink:0;">
+          📷<input type="file" id="post-photos" accept="image/*" multiple style="display:none" onchange="handlePostPhotos(this)">
+        </label>
+        <div id="post-photo-previews" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+      </div>
+
+      <!-- Headline -->
+      <div style="margin-bottom:14px;">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--pacific-deep);margin-bottom:6px;">Headline *</div>
+        <input type="text" id="post-headline" placeholder="e.g. Best view in Malibu" maxlength="100" style="width:100%;font-family:'Inter',sans-serif;font-size:15px;padding:10px 12px;border:1px solid var(--line-strong);border-radius:4px;color:var(--ink);background:var(--paper);box-sizing:border-box;">
+      </div>
+
+      <!-- Body -->
+      <div style="margin-bottom:14px;">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--pacific-deep);margin-bottom:6px;">Description *</div>
+        <textarea id="post-body" placeholder="Tell people what makes this worth their time…" rows="4" style="width:100%;font-family:'Inter',sans-serif;font-size:14px;padding:10px 12px;border:1px solid var(--line-strong);border-radius:4px;color:var(--ink);background:var(--paper);resize:vertical;box-sizing:border-box;"></textarea>
+      </div>
+
+      <!-- Location (hidden for gear) -->
+      <div id="post-location-section" style="margin-bottom:14px;">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--pacific-deep);margin-bottom:6px;">Location</div>
+        <input type="text" id="post-location-name" placeholder="e.g. Malibu Pier, CA" style="width:100%;font-family:'Inter',sans-serif;font-size:14px;padding:10px 12px;border:1px solid var(--line-strong);border-radius:4px;color:var(--ink);background:var(--paper);box-sizing:border-box;margin-bottom:8px;">
+      </div>
+
+      <!-- Category-specific fields -->
+
+      <!-- Hot To-Do fields -->
+      <div id="post-todo-fields" style="margin-bottom:14px;">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--pacific-deep);margin-bottom:8px;">Type</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+          <button class="post-tag-btn active" data-val="Restaurant" onclick="selectTag(this,'todo-type')">🍽 Restaurant</button>
+          <button class="post-tag-btn" data-val="Shop" onclick="selectTag(this,'todo-type')">🛍 Shop</button>
+          <button class="post-tag-btn" data-val="Activity" onclick="selectTag(this,'todo-type')">🏄 Activity</button>
+        </div>
+        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--pacific-deep);margin-bottom:8px;">Cost</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="post-tag-btn" data-val="Free" onclick="selectTag(this,'todo-cost')">Free</button>
+          <button class="post-tag-btn active" data-val="$" onclick="selectTag(this,'todo-cost')">$</button>
+          <button class="post-tag-btn" data-val="$$" onclick="selectTag(this,'todo-cost')">$$</button>
+          <button class="post-tag-btn" data-val="$$$" onclick="selectTag(this,'todo-cost')">$$$</button>
+        </div>
+      </div>
+
+      <!-- Hot View fields -->
+      <div id="post-view-fields" style="display:none;margin-bottom:14px;">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--pacific-deep);margin-bottom:8px;">Best time of day</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="post-tag-btn" data-val="Sunrise" onclick="selectTag(this,'view-time')">🌅 Sunrise</button>
+          <button class="post-tag-btn active" data-val="Sunset" onclick="selectTag(this,'view-time')">🌇 Sunset</button>
+          <button class="post-tag-btn" data-val="Midday" onclick="selectTag(this,'view-time')">☀️ Midday</button>
+          <button class="post-tag-btn" data-val="Night" onclick="selectTag(this,'view-time')">🌙 Night</button>
+          <button class="post-tag-btn" data-val="Any time" onclick="selectTag(this,'view-time')">Any time</button>
+        </div>
+      </div>
+
+      <!-- Driving Tour fields -->
+      <div id="post-tour-fields" style="display:none;margin-bottom:14px;">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--pacific-deep);margin-bottom:6px;">Route</div>
+        <input type="text" id="post-tour-start" placeholder="Start point (e.g. Malibu, CA)" style="width:100%;font-family:'Inter',sans-serif;font-size:14px;padding:9px 12px;border:1px solid var(--line-strong);border-radius:4px;color:var(--ink);background:var(--paper);box-sizing:border-box;margin-bottom:8px;">
+        <input type="text" id="post-tour-end" placeholder="End point (e.g. Santa Barbara, CA)" style="width:100%;font-family:'Inter',sans-serif;font-size:14px;padding:9px 12px;border:1px solid var(--line-strong);border-radius:4px;color:var(--ink);background:var(--paper);box-sizing:border-box;">
+      </div>
+
+      <!-- Boondocking fields -->
+      <div id="post-boondock-fields" style="display:none;margin-bottom:14px;">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+          <button class="post-tag-btn" data-val="fire-ok" onclick="toggleBoondockTag(this)">🔥 Fires OK</button>
+          <button class="post-tag-btn" data-val="tent-surface" onclick="toggleBoondockTag(this)">⛺ Tent surface</button>
+          <button class="post-tag-btn" data-val="dog-friendly" onclick="toggleBoondockTag(this)">🐕 Dog friendly</button>
+          <button class="post-tag-btn" data-val="free" onclick="toggleBoondockTag(this)">Free</button>
+        </div>
+        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--pacific-deep);margin-bottom:8px;">Vehicle access</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="post-tag-btn active" data-val="Stock" onclick="selectTag(this,'vehicle')">Stock</button>
+          <button class="post-tag-btn" data-val="High clearance" onclick="selectTag(this,'vehicle')">High clearance</button>
+          <button class="post-tag-btn" data-val="4WD required" onclick="selectTag(this,'vehicle')">4WD required</button>
+        </div>
+      </div>
+
+      <!-- Gear Up fields -->
+      <div id="post-gear-fields" style="display:none;margin-bottom:14px;">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--pacific-deep);margin-bottom:6px;">Brand</div>
+        <input type="text" id="post-gear-brand" placeholder="e.g. Jackery" style="width:100%;font-family:'Inter',sans-serif;font-size:14px;padding:9px 12px;border:1px solid var(--line-strong);border-radius:4px;color:var(--ink);background:var(--paper);box-sizing:border-box;margin-bottom:10px;">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--pacific-deep);margin-bottom:6px;">Price range</div>
+        <input type="text" id="post-gear-price" placeholder="e.g. $120–$160" style="width:100%;font-family:'Inter',sans-serif;font-size:14px;padding:9px 12px;border:1px solid var(--line-strong);border-radius:4px;color:var(--ink);background:var(--paper);box-sizing:border-box;margin-bottom:10px;">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--pacific-deep);margin-bottom:6px;">Buy link (Amazon or other)</div>
+        <input type="url" id="post-gear-url" placeholder="https://amazon.com/..." style="width:100%;font-family:'Inter',sans-serif;font-size:14px;padding:9px 12px;border:1px solid var(--line-strong);border-radius:4px;color:var(--ink);background:var(--paper);box-sizing:border-box;">
+      </div>
+
+      <!-- GPS (boondocking/view) -->
+      <div id="post-gps-section" style="display:none;margin-bottom:14px;">
+        <div style="background:rgba(177,87,47,0.07);border-left:3px solid var(--rust);border-radius:3px;padding:12px 14px;">
+          <p style="font-size:13px;color:#43403a;margin-bottom:10px;">📍 GPS coordinates are only revealed after someone acknowledges responsible camping.</p>
+          <label style="display:flex;align-items:flex-start;gap:8px;font-size:13px;cursor:pointer;">
+            <input type="checkbox" id="post-gps-ack" onchange="document.getElementById('post-gps-coords').style.display=this.checked?'block':'none'" style="margin-top:2px;">
+            I camp responsibly — Leave No Trace, pack out all trash, respect fire restrictions.
+          </label>
+          <div id="post-gps-coords" style="display:none;margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <input type="number" id="post-lat" placeholder="Latitude 34.1234" step="0.0001" style="font-family:'Inter',sans-serif;font-size:13px;padding:8px 10px;border:1px solid var(--line-strong);border-radius:3px;color:var(--ink);background:var(--paper);">
+            <input type="number" id="post-lng" placeholder="Longitude -118.1234" step="0.0001" style="font-family:'Inter',sans-serif;font-size:13px;padding:8px 10px;border:1px solid var(--line-strong);border-radius:3px;color:var(--ink);background:var(--paper);">
+          </div>
+        </div>
+      </div>
+
+      <!-- Dog friendly (all except gear) -->
+      <div id="post-dog-section" style="margin-bottom:18px;">
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;color:var(--ink);">
+          <input type="checkbox" id="post-dog" style="width:16px;height:16px;accent-color:var(--pine);">
+          🐕 Dog friendly
+        </label>
+      </div>
+
+      <!-- Submit -->
+      <div id="post-msg" style="display:none;font-family:'Space Mono',monospace;font-size:11px;padding:10px 12px;border-radius:3px;margin-bottom:12px;"></div>
+      <div style="display:flex;gap:10px;padding-bottom:22px;">
+        <button onclick="submitPost()" id="post-submit-btn" style="flex:1;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;background:var(--pine);color:var(--surf);border:none;padding:13px;border-radius:4px;cursor:pointer;font-weight:700;">Post it</button>
+        <button onclick="closePostForm()" style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;background:transparent;color:var(--muted);border:1px solid var(--line-strong);padding:13px 18px;border-radius:4px;cursor:pointer;">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- GATE OVERLAY — shown over gated panels -->
 <div class="gate-overlay" id="gate-overlay">
@@ -2936,8 +3576,12 @@ loadPlatformStats();
         <input type="text" id="prompt-name" placeholder="Your name" maxlength="40">
       </div>
       <div class="field">
+        <label>Home base (city, state)</label>
+        <input type="text" id="prompt-location" placeholder="e.g. Los Angeles, CA" maxlength="60">
+      </div>
+      <div class="field">
         <label>One-liner bio</label>
-        <input type="text" id="prompt-bio" placeholder="e.g. Dog dad, weekend camper, always looking for the next view" maxlength="120">
+        <input type="text" id="prompt-bio" placeholder="e.g. Weekend camper, always looking for the next view" maxlength="120">
       </div>
       <div class="form-actions" style="margin-top:16px">
         <button class="btn-primary" onclick="savePromptProfile()">Save & start exploring</button>
