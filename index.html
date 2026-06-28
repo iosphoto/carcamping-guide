@@ -425,11 +425,14 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--fog);color:var(--
 .hero-brand-heading .dot{color:var(--sun)}
 .hero-cta{display:inline-flex;align-items:center;gap:8px;margin-top:18px;background:var(--sun);color:var(--pine);font-family:'Space Mono',monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:700;padding:12px 22px;border-radius:3px;border:none;cursor:pointer;}
 .hero-cta:hover{background:var(--sun-deep)}
-.hero-platform-stats{display:flex;gap:22px;margin-top:20px;flex-wrap:wrap;}
-.hero-pstat{text-align:center;}
-.hero-pstat-n{font-family:'Zilla Slab',serif;font-weight:700;font-size:28px;color:var(--sun);line-height:1;}
-.hero-pstat-l{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(253,252,248,0.6);margin-top:4px;}
-.hero-pstat-div{width:1px;background:rgba(253,252,248,0.2);}
+.hero-platform-stats{display:flex;gap:0;margin-top:24px;flex-wrap:wrap;border:1px solid rgba(253,252,248,0.15);border-radius:4px;overflow:hidden;}
+.hero-pstat{text-align:center;flex:1 1 auto;padding:14px 10px;border-right:1px solid rgba(253,252,248,0.12);}
+.hero-pstat-n{font-family:'Zilla Slab',serif;font-weight:700;font-size:26px;color:var(--sun);line-height:1;}
+.hero-pstat-l{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:rgba(253,252,248,0.55);margin-top:6px;}
+.hero-pstat-div{display:none;}
+.pstat-link{text-decoration:none;display:block;}
+.pstat-link:hover .hero-pstat-l{color:var(--sun);transition:color .15s;}
+.pstat-link:hover .hero-pstat-n{opacity:0.85;transition:opacity .15s;}
 
 
 /* BOOKING FORM */
@@ -593,6 +596,64 @@ footer a{color:var(--pacific-deep);text-decoration:none}
   .form-box{padding:18px}
   .compass-upload{grid-template-columns:1fr 1fr}
 }
+
+/* CAMP CARD UPDATES */
+.camp-hero-photo{width:100%;height:180px;background:var(--fog-2);border-radius:4px 4px 0 0;overflow:hidden;margin:-18px -18px 14px;width:calc(100% + 36px);}
+.camp-hero-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--fog-2),var(--fog));font-size:32px;opacity:0.5;}
+.card-inner{padding:0;}
+.camp-name-link{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--sun);padding-bottom:1px;}
+.camp-name-link:hover{color:var(--pine);}
+.addr-link{color:var(--pacific-deep);text-decoration:none;font-size:12.5px;}
+.addr-link:hover{text-decoration:underline;}
+
+/* PROFILE PAGE */
+.profile-page{max-width:760px;margin:0 auto;padding:32px 22px 80px;}
+.profile-top{display:flex;gap:24px;align-items:flex-start;margin-bottom:32px;flex-wrap:wrap;}
+.profile-avatar-wrap{position:relative;flex-shrink:0;}
+.profile-avatar-img{width:96px;height:96px;border-radius:50%;object-fit:cover;background:var(--fog-2);display:flex;align-items:center;justify-content:center;font-size:36px;border:3px solid var(--surf);}
+.profile-avatar-edit{position:absolute;bottom:0;right:0;background:var(--pine);color:var(--surf);border:none;border-radius:50%;width:28px;height:28px;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.profile-info{flex:1;min-width:200px;}
+.profile-username{font-family:'Zilla Slab',serif;font-weight:700;font-size:26px;color:var(--ink);line-height:1.1;margin-bottom:4px;}
+.profile-bio{font-size:14px;color:var(--muted);margin-bottom:10px;}
+.profile-connect{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+.profile-connect-link{font-family:'Space Mono',monospace;font-size:11px;color:var(--pacific-deep);text-decoration:none;padding:4px 10px;border:1px solid rgba(44,111,121,0.3);border-radius:3px;}
+.profile-connect-link:hover{background:rgba(44,111,121,0.08);}
+.profile-edit-btn{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;background:transparent;color:var(--muted);border:1px solid var(--line-strong);padding:6px 12px;border-radius:3px;cursor:pointer;}
+.profile-edit-btn:hover{color:var(--ink);border-color:var(--ink);}
+
+/* PROFILE SCOREBOARD */
+.profile-scoreboard{display:flex;gap:0;border:1px solid var(--line-strong);border-radius:4px;overflow:hidden;margin-bottom:32px;}
+.profile-score-item{flex:1;text-align:center;padding:16px 8px;border-right:1px solid var(--line);}
+.profile-score-item:last-child{border-right:none;}
+.profile-score-n{font-family:'Zilla Slab',serif;font-weight:700;font-size:24px;color:var(--sun);line-height:1;}
+.profile-score-l{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-top:5px;}
+
+/* PROFILE TABS */
+.profile-tabs{display:flex;gap:0;border-bottom:2px solid var(--line);margin-bottom:24px;overflow-x:auto;}
+.profile-tab{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);padding:12px 16px;border:none;background:none;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;}
+.profile-tab:hover{color:var(--ink);}
+.profile-tab.active{color:var(--pine);border-bottom-color:var(--sun);}
+
+/* PROFILE FEED */
+.profile-feed{display:flex;flex-direction:column;gap:14px;}
+.feed-post{background:var(--paper);border:1px solid var(--line);border-radius:4px;overflow:hidden;display:flex;gap:0;}
+.feed-post-photo{width:120px;min-height:90px;background:var(--fog-2);flex-shrink:0;object-fit:cover;}
+.feed-post-photo-empty{width:120px;min-height:90px;background:var(--fog-2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:24px;opacity:0.5;}
+.feed-post-body{padding:14px 16px;flex:1;}
+.feed-post-type{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--pacific-deep);margin-bottom:4px;}
+.feed-post-title{font-family:'Zilla Slab',serif;font-weight:600;font-size:16px;color:var(--ink);margin-bottom:4px;}
+.feed-post-desc{font-size:12.5px;color:var(--muted);margin-bottom:8px;}
+.feed-post-footer{display:flex;align-items:center;gap:12px;font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);}
+.feed-post-likes{display:flex;align-items:center;gap:4px;}
+
+/* BOOKINGS LIST (profile) */
+.profile-bookings{display:flex;flex-direction:column;gap:10px;}
+.profile-booking-row{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:14px 16px;display:grid;grid-template-columns:80px 1fr auto;gap:12px;align-items:center;}
+.profile-booking-date{font-family:'Space Mono',monospace;font-size:11px;color:var(--sun-deep);font-weight:700;}
+.profile-booking-name{font-family:'Zilla Slab',serif;font-weight:600;font-size:15px;color:var(--ink);}
+.profile-booking-site{font-size:12px;color:var(--muted);}
+.profile-booking-rate{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);text-align:right;}
+.profile-empty{font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);text-align:center;padding:40px 20px;border:1px dashed var(--line-strong);border-radius:4px;}
 </style>
 </head>
 <body>
@@ -610,13 +671,19 @@ footer a{color:var(--pacific-deep);text-decoration:none}
         <button class="hero-cta" onclick="openSignin()" style="background:transparent;border:1px solid rgba(253,252,248,0.4);color:var(--surf);">Sign in</button>
       </div>
       <div class="hero-platform-stats">
-        <div class="hero-pstat"><div class="hero-pstat-n">40</div><div class="hero-pstat-l">Campgrounds</div></div>
+        <div class="hero-pstat"><a class="pstat-link" href="#campsite-reviews"><div class="hero-pstat-n">40</div><div class="hero-pstat-l">Campsite Reviews</div></a></div>
         <div class="hero-pstat-div"></div>
-        <div class="hero-pstat"><div class="hero-pstat-n" id="pstat-viewpoints">0</div><div class="hero-pstat-l">Viewpoints</div></div>
+        <div class="hero-pstat"><a class="pstat-link" href="#boondocking"><div class="hero-pstat-n">7</div><div class="hero-pstat-l">Boondocking</div></a></div>
         <div class="hero-pstat-div"></div>
-        <div class="hero-pstat"><div class="hero-pstat-n" id="pstat-explore">0</div><div class="hero-pstat-l">Places shared</div></div>
+        <div class="hero-pstat"><a class="pstat-link" href="#driving-tours"><div class="hero-pstat-n" id="pstat-driving-tours">0</div><div class="hero-pstat-l">Driving Tours</div></a></div>
         <div class="hero-pstat-div"></div>
-        <div class="hero-pstat"><div class="hero-pstat-n">7</div><div class="hero-pstat-l">Boondocking zones</div></div>
+        <div class="hero-pstat"><a class="pstat-link" href="#hot-views"><div class="hero-pstat-n" id="pstat-hot-views">0</div><div class="hero-pstat-l">Hot Views</div></a></div>
+        <div class="hero-pstat-div"></div>
+        <div class="hero-pstat"><a class="pstat-link" href="#hot-todos"><div class="hero-pstat-n" id="pstat-hot-todos">0</div><div class="hero-pstat-l">Hot To-Dos</div></a></div>
+        <div class="hero-pstat-div"></div>
+        <div class="hero-pstat"><a class="pstat-link" href="#community"><div class="hero-pstat-n" id="pstat-community">0</div><div class="hero-pstat-l">Car Camper Community</div></a></div>
+        <div class="hero-pstat-div"></div>
+        <div class="hero-pstat"><a class="pstat-link" href="#gear-up"><div class="hero-pstat-n" id="pstat-gear">8</div><div class="hero-pstat-l">Gear Up</div></a></div>
       </div>
     </div>
 
@@ -1016,46 +1083,46 @@ const REGIONS=[
   {key:'north',name:'Bay Area to Oregon Border',desc:'The long run north — dramatic coastline, old-growth redwoods, wild ocean.'}
 ];
 const CAMPS=[
-  {r:'socal',n:'San Onofre State Beach — Bluffs',d:'~75 mi / 1h 5m',p:'$45/night',o:1,b:1,bk:'Sites 11, 13 · Jun 29–30 · Conf 29719638 / 29719642',x:'Sandstone bluffs directly above the Pacific — Trestles surf break 1.5 miles south. Best dollar-for-view deal in SoCal.',a:'Surfing (Trestles) · Swimming · Beach walking · Fishing · Bluff hiking',s:'Sites 1–15 closest to bluff edge; 1–5 are top picks. 11 and 13 confirmed.'},
-  {r:'socal',n:'San Elijo State Beach',d:'~100 mi / 1h 30m',p:'$50–$70 premium',o:1,b:1,bk:'Premium 153, 170 · Nov 29–30 · Conf 29719655 / 29719663',x:'Bluff-backed sand above Cardiff Reef. Seaside Market across Hwy 101 sells the legendary Cardiff Crack tri-tip.',a:'Surfing · Snorkeling · Swimming · Fishing · Tide pools',s:'North bluff row 145–171: most spacious, best ocean exposure. Avoid 73–130.'},
-  {r:'socal',n:'South Carlsbad State Beach',d:'~90 mi / 1h 20m',p:'$45–$78 premium',o:1,b:1,bk:'Premium 203 · Sep 15 · Conf 30130032',x:'Largest bluff campground in San Diego — 3 miles of Pacific views from 43 feet up.',a:'Surfing · Swimming · Beach walking · Whale/dolphin watching · Tide pools',s:'Bluff rows 4–72 and 156–225 ocean-side. Southern section (156+) best privacy.'},
-  {r:'socal',n:'Crystal Cove SP — Moro',d:'~55 mi / 50m',p:'$46–$75/night',o:1,b:1,bk:'Premium 047, 041 · Nov 11–12 · Conf 29772460',x:'Three loops above pristine Newport Coast. Shake Shack and Beachcomber a short walk.',a:'Hiking · Mountain biking · Surfing · Snorkeling · Scuba · Tide pools',s:'Dolphin Circle strongest ocean views. Best-reviewed: 1, 5, 14, 20, 41, 47.'},
-  {r:'socal',n:'Leo Carrillo State Park',d:'~40 mi / 50m',p:'$45–$68/night',o:1,b:1,bk:'Hook Up E-109, E-020 · Aug 10–11 · Conf 29747958 / 29747466',x:'Malibu coast — sea cave, tide pools, kelp-forest snorkeling, sycamore-shaded canyon sites.',a:'Surfing · Snorkeling · Tide pools · Sea cave · Hiking · Kayaking',s:'Canyon sites 1–44: shaded, private. Beach 45–127: direct sand. Hook Up E confirmed.'},
-  {r:'socal',n:'Doheny State Beach',d:'~60 mi / 55m',p:'$35–$65/night',o:1,b:0,x:'Dana Point beach camping with direct sand access and Dana Point Harbor restaurants.',a:'Surfing · Swimming · Beach volleyball · Kayaking · Pier fishing',s:'Sites 1–30 beachfront-adjacent. 61–120 inland with more shade.'},
-  {r:'socal',n:'San Clemente State Beach',d:'~65 mi / 55m',p:'$35–$50/night',o:1,b:0,x:'Bluff campground above a wide sandy beach, walkable to the San Clemente Pier and downtown.',a:'Surfing · Swimming · Pier fishing · Hiking · Beach volleyball',s:'West-facing bluff sites. Only ~3 sites have true unobstructed views.'},
-  {r:'socal',n:'Bolsa Chica State Beach',d:'~30 mi / 35m',p:'$35–$65/night',o:1,b:0,x:'Closest ocean camping from LA — paved sites along PCH in Huntington Beach, wetlands next door.',a:'Surfing · Beach volleyball · Swimming · Bird watching',s:'Sites 36–53 and 183–205 ocean-facing. Best views: 40s and 190s.'},
-  {r:'sb',n:'Jalama Beach County Park',d:'~150 mi / 2h 20m',p:'~$45/night',o:1,b:1,bk:'Sites 31, 16 · Aug 12–13 · Conf 1328238 / 1328241',x:'Remote cult campground 14 miles from Lompoc. Wild coast, Jalama Burger, Vandenberg launches.',a:'Surfing · Clamming · Fishing · Rocket launches · Beach combing',s:'Sites 1–30 beachfront tier. 31 and 16 confirmed.'},
-  {r:'sb',n:'Refugio State Beach',d:'~115 mi / 1h 45m',p:'$35/night',o:1,b:1,bk:'Sites 45, 67 · Sep 1–2 · Conf 30132937',x:'Palm-lined cove with gentle surf and kelp-bed snorkeling. Most photogenic state beach in CA.',a:'Surfing · Snorkeling · Kayaking · Swimming · Fishing',s:'Sites 1–25 beachfront row. 45 and 67 confirmed.'},
-  {r:'sb',n:'El Capitan State Beach',d:'~120 mi / 1h 50m',p:'$35/night',o:1,b:0,x:'Oak-shaded bluff above a pristine cove, 17 miles west of Santa Barbara.',a:'Surfing · Snorkeling · Swimming · Canyon trails · Tide pools',s:'Bluff-top upper loops for views; canyon sites for shade and privacy.'},
-  {r:'smm',n:'Malibu Creek State Park',d:'~35 mi / 45m',p:'$45/night',o:0,b:1,nodog:1,bk:'Sites 29, 38 · Jun 24–25 · Conf 29719581 / 29719588',x:'Oak and sycamore canyon — MASH set, rock climbing, spring swimming hole. No dogs.',a:'Hiking · Rock climbing · MASH set · Creek swimming · Mountain biking',s:'Sites assigned on arrival. 29, 34, 14, 37, 38 top picks; 29 is the favorite.'},
-  {r:'smm',n:'Point Mugu SP — Sycamore Canyon',d:'~50 mi / 55m',p:'$35/night',o:0,b:0,x:'Mountains-meet-ocean canyon camping in the largest Santa Monica Mountains state park.',a:'Hiking · Mountain biking · Ocean day use · Bird watching · Equestrian',s:'Canyon: deeper sites more shade. Beach: ocean-adjacent but exposed.'},
-  {r:'smm',n:'Chilao — Angeles National Forest',d:'~45 mi / 55m',p:'~$25/night',o:0,b:0,x:'Pine forest at 5,300 feet on Angeles Crest Hwy. Wildly underused given proximity to LA.',a:'Hiking · Mountain biking · Stargazing · Nature center',s:'Outer-loop sites with most pine shade and road separation.'},
-  {r:'smm',n:'Chino Hills SP — Rolling M Ranch',d:'~40 mi / 45m',p:'$35/night',o:0,b:0,x:'Rolling grassland hills with long-range views. Spring wildflowers. Best Friday-night shakedown.',a:'Hiking · Mountain biking · Horseback riding · Wildflowers (spring)',s:'Hilltop sites with open grassland views. Spring visits only.'},
-  {r:'sd',n:'Cuyamaca Rancho — Paso Picacho',d:'~62 mi / 1h 10m',p:'$40/night',o:0,b:0,x:'5,000-foot elevation — cool nights, pines, real dark skies. Julian 15 minutes for dinner.',a:'Hiking · Peak summits · Mountain biking · Stargazing',s:'Sites 40–60: densest pine shade. 30, 70, 85: top picks.'},
-  {r:'sd',n:'Palomar Mountain — Doane Valley',d:'~75 mi / 1h 25m',p:'$35/night',o:0,b:0,x:'Cedar, fir, and oak at 5,500 feet. Palomar Observatory 6 miles away.',a:'Hiking · Fishing (Doane Pond) · Stargazing · Observatory · Birding',s:'Doane Valley loop. Meadow-exposure sites with good tree separation.'},
-  {r:'sd',n:'Anza-Borrego — Borrego Palm Canyon',d:'~135 mi / 2h 15m',p:'$35–$45/night',o:0,b:0,x:'California\'s largest state park — superbloom, Font\'s Point badlands, zero-light-pollution skies. Oct–May.',a:'Off-highway vehicle · Palm Canyon Trail · Stargazing · Wildflowers',s:'North and west perimeter outer-loop sites have most separation.'},
-  {r:'sd',n:'Cuyamaca Rancho — Green Valley',d:'~65 mi / 1h 15m',p:'$35/night',o:0,b:0,x:'Lower-elevation Cuyamaca with seasonal creek and waterfall access.',a:'Hiking · Creek swimming · Waterfall · Mountain biking',s:'Creek-adjacent sites in the shaded oak loops.'},
-  {r:'inland',n:'Cachuma Lake Recreation Area',d:'~115 mi / 1h 45m',p:'~$40–$55/night',o:0,b:1,bk:'Mohawk 529, Barona 288, Apache 231 & 230 · Jul 26–29 · Conf 2249020–2249053',x:'Santa Barbara County reservoir — boat rentals, fishing, winter eagles, wine country 20 min.',a:'Fishing · Boating · Kayaking · Eagle watching (winter) · Wine country',s:'Area A sites closest to lake. Waterfront row most dramatic views. 4 sites confirmed.'},
-  {r:'inland',n:'Serrano — Big Bear Lake',d:'~100 mi / 1h 50m',p:'~$40/night',o:0,b:0,x:'USFS campground on north shore of Big Bear Lake. Big Bear Village 3 miles east.',a:'Boating · Fishing · Mountain biking · Hiking · Skiing · Kayaking',s:'Sites 1–30 lakefront or lake-view. Outer sites more pine shade.'},
-  {r:'inland',n:'Silverwood Lake SRA',d:'~85 mi / 1h 20m',p:'$35/night',o:0,b:0,x:'Pine-ringed reservoir at 3,350 feet with swimming beach, boat rentals, and waterskiing.',a:'Swimming · Waterskiing · Boating · Fishing · Hiking',s:'Mesa Loop sites closest to lake.'},
-  {r:'inland',n:'Idyllwild Regional Park',d:'~100 mi / 1h 40m',p:'~$30/night',o:0,b:0,x:'Pine-and-granite mountain town at 5,400 feet — walkable to restaurants and galleries.',a:'Hiking · Rock climbing · Town dining · Birding',s:'Shaded sites set back from main road.'},
-  {r:'inland',n:'Lake Perris SRA',d:'~75 mi / 1h 10m',p:'$35/night',o:0,b:0,x:'Inland lake with developed beach and one of SoCal\'s better rock-climbing areas.',a:'Swimming · Waterskiing · Rock climbing · Fishing · Scuba',s:'Campground A and B loops closest to shore.'},
-  {r:'inland',n:'Lake Skinner Recreation Area',d:'~85 mi / 1h 20m',p:'~$30/night',o:0,b:0,x:'Riverside County park on 1,200-acre reservoir near Temecula.',a:'Fishing · Boating · Swimming · Windsurfing',s:'Sites closest to shoreline in north loops.'},
-  {r:'inland',n:'O\'Neill Regional Park',d:'~60 mi / 55m',p:'~$20/night',o:0,b:0,x:'Oak-shaded canyon park in Trabuco Canyon — reliable available-tonight campground.',a:'Hiking · Creek swimming · Mountain biking · Equestrian',s:'Creek-adjacent sites for atmosphere.'},
-  {r:'inland',n:'Caspers Wilderness Park',d:'~70 mi / 1h 5m',p:'~$20/night',o:0,b:0,x:'2,200-acre oak woodland wilderness in Santa Ana Mountains.',a:'Hiking · Equestrian · Mountain biking · Stargazing',s:'Outer-perimeter sites of Starr Ranch and Bell Canyon loops.'},
-  {r:'bigsur',n:'Pfeiffer Big Sur State Park',d:'~330 mi / 4h 30m',p:'$50–$60 riverfront',o:0,b:1,bk:'Sites 050, 091, 156, 056 · Sep 7–10 · Conf 30136001 / 30136589',x:'Flagship Big Sur campground under coast redwoods on the Big Sur River. Pfeiffer Beach 2 miles west.',a:'Hiking · River swimming · Redwood walks · Scenic drives',s:'Riverfront sites: 7,10,15,17,32,35,47,51,57,59,61,75,79,89,93,100,112,114,122,138,141,143,145,150,151.'},
-  {r:'bigsur',n:'Morro Strand State Beach',d:'~230 mi / 3h 10m',p:'$35/night',o:1,b:0,x:'Exposed beach campground within sight of Morro Rock.',a:'Windsurfing · Kite surfing · Fishing · Swimming',s:'Western-facing sites for ocean views and Morro Rock sightlines.'},
-  {r:'bigsur',n:'Pismo State Beach — North Beach',d:'~200 mi / 2h 50m',p:'$35/night',o:1,b:0,x:'Dune-backed beach camping. Monarch butterfly grove Oct–Feb; Oceano Dunes for ATVs.',a:'ATV/OHV · Butterfly viewing · Clamming · Surfing · Fishing',s:'North Beach loop sites closest to water.'},
-  {r:'bigsur',n:'Morro Bay State Park',d:'~230 mi / 3h 10m',p:'$35/night',o:0,b:0,x:'Bay-side camping in eucalyptus grove with heron rookery and kayak access to the estuary.',a:'Kayaking · Bird watching · Fishing · Hiking · Museum',s:'Sites closest to bay. Eucalyptus-grove sites under the heron nests.'},
-  {r:'bigsur',n:'Hearst San Simeon SP',d:'~250 mi / 3h 30m',p:'$35/night',o:0,b:0,x:'Best value base camp — Hearst Castle tours and elephant-seal rookery 5 miles north.',a:'Hearst Castle · Elephant seals · Hiking · Hwy 1',s:'Washburn: meadow-edge sites. San Simeon Creek: creek-adjacent.'},
-  {r:'north',n:'New Brighton State Beach',d:'~370 mi / 5h',p:'$35/night',o:1,b:0,x:'Monterey Bay bluff campground in Capitola — walkable to Capitola Village and surf.',a:'Surfing · Swimming · Capitola Village · Santa Cruz day trips',s:'Bluff-facing west sites for Monterey Bay views.'},
-  {r:'north',n:'Henry Cowell Redwoods SP',d:'~375 mi / 5h 10m',p:'$35/night',o:0,b:0,x:'Redwood-forest camping in Santa Cruz Mountains. Garden of Eden swimming hole.',a:'Hiking (Redwood Loop) · River swimming · Steam train · Mountain biking',s:'Main loop sites with densest redwood canopy.'},
-  {r:'north',n:'Half Moon Bay State Beach',d:'~390 mi / 5h 20m',p:'$35/night',o:1,b:0,x:'Four beaches south of San Francisco. Famous for Mavericks big-wave competition.',a:'Surfing · Whale watching · Fishing · Coastal trail · Mavericks',s:'West-facing bluff-edge sites at Francis Beach.'},
-  {r:'north',n:'Sonoma Coast SP — Bodega / Wrights',d:'~460 mi / 6h 10m',p:'$35/night',o:1,b:0,x:'Rugged Northern California coast at Bodega Bay, where Hitchcock filmed The Birds.',a:'Surfing · Crab fishing · Whale watching · Beachcombing · Birding',s:'Wrights Beach 1–30 oceanfront. Bodega Dunes: shelter from wind.'},
-  {r:'north',n:'Salt Point State Park',d:'~490 mi / 6h 30m',p:'$35/night',o:1,b:0,x:'Wild Sonoma Coast with sea stacks, tide pools, kelp-forest diving, and abalone habitat.',a:'Abalone diving · Spearfishing · Tide pools · Hiking · Mushroom foraging',s:'Gerstle Cove 1–20 most ocean-proximate.'},
-  {r:'north',n:'MacKerricher State Park',d:'~550 mi / 7h 20m',p:'$35/night',o:1,b:0,x:'Mendocino Coast — 9-mile coastal trail, seal watching, Fort Bragg\'s glass beach.',a:'Coastal trail · Seal watching · Beach glass · Skunk Train',s:'Sites closest to headlands trail.'},
-  {r:'north',n:'Sue-meg State Park',d:'~680 mi / 8h 45m',p:'$35/night',o:1,b:0,x:'Trinidad Head above one of the most dramatic headlands on the coast.',a:'Fishing (pier & surf) · Tide pools · Headland trails · Sea kayaking',s:'Sites closest to bluff edge for Trinidad Head views.'},
-  {r:'north',n:'Jedediah Smith Redwoods SP',d:'~745 mi / 9h 30m',p:'$35/night',o:0,b:0,x:'The Smith River runs beside some of the world\'s tallest trees. Howland Hill Road.',a:'Old-growth hiking · River swimming · Kayaking · Steelhead fishing',s:'Sites 1–30 along the river most coveted.'}
+  {r:'socal',n:'San Onofre State Beach — Bluffs',addr:'3021 Cristianitos Rd, San Clemente, CA 92672',phone:'1-800-444-7275',url:'https://www.reservecalifornia.com/Web/Default.aspx#!park/607',d:'~75 mi / 1h 5m',p:'$45/night',o:1,b:1,bk:'Sites 11, 13 · Jun 29–30 · Conf 29719638 / 29719642',x:'Sandstone bluffs directly above the Pacific — Trestles surf break 1.5 miles south. Best dollar-for-view deal in SoCal.',a:'Surfing (Trestles) · Swimming · Beach walking · Fishing · Bluff hiking',s:'Sites 1–15 closest to bluff edge; 1–5 are top picks. 11 and 13 confirmed.'},
+  {r:'socal',n:'San Elijo State Beach',addr:'2050 S Coast Hwy 101, Cardiff-by-the-Sea, CA 92007',phone:'1-800-444-7275',url:'https://www.reservecalifornia.com/Web/Default.aspx#!park/640',d:'~100 mi / 1h 30m',p:'$50–$70 premium',o:1,b:1,bk:'Premium 153, 170 · Nov 29–30 · Conf 29719655 / 29719663',x:'Bluff-backed sand above Cardiff Reef. Seaside Market across Hwy 101 sells the legendary Cardiff Crack tri-tip.',a:'Surfing · Snorkeling · Swimming · Fishing · Tide pools',s:'North bluff row 145–171: most spacious, best ocean exposure. Avoid 73–130.'},
+  {r:'socal',n:'South Carlsbad State Beach',addr:'7201 Carlsbad Blvd, Carlsbad, CA 92008',phone:'1-800-444-7275',url:'https://www.reservecalifornia.com/Web/Default.aspx#!park/641',d:'~90 mi / 1h 20m',p:'$45–$78 premium',o:1,b:1,bk:'Premium 203 · Sep 15 · Conf 30130032',x:'Largest bluff campground in San Diego — 3 miles of Pacific views from 43 feet up.',a:'Surfing · Swimming · Beach walking · Whale/dolphin watching · Tide pools',s:'Bluff rows 4–72 and 156–225 ocean-side. Southern section (156+) best privacy.'},
+  {r:'socal',n:'Crystal Cove SP — Moro',addr:'8471 N Coast Hwy, Laguna Beach, CA 92651',phone:'1-800-444-7275',url:'https://www.reservecalifornia.com/Web/Default.aspx#!park/573',d:'~55 mi / 50m',p:'$46–$75/night',o:1,b:1,bk:'Premium 047, 041 · Nov 11–12 · Conf 29772460',x:'Three loops above pristine Newport Coast. Shake Shack and Beachcomber a short walk.',a:'Hiking · Mountain biking · Surfing · Snorkeling · Scuba · Tide pools',s:'Dolphin Circle strongest ocean views. Best-reviewed: 1, 5, 14, 20, 41, 47.'},
+  {r:'socal',n:'Leo Carrillo State Park',addr:'35000 W Pacific Coast Hwy, Malibu, CA 90265',phone:'1-800-444-7275',url:'https://www.reservecalifornia.com/Web/Default.aspx#!park/598',d:'~40 mi / 50m',p:'$45–$68/night',o:1,b:1,bk:'Hook Up E-109, E-020 · Aug 10–11 · Conf 29747958 / 29747466',x:'Malibu coast — sea cave, tide pools, kelp-forest snorkeling, sycamore-shaded canyon sites.',a:'Surfing · Snorkeling · Tide pools · Sea cave · Hiking · Kayaking',s:'Canyon sites 1–44: shaded, private. Beach 45–127: direct sand. Hook Up E confirmed.'},
+  {r:'socal',n:'Doheny State Beach',addr:'25300 Dana Point Harbor Dr, Dana Point, CA 92629',phone:'1-800-444-7275',url:'https://www.reservecalifornia.com/Web/Default.aspx#!park/576',d:'~60 mi / 55m',p:'$35–$65/night',o:1,b:0,x:'Dana Point beach camping with direct sand access and Dana Point Harbor restaurants.',a:'Surfing · Swimming · Beach volleyball · Kayaking · Pier fishing',s:'Sites 1–30 beachfront-adjacent. 61–120 inland with more shade.'},
+  {r:'socal',n:'San Clemente State Beach',addr:'225 Avenida Calafia, San Clemente, CA 92672',phone:'1-800-444-7275',url:'https://www.reservecalifornia.com/Web/Default.aspx#!park/638',d:'~65 mi / 55m',p:'$35–$50/night',o:1,b:0,x:'Bluff campground above a wide sandy beach, walkable to the San Clemente Pier and downtown.',a:'Surfing · Swimming · Pier fishing · Hiking · Beach volleyball',s:'West-facing bluff sites. Only ~3 sites have true unobstructed views.'},
+  {r:'socal',n:'Bolsa Chica State Beach',addr:'18000 Pacific Coast Hwy, Huntington Beach, CA 92648',phone:'1-800-444-7275',url:'https://www.reservecalifornia.com/Web/Default.aspx#!park/563',d:'~30 mi / 35m',p:'$35–$65/night',o:1,b:0,x:'Closest ocean camping from LA — paved sites along PCH in Huntington Beach, wetlands next door.',a:'Surfing · Beach volleyball · Swimming · Bird watching',s:'Sites 36–53 and 183–205 ocean-facing. Best views: 40s and 190s.'},
+  {r:'sb',n:'Jalama Beach County Park',addr:'9999 Jalama Rd, Lompoc, CA 93436',phone:'1-800-444-7275',url:'https://www.slocountyparks.com/jalama-beach/',d:'~150 mi / 2h 20m',p:'~$45/night',o:1,b:1,bk:'Sites 31, 16 · Aug 12–13 · Conf 1328238 / 1328241',x:'Remote cult campground 14 miles from Lompoc. Wild coast, Jalama Burger, Vandenberg launches.',a:'Surfing · Clamming · Fishing · Rocket launches · Beach combing',s:'Sites 1–30 beachfront tier. 31 and 16 confirmed.'},
+  {r:'sb',n:'Refugio State Beach',addr:'10 Refugio Beach Rd, Goleta, CA 93117',phone:'1-800-444-7275',url:'https://www.reservecalifornia.com/Web/Default.aspx#!park/630',d:'~115 mi / 1h 45m',p:'$35/night',o:1,b:1,bk:'Sites 45, 67 · Sep 1–2 · Conf 30132937',x:'Palm-lined cove with gentle surf and kelp-bed snorkeling. Most photogenic state beach in CA.',a:'Surfing · Snorkeling · Kayaking · Swimming · Fishing',s:'Sites 1–25 beachfront row. 45 and 67 confirmed.'},
+  {r:'sb',n:'El Capitan State Beach',addr:'El Capitan State Beach, Goleta, CA 93117',phone:'1-800-444-7275',url:'https://www.reservecalifornia.com/Web/Default.aspx#!park/579',d:'~120 mi / 1h 50m',p:'$35/night',o:1,b:0,x:'Oak-shaded bluff above a pristine cove, 17 miles west of Santa Barbara.',a:'Surfing · Snorkeling · Swimming · Canyon trails · Tide pools',s:'Bluff-top upper loops for views; canyon sites for shade and privacy.'},
+  {r:'smm',n:'Malibu Creek State Park',addr:'1925 Las Virgenes Rd, Calabasas, CA 91302',phone:'1-800-444-7275',url:'https://www.reservecalifornia.com/Web/Default.aspx#!park/602',d:'~35 mi / 45m',p:'$45/night',o:0,b:0,bk:'Sites 29, 38 · Jun 24–25 · Conf 29719581 / 29719588',x:'Oak and sycamore canyon — MASH set, rock climbing, spring swimming hole. No dogs.',a:'Hiking · Rock climbing · MASH set · Creek swimming · Mountain biking',s:'Sites assigned on arrival. 29, 34, 14, 37, 38 top picks; 29 is the favorite.'},
+  {r:'smm',n:'Point Mugu SP — Sycamore Canyon',addr:'9000 W Pacific Coast Hwy, Malibu, CA 90265',phone:'1-800-444-7275',url:'https://www.reservecalifornia.com/Web/Default.aspx#!park/623',d:'~50 mi / 55m',p:'$35/night',o:0,b:0,x:'Mountains-meet-ocean canyon camping in the largest Santa Monica Mountains state park.',a:'Hiking · Mountain biking · Ocean day use · Bird watching · Equestrian',s:'Canyon: deeper sites more shade. Beach: ocean-adjacent but exposed.'},
+  {r:'smm',n:'Chilao — Angeles National Forest',addr:'Angeles Crest Hwy, La Cañada Flintridge, CA 91011',phone:'1-800-444-7275',url:'https://www.recreation.gov/camping/campgrounds/232452',d:'~45 mi / 55m',p:'~$25/night',o:0,b:0,x:'Pine forest at 5,300 feet on Angeles Crest Hwy. Wildly underused given proximity to LA.',a:'Hiking · Mountain biking · Stargazing · Nature center',s:'Outer-loop sites with most pine shade and road separation.'},
+  {r:'smm',n:'Chino Hills SP — Rolling M Ranch',addr:'4721 Sapphire Rd, Chino Hills, CA 91709',phone:'1-800-444-7275',url:'https://www.reservecalifornia.com/Web/Default.aspx#!park/568',d:'~40 mi / 45m',p:'$35/night',o:0,b:0,x:'Rolling grassland hills with long-range views. Spring wildflowers. Best Friday-night shakedown.',a:'Hiking · Mountain biking · Horseback riding · Wildflowers (spring)',s:'Hilltop sites with open grassland views. Spring visits only.'},
+  {r:'sd',n:'Cuyamaca Rancho — Paso Picacho',addr:'13652 CA-79, Julian, CA 92036',phone:'1-800-444-7275',url:'https://www.reservecalifornia.com/Web/Default.aspx#!park/574',d:'~62 mi / 1h 10m',p:'$40/night',o:0,b:0,x:'5,000-foot elevation — cool nights, pines, real dark skies. Julian 15 minutes for dinner.',a:'Hiking · Peak summits · Mountain biking · Stargazing',s:'Sites 40–60: densest pine shade. 30, 70, 85: top picks.'},
+  {r:'sd',n:'Palomar Mountain — Doane Valley',addr:'19952 State Park Dr, Palomar Mountain, CA 92060',phone:'1-800-444-7275',url:'https://www.reservecalifornia.com/Web/Default.aspx#!park/618',d:'~75 mi / 1h 25m',p:'$35/night',o:0,b:0,x:'Cedar, fir, and oak at 5,500 feet. Palomar Observatory 6 miles away.',a:'Hiking · Fishing (Doane Pond) · Stargazing · Observatory · Birding',s:'Doane Valley loop. Meadow-exposure sites with good tree separation.'},
+  {r:'sd',n:'Anza-Borrego — Borrego Palm Canyon',addr:'200 Palm Canyon Dr, Borrego Springs, CA 92004',phone:'1-800-444-7275',url:'https://www.reservecalifornia.com/Web/Default.aspx#!park/554',d:'~135 mi / 2h 15m',p:'$35–$45/night',o:0,b:0,x:'California\'s largest state park — superbloom, Font\'s Point badlands, zero-light-pollution skies. Oct–May.',a:'Off-highway vehicle · Palm Canyon Trail · Stargazing · Wildflowers',s:'North and west perimeter outer-loop sites have most separation.'},
+  {r:'sd',n:'Cuyamaca Rancho — Green Valley',addr:'13652 CA-79, Julian, CA 92036',phone:'1-800-444-7275',url:'https://www.reservecalifornia.com/Web/Default.aspx#!park/574',d:'~65 mi / 1h 15m',p:'$35/night',o:0,b:0,x:'Lower-elevation Cuyamaca with seasonal creek and waterfall access.',a:'Hiking · Creek swimming · Waterfall · Mountain biking',s:'Creek-adjacent sites in the shaded oak loops.'},
+  {r:'inland',n:'Cachuma Lake Recreation Area',addr:'2225 CA-154, Santa Barbara, CA 93105',phone:'1-800-444-7275',url:'https://www.countyofsb.org/1017/Cachuma-Lake',d:'~115 mi / 1h 45m',p:'~$40–$55/night',o:0,b:1,bk:'Mohawk 529, Barona 288, Apache 231 & 230 · Jul 26–29 · Conf 2249020–2249053',x:'Santa Barbara County reservoir — boat rentals, fishing, winter eagles, wine country 20 min.',a:'Fishing · Boating · Kayaking · Eagle watching (winter) · Wine country',s:'Area A sites closest to lake. Waterfront row most dramatic views. 4 sites confirmed.'},
+  {r:'inland',n:'Serrano — Big Bear Lake',addr:'40650 North Shore Dr, Fawnskin, CA 92333',phone:'1-800-444-7275',url:'https://www.recreation.gov/camping/campgrounds/233116',d:'~100 mi / 1h 50m',p:'~$40/night',o:0,b:0,x:'USFS campground on north shore of Big Bear Lake. Big Bear Village 3 miles east.',a:'Boating · Fishing · Mountain biking · Hiking · Skiing · Kayaking',s:'Sites 1–30 lakefront or lake-view. Outer sites more pine shade.'},
+  {r:'inland',n:'Silverwood Lake SRA',addr:'14651 Cedar Cir, Hesperia, CA 92345',phone:'1-800-444-7275',url:'https://www.reservecalifornia.com/Web/Default.aspx#!park/643',d:'~85 mi / 1h 20m',p:'$35/night',o:0,b:0,x:'Pine-ringed reservoir at 3,350 feet with swimming beach, boat rentals, and waterskiing.',a:'Swimming · Waterskiing · Boating · Fishing · Hiking',s:'Mesa Loop sites closest to lake.'},
+  {r:'inland',n:'Idyllwild Regional Park',addr:'54000 Riverside County Playground Dr, Idyllwild, CA 92549',phone:'1-800-444-7275',url:'https://rivcoparks.org/idyllwild-county-park/',d:'~100 mi / 1h 40m',p:'~$30/night',o:0,b:0,x:'Pine-and-granite mountain town at 5,400 feet — walkable to restaurants and galleries.',a:'Hiking · Rock climbing · Town dining · Birding',s:'Shaded sites set back from main road.'},
+  {r:'inland',n:'Lake Perris SRA',addr:'17801 Lake Perris Dr, Perris, CA 92571',phone:'1-800-444-7275',url:'https://www.reservecalifornia.com/Web/Default.aspx#!park/596',d:'~75 mi / 1h 10m',p:'$35/night',o:0,b:0,x:'Inland lake with developed beach and one of SoCal\'s better rock-climbing areas.',a:'Swimming · Waterskiing · Rock climbing · Fishing · Scuba',s:'Campground A and B loops closest to shore.'},
+  {r:'inland',n:'Lake Skinner Recreation Area',addr:'37701 Warren Rd, Winchester, CA 92596',phone:'1-800-444-7275',url:'https://rivcoparks.org/lake-skinner/',d:'~85 mi / 1h 20m',p:'~$30/night',o:0,b:0,x:'Riverside County park on 1,200-acre reservoir near Temecula.',a:'Fishing · Boating · Swimming · Windsurfing',s:'Sites closest to shoreline in north loops.'},
+  {r:'inland',n:'O\'Neill Regional Park',addr:'30892 Trabuco Canyon Rd, Trabuco Canyon, CA 92679',phone:'1-800-444-7275',url:'https://ocparks.com/parks-trails/oneill-regional-park',d:'~60 mi / 55m',p:'~$20/night',o:0,b:0,x:'Oak-shaded canyon park in Trabuco Canyon — reliable available-tonight campground.',a:'Hiking · Creek swimming · Mountain biking · Equestrian',s:'Creek-adjacent sites for atmosphere.'},
+  {r:'inland',n:'Caspers Wilderness Park',addr:'33401 Ortega Hwy, San Juan Capistrano, CA 92675',phone:'1-800-444-7275',url:'https://ocparks.com/parks-trails/caspers-wilderness-park',d:'~70 mi / 1h 5m',p:'~$20/night',o:0,b:0,x:'2,200-acre oak woodland wilderness in Santa Ana Mountains.',a:'Hiking · Equestrian · Mountain biking · Stargazing',s:'Outer-perimeter sites of Starr Ranch and Bell Canyon loops.'},
+  {r:'bigsur',n:'Pfeiffer Big Sur State Park',addr:'47225 CA-1, Big Sur, CA 93920',phone:'1-800-444-7275',url:'https://www.reservecalifornia.com/Web/Default.aspx#!park/619',d:'~330 mi / 4h 30m',p:'$50–$60 riverfront',o:0,b:1,bk:'Sites 050, 091, 156, 056 · Sep 7–10 · Conf 30136001 / 30136589',x:'Flagship Big Sur campground under coast redwoods on the Big Sur River. Pfeiffer Beach 2 miles west.',a:'Hiking · River swimming · Redwood walks · Scenic drives',s:'Riverfront sites: 7,10,15,17,32,35,47,51,57,59,61,75,79,89,93,100,112,114,122,138,141,143,145,150,151.'},
+  {r:'bigsur',n:'Morro Strand State Beach',addr:'1 State Park Rd, Morro Bay, CA 93442',phone:'1-800-444-7275',url:'https://www.reservecalifornia.com/Web/Default.aspx#!park/611',d:'~230 mi / 3h 10m',p:'$35/night',o:1,b:0,x:'Exposed beach campground within sight of Morro Rock.',a:'Windsurfing · Kite surfing · Fishing · Swimming',s:'Western-facing sites for ocean views and Morro Rock sightlines.'},
+  {r:'bigsur',n:'Pismo State Beach — North Beach',addr:'555 Pier Ave, Oceano, CA 93445',phone:'1-800-444-7275',url:'https://www.reservecalifornia.com/Web/Default.aspx#!park/620',d:'~200 mi / 2h 50m',p:'$35/night',o:1,b:0,x:'Dune-backed beach camping. Monarch butterfly grove Oct–Feb; Oceano Dunes for ATVs.',a:'ATV/OHV · Butterfly viewing · Clamming · Surfing · Fishing',s:'North Beach loop sites closest to water.'},
+  {r:'bigsur',n:'Morro Bay State Park',addr:'State Park Rd, Morro Bay, CA 93442',phone:'1-800-444-7275',url:'https://www.reservecalifornia.com/Web/Default.aspx#!park/610',d:'~230 mi / 3h 10m',p:'$35/night',o:0,b:0,x:'Bay-side camping in eucalyptus grove with heron rookery and kayak access to the estuary.',a:'Kayaking · Bird watching · Fishing · Hiking · Museum',s:'Sites closest to bay. Eucalyptus-grove sites under the heron nests.'},
+  {r:'bigsur',n:'Hearst San Simeon SP',addr:'500 San Simeon Creek Rd, Cambria, CA 93428',phone:'1-800-444-7275',url:'https://www.reservecalifornia.com/Web/Default.aspx#!park/590',d:'~250 mi / 3h 30m',p:'$35/night',o:0,b:0,x:'Best value base camp — Hearst Castle tours and elephant-seal rookery 5 miles north.',a:'Hearst Castle · Elephant seals · Hiking · Hwy 1',s:'Washburn: meadow-edge sites. San Simeon Creek: creek-adjacent.'},
+  {r:'north',n:'New Brighton State Beach',addr:'1500 Park Ave, Capitola, CA 95010',phone:'1-800-444-7275',url:'https://www.reservecalifornia.com/Web/Default.aspx#!park/614',d:'~370 mi / 5h',p:'$35/night',o:1,b:0,x:'Monterey Bay bluff campground in Capitola — walkable to Capitola Village and surf.',a:'Surfing · Swimming · Capitola Village · Santa Cruz day trips',s:'Bluff-facing west sites for Monterey Bay views.'},
+  {r:'north',n:'Henry Cowell Redwoods SP',addr:'101 N Big Trees Park Rd, Felton, CA 95018',phone:'1-800-444-7275',url:'https://www.reservecalifornia.com/Web/Default.aspx#!park/591',d:'~375 mi / 5h 10m',p:'$35/night',o:0,b:0,x:'Redwood-forest camping in Santa Cruz Mountains. Garden of Eden swimming hole.',a:'Hiking (Redwood Loop) · River swimming · Steam train · Mountain biking',s:'Main loop sites with densest redwood canopy.'},
+  {r:'north',n:'Half Moon Bay State Beach',addr:'95 Kelly Ave, Half Moon Bay, CA 94019',phone:'1-800-444-7275',url:'https://www.reservecalifornia.com/Web/Default.aspx#!park/589',d:'~390 mi / 5h 20m',p:'$35/night',o:1,b:0,x:'Four beaches south of San Francisco. Famous for Mavericks big-wave competition.',a:'Surfing · Whale watching · Fishing · Coastal trail · Mavericks',s:'West-facing bluff-edge sites at Francis Beach.'},
+  {r:'north',n:'Sonoma Coast SP — Bodega / Wrights',addr:'Hwy 1, Bodega Bay, CA 94923',phone:'1-800-444-7275',url:'https://www.reservecalifornia.com/Web/Default.aspx#!park/645',d:'~460 mi / 6h 10m',p:'$35/night',o:1,b:0,x:'Rugged Northern California coast at Bodega Bay, where Hitchcock filmed The Birds.',a:'Surfing · Crab fishing · Whale watching · Beachcombing · Birding',s:'Wrights Beach 1–30 oceanfront. Bodega Dunes: shelter from wind.'},
+  {r:'north',n:'Salt Point State Park',addr:'25050 Coast Hwy 1, Jenner, CA 95450',phone:'1-800-444-7275',url:'https://www.reservecalifornia.com/Web/Default.aspx#!park/637',d:'~490 mi / 6h 30m',p:'$35/night',o:1,b:0,x:'Wild Sonoma Coast with sea stacks, tide pools, kelp-forest diving, and abalone habitat.',a:'Abalone diving · Spearfishing · Tide pools · Hiking · Mushroom foraging',s:'Gerstle Cove 1–20 most ocean-proximate.'},
+  {r:'north',n:'MacKerricher State Park',addr:'24100 MacKerricher Park Rd, Fort Bragg, CA 95437',phone:'1-800-444-7275',url:'https://www.reservecalifornia.com/Web/Default.aspx#!park/601',d:'~550 mi / 7h 20m',p:'$35/night',o:1,b:0,x:'Mendocino Coast — 9-mile coastal trail, seal watching, Fort Bragg\'s glass beach.',a:'Coastal trail · Seal watching · Beach glass · Skunk Train',s:'Sites closest to headlands trail.'},
+  {r:'north',n:'Sue-meg State Park',addr:'Patrick\'s Point Dr, Trinidad, CA 95570',phone:'1-800-444-7275',url:'https://www.reservecalifornia.com/Web/Default.aspx#!park/648',d:'~680 mi / 8h 45m',p:'$35/night',o:1,b:0,x:'Trinidad Head above one of the most dramatic headlands on the coast.',a:'Fishing (pier & surf) · Tide pools · Headland trails · Sea kayaking',s:'Sites closest to bluff edge for Trinidad Head views.'},
+  {r:'north',n:'Jedediah Smith Redwoods SP',addr:'1375 Elk Valley Rd, Crescent City, CA 95531',phone:'1-800-444-7275',url:'https://www.reservecalifornia.com/Web/Default.aspx#!park/594',d:'~745 mi / 9h 30m',p:'$35/night',o:0,b:0,x:'The Smith River runs beside some of the world\'s tallest trees. Howland Hill Road.',a:'Old-growth hiking · River swimming · Kayaking · Steelhead fishing',s:'Sites 1–30 along the river most coveted.'}
 ];
 const TRIPS=[
   {name:'Malibu Creek',region:'Santa Monica Mountains',start:'2026-06-24',end:'2026-06-25',nights:[{d:'Jun 24',site:'Site 29',det:'Oak Tree, Rocks & Hills',rate:'$53.25',conf:'29719581'},{d:'Jun 25',site:'Site 38',det:'Trees & Meadow Access',rate:'$53.25',conf:'29719588'}]},
@@ -1214,21 +1281,25 @@ function campMatches(c){
 function campCard(c){
   const tags=[`<span class="t price">${c.p}</span>`];
   if(c.o)tags.push(`<span class="t ocean">🌊 Ocean view</span>`);
-  if(c.b)tags.push(`<span class="t booked">★ Booked</span>`);
-  if(c.nodog)tags.push(`<span class="t nodog">No dogs</span>`);
   const cardId=`camp-${c.n.replace(/[^a-z0-9]/gi,'').toLowerCase()}`;
-  return `<div class="card ${c.b?'booked':''}" id="${cardId}">
-    <div class="card-top"><h3>${c.n}</h3><div class="dist">${c.d}</div></div>
+  const mapsUrl=`https://maps.google.com/?q=${encodeURIComponent(c.addr||c.n)}`;
+  const nameEl=c.url?`<a href="${c.url}" target="_blank" class="camp-name-link">${c.n}</a>`:`<span>${c.n}</span>`;
+  return `<div class="card" id="${cardId}">
+    <div class="camp-hero-photo"><div class="camp-hero-placeholder"><span>📷</span></div></div>
+    <div class="card-inner">
+    <div class="card-top"><h3>${nameEl}</h3></div>
     <div class="tags">${tags.join('')}</div>
     <div class="blurb">${c.x}</div>
     <div class="meta">
       <div class="row"><span class="k">Activities</span>${c.a}</div>
       <div class="row"><span class="k">Top sites</span>${c.s}</div>
+      ${c.addr?`<div class="row"><span class="k">Address</span><a href="${mapsUrl}" target="_blank" class="addr-link">${c.addr}</a></div>`:''}
+      ${c.phone?`<div class="row"><span class="k">Phone</span><a href="tel:${c.phone}" class="addr-link">${c.phone}</a></div>`:''}
     </div>
-    ${c.b?`<div class="bookline">✓ ${c.bk}</div>`:''}
     <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);">
       <button class="sites-toggle" onclick="toggleSiteReviews('${cardId}','${c.n.replace(/'/g,"\'")}',this)">▶ Favorite sites</button>
       <button class="site-submit-btn" onclick="openSiteForm('${c.n.replace(/'/g,"\'")}')">+ Share a site</button>
+    </div>
     </div>
     <div class="campcard-sites" id="sites-${cardId}">
       <div class="loading" style="font-size:11px;padding:12px 0;">Loading…</div>
@@ -1809,14 +1880,17 @@ async function loadMyProfile(){
 }
 
 async function loadPlatformStats(){
-  const [{count:vp},{count:ex}]=await Promise.all([
-    db.from('spots').select('*',{count:'exact',head:true}).eq('status','approved').eq('type','viewpoint'),
-    db.from('spots').select('*',{count:'exact',head:true}).eq('status','approved').eq('type','explore')
+  const [{count:dt},{count:hv},{count:ht},{count:cm}]=await Promise.all([
+    db.from('spots').select('*',{count:'exact',head:true}).eq('status','approved').eq('type','driving-tour'),
+    db.from('spots').select('*',{count:'exact',head:true}).eq('status','approved').eq('type','hot-view'),
+    db.from('spots').select('*',{count:'exact',head:true}).eq('status','approved').eq('type','hot-todo'),
+    db.from('profiles').select('*',{count:'exact',head:true})
   ]);
-  const vs=document.getElementById('pstat-viewpoints');
-  const es=document.getElementById('pstat-explore');
-  if(vs)vs.textContent=vp||0;
-  if(es)es.textContent=ex||0;
+  const setEl=(id,val)=>{const e=document.getElementById(id);if(e)e.textContent=val||0;};
+  setEl('pstat-driving-tours',dt);
+  setEl('pstat-hot-views',hv);
+  setEl('pstat-hot-todos',ht);
+  setEl('pstat-community',cm);
 }
 
 async function renderHero(){
@@ -1997,48 +2071,148 @@ async function savePromptProfile(){
 function skipProfilePrompt(){document.getElementById('profile-prompt-overlay').classList.remove('open');promptAvatarFile=null;}
 
 /* PUBLIC PROFILE */
-async function openPubProfile(userId){
-  if(!userId)return;
-  document.getElementById('pub-profile-overlay').classList.add('open');
-  const {data:prof}=await db.from('profiles').select('*').eq('user_id',userId).single();
-  const {data:spots}=await db.from('spots').select('*').eq('user_id',userId).eq('status','approved').order('created_at',{ascending:false});
-  if(prof){
-    document.getElementById('pub-name').textContent=prof.display_name||'Anonymous';
-    document.getElementById('pub-bio').textContent=prof.bio||'';
-    const regionEl=document.getElementById('pub-region-n');
-    regionEl.textContent=prof.zip||'—';
-    regionEl.style.fontSize='16px';
-    if(prof.avatar_url){
-      document.getElementById('pub-avatar-img').src=prof.avatar_url;
-      document.getElementById('pub-avatar-img').style.display='block';
-      document.getElementById('pub-avatar-empty').style.display='none';
-    }
-    const links=[];
-    if(prof.instagram)links.push(`<a class="pub-link" href="https://instagram.com/${prof.instagram}" target="_blank">@${prof.instagram}</a>`);
-    if(prof.website)links.push(`<a class="pub-link" href="${prof.website}" target="_blank">${prof.website.replace('https://','')}</a>`);
-    document.getElementById('pub-links').innerHTML=links.join('');
-  }
-  const totalLikes=(spots||[]).reduce((s,x)=>s+(x.upvotes||0),0);
-  const pubSpotsCount=(spots||[]).length;
-  document.getElementById('pub-spots-n').textContent=pubSpotsCount;
-  document.getElementById('pub-likes-n').textContent=totalLikes;
-  // Show rank in pub profile
-  const pubScore=pubSpotsCount*4+Math.floor(totalLikes/2);
-  const pubRank=getRank(pubScore);
-  const pubNameEl=document.getElementById('pub-name');
-  if(pubNameEl)pubNameEl.innerHTML=(prof?.display_name||'—')+' '+rankBadgeHtml(pubRank);
-  const list=document.getElementById('pub-spot-list');
-  if(!spots?.length){list.innerHTML='<div class="empty" style="padding:20px 0">No spots shared yet.</div>';return;}
-  list.innerHTML=spots.map(s=>`<div class="pub-spot-row" onclick="closePubProfile();openSpotPanel(${JSON.stringify(s).replace(/"/g,'&quot;')},'${s.type}')">
-    ${s.photo_url?`<img class="pub-spot-thumb" src="${s.photo_url}" loading="lazy">`:`<div class="pub-spot-thumb-empty">${s.type==='viewpoint'?'📍':s.type==='explore'?'🗺':'🏕'}</div>`}
-    <div><div class="pub-spot-name">${s.name||s.description?.slice(0,50)||'Untitled'}</div><div class="pub-spot-type">${s.type} · ${s.upvotes||0} likes</div></div>
-  </div>`).join('');
+/* ===== PROFILE PAGE JS ===== */
+function switchProfileTab(btn){
+  document.querySelectorAll('.profile-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.pub-ptab').forEach(p=>p.style.display='none');
+  btn.classList.add('active');
+  const tab=btn.dataset.ptab;
+  const panel=document.getElementById('pub-ptab-'+tab);
+  if(panel)panel.style.display='block';
 }
+
+function handlePubAvatarChange(input){
+  const file=input.files[0];if(!file)return;
+  // Upload and save avatar — same flow as existing avatar upload
+  handleAvatarSelect(input);
+}
+
+async function openPubProfile(userId){
+  document.getElementById('pub-profile-overlay').classList.add('open');
+  // Reset tabs to feed
+  document.querySelectorAll('.profile-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.pub-ptab').forEach(p=>p.style.display='none');
+  const feedTab=document.querySelector('[data-ptab="feed"]');
+  if(feedTab)feedTab.classList.add('active');
+  const feedPanel=document.getElementById('pub-ptab-feed');
+  if(feedPanel)feedPanel.style.display='block';
+
+  // Show/hide owner controls
+  const isOwner=currentUser&&currentUser.id===userId;
+  const editBtn=document.getElementById('pub-edit-profile-btn');
+  const avatarEditBtn=document.getElementById('pub-avatar-edit-btn');
+  const bookingsTab=document.getElementById('pub-bookings-tab');
+  if(editBtn)editBtn.style.display=isOwner?'inline-block':'none';
+  if(avatarEditBtn)avatarEditBtn.style.display=isOwner?'flex':'none';
+  if(bookingsTab)bookingsTab.style.display=isOwner?'block':'none';
+
+  // Load profile data
+  const {data:profile}=await db.from('profiles').select('*').eq('id',userId).single();
+  if(!profile)return;
+
+  // Avatar
+  const avatarWrap=document.getElementById('pub-avatar-wrap');
+  if(profile.avatar_url){
+    avatarWrap.innerHTML=`<img src="${profile.avatar_url}" style="width:96px;height:96px;border-radius:50%;object-fit:cover;">`;
+  } else {
+    avatarWrap.innerHTML='<span style="font-size:36px;">🏕</span>';
+  }
+
+  // Name + bio
+  document.getElementById('pub-profile-name').textContent=profile.display_name||'Anonymous';
+  document.getElementById('pub-profile-bio').textContent=profile.bio||'';
+
+  // Connect links
+  const connectEl=document.getElementById('pub-profile-connect');
+  const links=[];
+  if(profile.instagram)links.push(`<a class="profile-connect-link" href="https://instagram.com/${profile.instagram.replace('@','')}" target="_blank">@${profile.instagram.replace('@','')}</a>`);
+  if(profile.website)links.push(`<a class="profile-connect-link" href="${profile.website}" target="_blank">Website</a>`);
+  connectEl.innerHTML=links.join('');
+
+  // Load spots for stats + feed
+  const {data:spots}=await db.from('spots').select('*').eq('user_id',userId).eq('status','approved').order('created_at',{ascending:false});
+  const allSpots=spots||[];
+
+  // Scoreboard
+  const byType=(t)=>allSpots.filter(s=>s.type===t).length;
+  document.getElementById('pub-score-nights').textContent=profile.nights_completed||0;
+  document.getElementById('pub-score-reviews').textContent=byType('campsite-review');
+  document.getElementById('pub-score-boondocking').textContent=byType('boondocking');
+  document.getElementById('pub-score-tours').textContent=byType('driving-tour');
+  document.getElementById('pub-score-views').textContent=byType('hot-view');
+  document.getElementById('pub-score-todos').textContent=byType('hot-todo');
+
+  // Feed
+  const typeLabel={
+    'campsite-review':'Campsite review',
+    'boondocking':'Boondocking spot',
+    'driving-tour':'Driving tour',
+    'hot-view':'Hot view',
+    'hot-todo':'Hot to-do',
+    'viewpoint':'Viewpoint',
+    'explore':'Explore spot'
+  };
+  const feedEl=document.getElementById('pub-feed-list');
+  if(!allSpots.length){
+    feedEl.innerHTML='<div class="profile-empty">No content shared yet.</div>';
+  } else {
+    feedEl.innerHTML=allSpots.map(s=>`
+      <div class="feed-post">
+        ${s.photo_url?`<img class="feed-post-photo" src="${s.photo_url}" alt="${s.name}">`:`<div class="feed-post-photo-empty">📷</div>`}
+        <div class="feed-post-body">
+          <div class="feed-post-type">${typeLabel[s.type]||s.type}</div>
+          <div class="feed-post-title">${s.name}</div>
+          <div class="feed-post-desc">${(s.description||'').slice(0,80)}${(s.description||'').length>80?'…':''}</div>
+          <div class="feed-post-footer">
+            <span class="feed-post-likes">▲ ${s.upvotes||0}</span>
+            ${s.region?`<span>${s.region}</span>`:''}
+          </div>
+        </div>
+      </div>`).join('');
+  }
+
+  // Category lists
+  const renderList=(elId,type)=>{
+    const el=document.getElementById(elId);
+    const filtered=allSpots.filter(s=>s.type===type);
+    if(!filtered.length){el.innerHTML='<div class="profile-empty">Nothing here yet.</div>';return;}
+    el.innerHTML=filtered.map(s=>`
+      <div class="feed-post">
+        ${s.photo_url?`<img class="feed-post-photo" src="${s.photo_url}" alt="${s.name}">`:`<div class="feed-post-photo-empty">📷</div>`}
+        <div class="feed-post-body">
+          <div class="feed-post-title">${s.name}</div>
+          <div class="feed-post-desc">${(s.description||'').slice(0,100)}…</div>
+          <div class="feed-post-footer"><span class="feed-post-likes">▲ ${s.upvotes||0}</span></div>
+        </div>
+      </div>`).join('');
+  };
+  renderList('pub-reviews-list','campsite-review');
+  renderList('pub-boondocking-list','boondocking');
+  renderList('pub-tours-list','driving-tour');
+  renderList('pub-views-list','hot-view');
+  renderList('pub-todos-list','hot-todo');
+
+  // Bookings (owner only)
+  if(isOwner){
+    const bookEl=document.getElementById('pub-bookings-list');
+    const {data:bookings}=await db.from('trips').select('*').eq('user_id',userId).order('start_date',{ascending:true});
+    if(!bookings||!bookings.length){
+      bookEl.innerHTML='<div class="profile-empty">No bookings logged yet.</div>';
+    } else {
+      bookEl.innerHTML=bookings.map(b=>`
+        <div class="profile-booking-row">
+          <div class="profile-booking-date">${b.start_date||''}</div>
+          <div><div class="profile-booking-name">${b.campground||''}</div><div class="profile-booking-site">${b.site||''} ${b.notes?'· '+b.notes:''}</div></div>
+          <div class="profile-booking-rate">${b.rate?'$'+b.rate+'/night':''}</div>
+        </div>`).join('');
+    }
+  }
+}
+
 function closePubProfile(){
   document.getElementById('pub-profile-overlay').classList.remove('open');
-  document.getElementById('pub-avatar-img').style.display='none';
-  document.getElementById('pub-avatar-empty').style.display='flex';
 }
+
 
 /* ===== BOOKINGS DB ===== */
 function openAddBooking(){
@@ -2672,27 +2846,79 @@ loadPlatformStats();
 
 <!-- PUBLIC PROFILE VIEW -->
 <div class="profile-overlay" id="pub-profile-overlay" onclick="if(event.target===this)closePubProfile()">
-  <div class="pub-profile">
-    <div class="pub-profile-hero">
-      <button class="profile-close" onclick="closePubProfile()">✕ close</button>
-      <div class="pub-avatar"><div class="pub-avatar-empty" id="pub-avatar-empty">🏕</div><img id="pub-avatar-img" style="display:none"></div>
-      <div class="pub-name" id="pub-name">—</div>
-      <div class="pub-bio" id="pub-bio"></div>
-      <div class="pub-links" id="pub-links"></div>
-      <div class="pub-stats">
-        <div class="pub-stat"><div class="pub-stat-n" id="pub-spots-n">0</div><div class="pub-stat-l">Spots shared</div></div>
-        <div class="pub-stat-div"></div>
-        <div class="pub-stat"><div class="pub-stat-n" id="pub-likes-n">0</div><div class="pub-stat-l">Total likes</div></div>
-        <div class="pub-stat-div"></div>
-        <div class="pub-stat"><div class="pub-stat-n" id="pub-region-n">—</div><div class="pub-stat-l">Home ZIP</div></div>
-      </div>
+  <div class="pub-profile" style="max-width:720px;width:100%;max-height:92vh;overflow-y:auto;background:var(--surf);border-radius:8px;">
+    <div style="background:var(--pine);padding:20px 24px 16px;border-radius:8px 8px 0 0;display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(253,252,248,0.6);">Member profile</span>
+      <button class="profile-close" onclick="closePubProfile()" style="background:transparent;border:none;color:rgba(253,252,248,0.7);cursor:pointer;font-family:'Space Mono',monospace;font-size:11px;">✕ close</button>
     </div>
-    <div class="pub-spots">
-      <h4>Spots shared</h4>
-      <div id="pub-spot-list"><div class="loading">Loading…</div></div>
+    <div class="profile-page" style="padding-top:28px;">
+
+      <!-- TOP: avatar + info -->
+      <div class="profile-top">
+        <div class="profile-avatar-wrap">
+          <div class="profile-avatar-img" id="pub-avatar-wrap"><span style="font-size:36px;">🏕</span></div>
+          <button class="profile-avatar-edit" id="pub-avatar-edit-btn" style="display:none;" onclick="document.getElementById('pub-avatar-file').click()">✎</button>
+          <input type="file" id="pub-avatar-file" accept="image/*" style="display:none" onchange="handlePubAvatarChange(this)">
+        </div>
+        <div class="profile-info">
+          <div class="profile-username" id="pub-profile-name">—</div>
+          <div class="profile-bio" id="pub-profile-bio"></div>
+          <div class="profile-connect" id="pub-profile-connect"></div>
+          <button class="profile-edit-btn" id="pub-edit-profile-btn" style="display:none;" onclick="openProfile()">Edit profile</button>
+        </div>
+      </div>
+
+      <!-- SCOREBOARD -->
+      <div class="profile-scoreboard">
+        <div class="profile-score-item"><div class="profile-score-n" id="pub-score-nights">0</div><div class="profile-score-l">Nights out</div></div>
+        <div class="profile-score-item"><div class="profile-score-n" id="pub-score-reviews">0</div><div class="profile-score-l">Campsite reviews</div></div>
+        <div class="profile-score-item"><div class="profile-score-n" id="pub-score-boondocking">0</div><div class="profile-score-l">Boondocking</div></div>
+        <div class="profile-score-item"><div class="profile-score-n" id="pub-score-tours">0</div><div class="profile-score-l">Driving tours</div></div>
+        <div class="profile-score-item"><div class="profile-score-n" id="pub-score-views">0</div><div class="profile-score-l">Hot views</div></div>
+        <div class="profile-score-item"><div class="profile-score-n" id="pub-score-todos">0</div><div class="profile-score-l">Hot to-dos</div></div>
+      </div>
+
+      <!-- TABS -->
+      <div class="profile-tabs">
+        <button class="profile-tab active" data-ptab="feed" onclick="switchProfileTab(this)">Feed</button>
+        <button class="profile-tab" data-ptab="nights" onclick="switchProfileTab(this)">Nights out</button>
+        <button class="profile-tab" data-ptab="reviews" onclick="switchProfileTab(this)">Campsite reviews</button>
+        <button class="profile-tab" data-ptab="boondocking" onclick="switchProfileTab(this)">Boondocking</button>
+        <button class="profile-tab" data-ptab="tours" onclick="switchProfileTab(this)">Driving tours</button>
+        <button class="profile-tab" data-ptab="views" onclick="switchProfileTab(this)">Hot views</button>
+        <button class="profile-tab" data-ptab="todos" onclick="switchProfileTab(this)">Hot to-dos</button>
+        <button class="profile-tab" data-ptab="bookings" id="pub-bookings-tab" style="display:none;" onclick="switchProfileTab(this)">Bookings</button>
+      </div>
+
+      <!-- TAB CONTENT -->
+      <div id="pub-ptab-feed" class="pub-ptab">
+        <div class="profile-feed" id="pub-feed-list"><div class="loading">Loading…</div></div>
+      </div>
+      <div id="pub-ptab-nights" class="pub-ptab" style="display:none;">
+        <div id="pub-nights-list"><div class="profile-empty">No completed trips yet.</div></div>
+      </div>
+      <div id="pub-ptab-reviews" class="pub-ptab" style="display:none;">
+        <div id="pub-reviews-list"><div class="profile-empty">No campsite reviews yet.</div></div>
+      </div>
+      <div id="pub-ptab-boondocking" class="pub-ptab" style="display:none;">
+        <div id="pub-boondocking-list"><div class="profile-empty">No boondocking spots shared yet.</div></div>
+      </div>
+      <div id="pub-ptab-tours" class="pub-ptab" style="display:none;">
+        <div id="pub-tours-list"><div class="profile-empty">No driving tours posted yet.</div></div>
+      </div>
+      <div id="pub-ptab-views" class="pub-ptab" style="display:none;">
+        <div id="pub-views-list"><div class="profile-empty">No hot views shared yet.</div></div>
+      </div>
+      <div id="pub-ptab-todos" class="pub-ptab" style="display:none;">
+        <div id="pub-todos-list"><div class="profile-empty">No hot to-dos added yet.</div></div>
+      </div>
+      <div id="pub-ptab-bookings" class="pub-ptab" style="display:none;">
+        <div class="profile-bookings" id="pub-bookings-list"><div class="loading">Loading…</div></div>
+      </div>
+
     </div>
   </div>
-</div>
+</div>>
 
 <!-- GATE OVERLAY — shown over gated panels -->
 <div class="gate-overlay" id="gate-overlay">
