@@ -19,7 +19,7 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap');
 :root{
-  --ink:#16221d;--pine:#2d4a3e;--pine-2:#375c4e;
+  --ink:#16221d;--pine:#3d6b55;--pine-2:#4a7d65;
   --pacific:#2c6f79;--pacific-deep:#1f545d;
   --sun:#d9963f;--sun-deep:#bd7c2c;--rust:#b1572f;
   --fog:#e6e8e2;--fog-2:#dde0d8;--paper:#faf9f4;--surf:#fdfcf8;
@@ -50,14 +50,14 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--fog);color:var(--
 
 
 /* TABS */
-.tabwrap{position:sticky;top:0;z-index:20;background:var(--surf);border-bottom:1px solid var(--line);}
-.tabs{max-width:1080px;margin:0 auto;display:flex;padding:0 22px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+
+
 .tabs::-webkit-scrollbar{display:none;}
-.tab{flex-shrink:0;appearance:none;border:none;background:none;cursor:pointer;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);padding:15px 12px;border-bottom:3px solid transparent;transition:color .15s,border-color .15s;white-space:nowrap;}
-.tab:hover{color:var(--ink)}
-.tab.active{color:var(--pine);border-bottom-color:var(--sun)}
-.tab .badge{display:inline-block;margin-left:5px;background:var(--fog-2);color:var(--muted);border-radius:10px;padding:1px 6px;font-size:10px;}
-.tab.active .badge{background:var(--sun);color:var(--pine)}
+
+
+
+
+
 
 /* LAYOUT */
 .wrap{max-width:1080px;margin:0 auto;padding:26px 22px 70px}
@@ -714,22 +714,12 @@ footer a{color:var(--pacific-deep);text-decoration:none}
 </header>
 
 
-<nav class="tabwrap">
-  <div class="tabs">
-    <button class="tab active" data-tab="bookings" id="tab-bookings" style="display:none">My Bookings <span class="badge">10</span></button>
-    <button class="tab active" data-tab="camps" id="tab-camps">Campgrounds <span class="badge">40</span></button>
-    <button class="tab" data-tab="boondock">Boondocking <span class="badge">7</span></button>
-    <button class="tab" data-tab="viewpoints">Viewpoints <span class="badge" id="vp-badge">0</span></button>
-    <button class="tab" data-tab="explore">Explore <span class="badge" id="ex-badge">0</span></button>
-    <button class="tab" data-tab="community">Community <span class="badge" id="comm-badge">0</span></button>
-    <button class="tab" data-tab="gear">Gear Up</button>
-  </div>
-</nav>
+
 
 <main>
 
 <!-- MY BOOKINGS -->
-<div class="wrap panel" id="panel-bookings">
+<div class="wrap" style="display:none" id="panel-bookings">
   <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:22px;flex-wrap:wrap;">
     <p class="intro" style="margin-bottom:0;flex:1">Your camping journal — every trip, every night, every site. Tap any trip to expand.</p>
     <div style="display:flex;gap:8px;flex-shrink:0;" id="booking-actions" style="display:none">
@@ -742,7 +732,7 @@ footer a{color:var(--pacific-deep);text-decoration:none}
 </div>
 
 <!-- CAMPGROUNDS -->
-<div class="wrap panel active" id="panel-camps">
+<div class="wrap" id="panel-camps">
   <div class="controls">
     <input type="text" class="search" id="search" placeholder="Search campgrounds, regions, activities…" autocomplete="off" autocomplete="off">
 
@@ -753,7 +743,7 @@ footer a{color:var(--pacific-deep);text-decoration:none}
 </div>
 
 <!-- BOONDOCKING -->
-<div class="wrap panel" id="panel-boondock">
+<div class="wrap" style="display:none" id="panel-boondock">
   <p class="intro">Free and low-cost dispersed camping on BLM and National Forest land. All zones are dog-friendly and prioritize where campfires are permitted.</p>
   <div class="firebox">
     <div class="ic">🔥</div>
@@ -775,7 +765,7 @@ footer a{color:var(--pacific-deep);text-decoration:none}
 </div>
 
 <!-- VIEWPOINTS -->
-<div class="fullpanel panel" id="panel-viewpoints">
+<div class="fullpanel" style="display:none" id="panel-viewpoints">
   <div class="map-header">
     <div class="map-stats">
       <div class="map-stat">
@@ -795,7 +785,7 @@ footer a{color:var(--pacific-deep);text-decoration:none}
 </div>
 
 <!-- EXPLORE -->
-<div class="fullpanel panel" id="panel-explore">
+<div class="fullpanel" style="display:none" id="panel-explore">
   <div class="map-header">
     <div class="map-stats">
       <div class="map-stat">
@@ -824,7 +814,7 @@ footer a{color:var(--pacific-deep);text-decoration:none}
 
 
 <!-- COMMUNITY -->
-<div class="fullpanel panel" id="panel-community">
+<div class="fullpanel" style="display:none" id="panel-community">
   <div class="map-header" style="flex-wrap:wrap;gap:10px;">
     <div class="map-stats">
       <div class="map-stat">
@@ -861,7 +851,7 @@ footer a{color:var(--pacific-deep);text-decoration:none}
 </div>
 
 <!-- GEAR UP -->
-<div class="wrap panel" id="panel-gear">
+<div class="wrap" style="display:none" id="panel-gear">
 
   <!-- Section header -->
   <div class="gear-header">
@@ -1178,12 +1168,18 @@ function updateAuthUI(){
     if(bo)bo.style.display='inline-block';
     if(bp)bp.style.display='inline-block';
     if(tabBookings)tabBookings.style.display='inline-block';
+    const loggedInNav=document.getElementById('logged-in-nav');
+    const navGreeting=document.getElementById('nav-greeting');
+    if(loggedInNav)loggedInNav.style.display='block';
+    if(navGreeting)navGreeting.textContent=myProfile?.display_name?.split(' ')[0]||currentUser.email.split('@')[0];
     updateGate(false);
   } else {
     if(g)g.style.display='none';
     if(bo)bo.style.display='none';
     if(bp)bp.style.display='none';
     if(tabBookings)tabBookings.style.display='none';
+    const loggedInNav2=document.getElementById('logged-in-nav');
+    if(loggedInNav2)loggedInNav2.style.display='none';
     updateGate(true);
   }
 }
@@ -2762,23 +2758,18 @@ async function upvoteFeedPost(id,type,btn){
 
 /* ===== TABS ===== */
 const PANELS={bookings:'panel',camps:'panel',boondock:'panel',viewpoints:'fullpanel',explore:'fullpanel',community:'fullpanel',gear:'panel'};
-document.querySelectorAll('.tab').forEach(t=>{
-  t.addEventListener('click',()=>{
-    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
-    document.querySelectorAll('.panel,.fullpanel').forEach(x=>x.classList.remove('active'));
-    t.classList.add('active');
-    document.getElementById('panel-'+t.dataset.tab).classList.add('active');
-    const tab=t.dataset.tab;
-    if(PANELS[tab]==='panel')window.scrollTo({top:document.querySelector('.tabwrap').offsetTop-1,behavior:'instant'});
-    updateGate(!currentUser);
-    if(tab==='boondock')loadBoondockSpots();
-    if(tab==='viewpoints')initMap('viewpoint');
-    if(tab==='explore')initMap('explore');
-    if(tab==='community')loadCommunity();
-    if(tab==='gear')renderGear();
-  });
-});
+
 document.getElementById('search').addEventListener('input',e=>{campState.q=e.target.value;renderCamps();});
+
+
+function showPanel(id){
+  document.querySelectorAll('.wrap,.fullpanel').forEach(p=>{
+    if(p.id&&p.id.startsWith('panel-')) p.style.display='none';
+  });
+  const target=document.getElementById('panel-'+id);
+  if(target)target.style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
 
 /* ===== INIT ===== */
 // Show logged-out hero immediately, auth state will update it
