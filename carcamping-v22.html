@@ -2411,11 +2411,13 @@ async function shareMyTrips(){
 // Public visitor view — anyone (even logged out) opening a shared link
 async function openPublicShare(userId){
   if(!userId)return;
-  const page=document.getElementById('share-page');
   const {data:prof}=await db.from('profiles').select('display_name,bio,instagram,avatar_url').eq('user_id',userId).maybeSingle();
   const {data:trips}=await db.from('shared_trips').select('*').eq('user_id',userId).order('start_date',{ascending:true});
   const list=trips||[];
   const name=prof?.display_name||'A fellow camper';
+  // Query the overlay AFTER awaits so it exists even when called during initial page parse
+  const page=document.getElementById('share-page');
+  if(!page)return;
   document.getElementById('share-page-title').textContent=name+'’s camping trips';
   try{document.title=name+'’s camping trips · carcamping.guide';}catch(e){}
   document.getElementById('share-profile-strip').innerHTML=shareProfileStripHTML(prof);
@@ -3298,7 +3300,8 @@ document.getElementById('hero-logged-out').style.display='block';
 renderTrips();renderCamps();renderZones();
 loadPlatformStats();
 // Deep-link: open a shared trips view when the URL carries ?user= or ?trip=
-handleShareDeepLink();
+// Run after the full document (incl. the share-page overlay markup below) is parsed.
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',handleShareDeepLink);}else{handleShareDeepLink();}
 </script>
 
 <!-- MY PROFILE MODAL -->
