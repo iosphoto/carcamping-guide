@@ -13,7 +13,7 @@
 <meta name="twitter:description" content="Community-built car camping guide. Find your site. Find your vibe.">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>carcamping.guide · The best sights at the best sites</title>
-<!-- v25 · profile as full page (URL routing, back-button) + members directory + avatar re-upload fix -->
+<!-- v24 · shareable profile pages (?profile= deep link + Share page button) + avatar re-upload fix (unique filenames) -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet">
 <style>
@@ -372,10 +372,6 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--fog);color:var(--
 
 /* PUBLIC PROFILE VIEW */
 .pub-profile{background:var(--surf);border-radius:8px;width:100%;max-width:620px;max-height:92vh;overflow-y:auto;}
-/* Public profile renders as a full PAGE (not a floating modal). Edit form keeps the modal look. */
-#pub-profile-overlay{background:var(--fog);align-items:flex-start;padding:0;}
-#pub-profile-overlay .pub-profile{max-width:880px;width:100%;margin:0 auto;min-height:100vh;max-height:none;border-radius:0;box-shadow:0 0 50px rgba(22,34,29,0.08);}
-#pub-profile-overlay .pub-profile > div:first-child{position:sticky;top:0;z-index:5;border-radius:0;}
 .pub-profile-hero{background:var(--pine);padding:28px 24px 24px;}
 .pub-avatar{width:80px;height:80px;border-radius:50%;overflow:hidden;background:var(--fog-2);border:4px solid rgba(253,252,248,0.25);margin-bottom:14px;}
 .pub-avatar img{width:100%;height:100%;object-fit:cover;}
@@ -2160,11 +2156,8 @@ function handlePubAvatarChange(input){
 }
 
 let viewingProfileId=null;
-async function openPubProfile(userId, fromHistory){
+async function openPubProfile(userId){
   viewingProfileId=userId;
-  // Make it a real page: reflect in the URL + scroll to top (skip when restoring via Back/Forward)
-  if(!fromHistory){ try{ history.pushState({pp:userId}, '', '?profile='+userId); }catch(e){} }
-  window.scrollTo(0,0);
   document.getElementById('pub-profile-overlay').classList.add('open');
   // Reset tabs to feed
   document.querySelectorAll('.profile-tab').forEach(t=>t.classList.remove('active'));
@@ -2302,15 +2295,7 @@ async function openPubProfile(userId, fromHistory){
 
 function closePubProfile(){
   document.getElementById('pub-profile-overlay').classList.remove('open');
-  // Clear the ?profile= param so the address bar returns to the app
-  if(new URLSearchParams(location.search).get('profile')){ try{ history.pushState({}, '', location.pathname); }catch(e){} }
 }
-// Browser Back/Forward navigates the profile page like a real page
-window.addEventListener('popstate', ()=>{
-  const id=new URLSearchParams(location.search).get('profile');
-  if(id){ openPubProfile(id, true); }
-  else { const ov=document.getElementById('pub-profile-overlay'); if(ov)ov.classList.remove('open'); }
-});
 function copyProfileLink(){
   if(!viewingProfileId)return;
   const url=`${location.origin}?profile=${viewingProfileId}`;
@@ -2450,7 +2435,7 @@ async function openPublicShare(userId){
 async function handleShareDeepLink(){
   const p=new URLSearchParams(location.search);
   const prof=p.get('profile');
-  if(prof){ openPubProfile(prof, true); return; }
+  if(prof){ openPubProfile(prof); return; }
   const u=p.get('user'), slug=p.get('trip');
   if(u){ openPublicShare(u); return; }
   if(slug){
@@ -3383,7 +3368,7 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
 
 <!-- PUBLIC PROFILE VIEW -->
 <div class="profile-overlay" id="pub-profile-overlay" onclick="if(event.target===this)closePubProfile()">
-  <div class="pub-profile" style="background:var(--surf);">
+  <div class="pub-profile" style="max-width:720px;width:100%;max-height:92vh;overflow-y:auto;background:var(--surf);border-radius:8px;">
     <div style="background:var(--pine);padding:20px 24px 16px;border-radius:8px 8px 0 0;display:flex;justify-content:space-between;align-items:center;">
       <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(253,252,248,0.6);">Member profile</span>
       <div style="display:flex;gap:10px;align-items:center;">
