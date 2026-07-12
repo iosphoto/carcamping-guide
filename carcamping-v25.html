@@ -376,6 +376,9 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--fog);color:var(--
 #pub-profile-overlay{background:var(--fog);align-items:flex-start;padding:0;}
 #pub-profile-overlay .pub-profile{max-width:880px;width:100%;margin:0 auto;min-height:100vh;max-height:none;border-radius:0;box-shadow:0 0 50px rgba(22,34,29,0.08);}
 #pub-profile-overlay .pub-profile > div:first-child{position:sticky;top:0;z-index:5;border-radius:0;}
+/* Edit form must sit ABOVE the profile page/popup (both were z-index 150, so the form was hidden behind it) */
+#profile-overlay{z-index:260;}
+#profile-prompt-overlay{z-index:260;}
 .pub-profile-hero{background:var(--pine);padding:28px 24px 24px;}
 .pub-avatar{width:80px;height:80px;border-radius:50%;overflow:hidden;background:var(--fog-2);border:4px solid rgba(253,252,248,0.25);margin-bottom:14px;}
 .pub-avatar img{width:100%;height:100%;object-fit:cover;}
