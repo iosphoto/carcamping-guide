@@ -233,3 +233,26 @@ Every **Hot To-Do** carries: GPS pin + carousel + write-up + upvote.
 2. **Phase 2 — Map & media:** map browse/filter over pinned content; video posts for driving tours; Hot To-Do subcategory composer.
 3. **Phase 3 — Itinerary:** trip planner + planned→completed conversion.
 4. **Phase 4 — Monetize & rank:** gear/sponsorship surfaces; per-user leaderboards; OG previews.
+
+---
+
+## Feed & Native Ads (design detail)
+
+**One mobile-first stream, everywhere.** Design for a single column — most traffic is phones. No parallel/second stream (needs horizontal room phones don't have). The same standard-post card powers all three surfaces:
+- **Main page:** the master aggregate feed (everyone's posts, sits beneath the leaderboard).
+- **Profile page:** that member's posts in sequence = their journal.
+- (Both already run on `renderFeedItem`.)
+
+**Filter chips + sort** at the top of the feed:
+- Chips: **All · Campsites · Boondocking · Driving Tours · Hot To-Dos · Gear**. Tapping "Gear" gives a gear-only stream on demand — this is how "gear as its own part of the feed" is satisfied without a second column.
+- Sort: **Latest** and **Top** (by upvotes). "Top" is where community ranking pays off — best content rises — and it doubles as the SEO quality signal later.
+
+**Native ads = featured product posts, not banners.** Gear is already a post type, so an advertiser is simply a member whose gear post is **featured/sponsored**:
+- Reuses the exact post infrastructure (photo/carousel, write-up, buy link) — **no separate ad system to build**.
+- Interspersed in the single stream at a cadence (~1 sponsored per 6–8 organic posts), each clearly labeled **"Sponsored"** / **"Featured Gear"** with affiliate disclosure.
+- Native product listings convert far better than banners and keep the authentic community aesthetic.
+- Implementation hook: add a `sponsored` (bool) + optional `sponsor` field on gear posts; feed injects them on a cadence; they also appear under the "Gear" chip.
+
+**Trip-Recap post — its own rich card type.** Auto-composable after a completed trip (ties to the trip planner): hero = map route *or* a photo collage; headline ("4 nights on the Big Sur coast"); a stat strip (**nights · spots · miles**); a photo carousel; tappable links to the spots visited. Lives in both the feed and the journal, and is the single most shareable unit on the platform (pairs with the OG-preview work).
+
+**Everything is authentic-first:** founder content, member content, and sponsored content all use the same card; the only differences are the "Sponsored" label and author attribution.
