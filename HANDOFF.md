@@ -7,15 +7,14 @@ Single-file web app (`index.html`, ~3,800 lines). Supabase backend, Mapbox, depl
 
 ## FIRST ACTION
 
-**v27 is finished but UNCOMMITTED on disk.** Live site is currently v26. Your first step:
+Nothing pending. **Live version is v29** — all committed and pushed. Verify the latest deploy rendered (Netlify auto-builds on push, ~1 min), then pick up the next task below.
 
-```bash
-git add -A && git commit -m "v27: campsite-review posting + post-publish auto-refresh" && git push
-```
+**Recent history:**
+- **v27:** "⛺ Campsite Review" category in the "+ Post" composer (routes through `submitPost` → `spots`), plus post-publish auto-refresh (feed + landing feed + leaderboard + open profile update, no reload).
+- **v28:** Swipeable photo **carousel** in the standard post (`renderFeedItem`) — CSS scroll-snap track, hover arrows (hidden on touch), dots, and an "N/M" counter. Combines `photo_url` + `photos[]` and dedupes, because the two posting flows stored `photos[]` inconsistently (one includes the lead image, one doesn't).
+- **v29:** Retired the broken "Share a favorite site" form. It wrote to a `site_reviews` table that never existed. Campground cards' button now routes to the standard `+ Post` composer pre-set to **campsite-review** with the campground name prefilled (`openPostForm(cat, prefillLoc)`). Removed the old submit form, the "Favorite sites" reader, and all associated JS/CSS. One way to post.
 
-Then verify it deployed (Netlify auto-builds on push, ~1 min).
-
-**v27 adds:** "⛺ Campsite Review" as a category in the "+ Post" composer (routes through the normal `submitPost` → `spots` pipeline), and auto-refresh after posting (feed + landing feed + leaderboard + open profile all update, no reload).
+> **Note:** no JS runtime (node/deno/bun) is available in the Claude Code shell here, so the `node --check` sanity step can't run. Fallback used: a Python script extracts the inline `<script>` block and checks bracket/backtick balance. Cowork should do the real browser verification.
 
 ---
 
@@ -53,9 +52,10 @@ Then verify it deployed (Netlify auto-builds on push, ~1 min).
 
 ## Next tasks (priority order)
 
-1. **Photo carousel** — `renderFeedItem` shows only `photos[0]`. Make the lead media a real swipeable carousel (posts already store `photos[]`).
-2. **Retire the broken "Share a favorite site" form** — it writes to a `site_reviews` table that does NOT exist. Now that campsite reviews post via the standard composer, remove/redirect that old flow so there's one way to post.
-3. From `SPEC.md`: profile-as-home restructure (login lands on your profile; demote old dashboard to a toolbar), video posts for driving tours, the map browse/filter surface, Hot To-Do subcategories (Restaurants/Shop/Activity/Hot Stops), trip planner (Trips Planned → Nights Camped), per-user leaderboards.
+1. ✅ **Photo carousel** — done in v28.
+2. ✅ **Retire the broken "Share a favorite site" form** — done in v29.
+3. **Profile-as-home restructure** (SPEC P0) — login should land on your own profile page; demote the old dashboard tabs to a plain nav/toolbar; eliminate the duplicate profile view. Note the profile **journal** still uses a legacy renderer (`feed-card` / `feed_type`, ~line 2760) with its own photo/compass markup — migrating it to the shared standard-post renderer (`renderFeedItem`, now with the carousel) is part of this task.
+4. From `SPEC.md` (P1+): video posts for driving tours, the map browse/filter surface, Hot To-Do subcategories (Restaurants/Shop/Activity/Hot Stops), trip planner (Trips Planned → Nights Camped), per-user leaderboards.
 
 ## Gotchas
 
