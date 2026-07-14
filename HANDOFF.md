@@ -7,12 +7,14 @@ Single-file web app (`index.html`, ~3,800 lines). Supabase backend, Mapbox, depl
 
 ## FIRST ACTION
 
-Nothing pending. **Live version is v29** — all committed and pushed. Verify the latest deploy rendered (Netlify auto-builds on push, ~1 min), then pick up the next task below.
+Nothing pending. **Live version is v31** — all committed and pushed. Verify the latest deploy rendered (Netlify auto-builds on push, ~1 min), then pick up the next task below.
 
 **Recent history:**
 - **v27:** "⛺ Campsite Review" category in the "+ Post" composer (routes through `submitPost` → `spots`), plus post-publish auto-refresh (feed + landing feed + leaderboard + open profile update, no reload).
 - **v28:** Swipeable photo **carousel** in the standard post (`renderFeedItem`) — CSS scroll-snap track, hover arrows (hidden on touch), dots, and an "N/M" counter. Combines `photo_url` + `photos[]` and dedupes, because the two posting flows stored `photos[]` inconsistently (one includes the lead image, one doesn't).
 - **v29:** Retired the broken "Share a favorite site" form. It wrote to a `site_reviews` table that never existed. Campground cards' button now routes to the standard `+ Post` composer pre-set to **campsite-review** with the campground name prefilled (`openPostForm(cat, prefillLoc)`). Removed the old submit form, the "Favorite sites" reader, and all associated JS/CSS. One way to post.
+- **v30:** Login/signup mobile polish — show-password eye toggle (`togglePwVisibility`), `autocomplete=email`+`autocapitalize=none` on the email input, and password `autocomplete` set per mode (`current-password` signin / `new-password` signup) so phone password managers autofill.
+- **v31:** **Profile-as-home restructure.** Login now lands on your OWN profile page (`openPubProfile(currentUser.id)`), fired once per login in `onAuthStateChange` (guarded by `hasDeepLinkParam()` so `?profile=/?user=/?trip=` deep-links still win; no longer re-fires on token refresh). The logged-in "My camping journal" hero is retired — `renderHero` hides `header.hero` when logged in, so the sticky `#logged-in-nav` toolbar is the top of the app (actions + browsing). `openPubProfile` is the single profile page (owner gets the Edit button → `openMyProfile` edit modal). **Feed unification:** the profile journal feed + category lists and the community feed all render through the shared `renderFeedItem` standard-post card (with carousel); legacy `feedCard` deleted; bookings keep a compact `bookingFeedCard`. Verified live with a logged-in session (lands on own profile, Edit visible, hero hidden, `.feed-item` cards, no console errors).
 
 > **Note:** no JS runtime (node/deno/bun) is available in the Claude Code shell here, so the `node --check` sanity step can't run. Fallback used: a Python script extracts the inline `<script>` block and checks bracket/backtick balance. Cowork should do the real browser verification.
 
@@ -54,8 +56,9 @@ Nothing pending. **Live version is v29** — all committed and pushed. Verify th
 
 1. ✅ **Photo carousel** — done in v28.
 2. ✅ **Retire the broken "Share a favorite site" form** — done in v29.
-3. **Profile-as-home restructure** (SPEC P0) — login should land on your own profile page; demote the old dashboard tabs to a plain nav/toolbar; eliminate the duplicate profile view. Note the profile **journal** still uses a legacy renderer (`feed-card` / `feed_type`, ~line 2760) with its own photo/compass markup — migrating it to the shared standard-post renderer (`renderFeedItem`, now with the carousel) is part of this task.
-4. From `SPEC.md` (P1+): video posts for driving tours, the map browse/filter surface, Hot To-Do subcategories (Restaurants/Shop/Activity/Hot Stops), trip planner (Trips Planned → Nights Camped), per-user leaderboards.
+3. ✅ **Profile-as-home restructure** — done in v31.
+4. **Follow-ups from v31** (worth a design pass): the logged-in home now opens straight on the sticky nav toolbar with no hero/branding above it — consider a slim logged-in header/logo. The demoted hero also carried the **rank badge + "Next up" trip** widgets; those are no longer shown anywhere — decide whether to move them onto the profile page. Every logged-in **reload** (no deep-link) re-lands on your own profile — intended per profile-as-home, but confirm that's the desired feel.
+5. From `SPEC.md` (P1+): video posts for driving tours, the map browse/filter surface, Hot To-Do subcategories (Restaurants/Shop/Activity/Hot Stops), trip planner (Trips Planned → Nights Camped), per-user leaderboards.
 
 ## Gotchas
 
